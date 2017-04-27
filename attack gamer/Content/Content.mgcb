@@ -1,0 +1,109 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:Windows
+/config:
+/profile:Reach
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+/reference:..\..\packages\MonoGame.Spritesheet.Pipeline.1.1.1\lib\net45\MonoGame.Spritesheet.Pipeline.dll
+
+#---------------------------------- Content ---------------------------------#
+
+#begin gamefont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:gamefont.spritefont
+
+#begin menufont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:menufont.spritefont
+
+#begin debugFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:debugFont.spritefont
+
+#begin box.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:box.png
+
+#begin playerSheet.png
+/importer:TextureImporter
+/processor:GridSheetProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/processorParam:SpriteWidth=32
+/processorParam:SpriteHeight=32
+/processorParam:Padding=0
+/build:playerSheet.png
+
+#begin swing.png
+/importer:TextureImporter
+/processor:GridSheetProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/processorParam:SpriteWidth=32
+/processorParam:SpriteHeight=96
+/processorParam:Padding=0
+/build:swing.png
+
+#begin goblinSheet.png
+/importer:TextureImporter
+/processor:GridSheetProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/processorParam:SpriteWidth=32
+/processorParam:SpriteHeight=32
+/processorParam:Padding=0
+/build:goblinSheet.png
+
+#begin skeleSheet.png
+/importer:TextureImporter
+/processor:GridSheetProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/processorParam:SpriteWidth=32
+/processorParam:SpriteHeight=32
+/processorParam:Padding=0
+/build:skeleSheet.png
+
