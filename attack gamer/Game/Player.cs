@@ -111,43 +111,44 @@ namespace attack_gamer
                     SetAnimation(Animations["walkright"]);
                 }
 
+
+                #endregion
+
+                #region triangle
+                // triangle above player
+                if (Helper.IsPointInTri(Input.mPos, new Vector2(0), new Vector2(Globals.ScreenX, 0), Position))
+                {
+                    CurrentRow = 1;
+                    attackBox = new Rectangle((int)Position.X - 32 - 8, (int)Position.Y - (int)Size.Y - 8, (int)Swing.Size.Y + 16, (int)Swing.Size.X + 16);
+                    swingRotation = MathHelper.ToRadians(270);
+                }
+
+                // triangle under player
+                if (Helper.IsPointInTri(Input.mPos, new Vector2(0, Globals.ScreenY), Globals.ScreenXY, Position))
+                {
+                    CurrentRow = 0;
+                    attackBox = new Rectangle((int)Position.X - 32 - 8, (int)Position.Y + 32 - 8, (int)Swing.Size.Y + 16, (int)Swing.Size.X + 16);
+                    swingRotation = MathHelper.ToRadians(90);
+                }
+
+                // triangle left player
+                if (Helper.IsPointInTri(Input.mPos, new Vector2(0), new Vector2(0, Globals.ScreenY), Position))
+                {
+                    CurrentRow = 3;
+                    attackBox = new Rectangle((int)Position.X - 32 - 17 + 8, (int)Position.Y - 32 - 8, (int)Swing.Size.X + 16, (int)Swing.Size.Y + 16);
+                    swingRotation = MathHelper.ToRadians(180);
+                }
+
+                // triangle right player
+                if (Helper.IsPointInTri(Input.mPos, new Vector2(Globals.ScreenX, 0), new Vector2(Globals.ScreenX, Globals.ScreenY), Position))
+                {
+                    CurrentRow = 2;
+                    attackBox = new Rectangle((int)Position.X + 32 - 8, (int)Position.Y - 32 - 8, (int)Swing.Size.X + 16, (int)Swing.Size.Y + 16);
+                    swingRotation = MathHelper.ToRadians(0);
+                }
             }
             if (Direction == new Vector2(0))
                 SetAnimation(new[] { GSheet[0, CurrentRow] });
-            #endregion
-
-            #region triangle
-            // triangle above player
-            if (Helper.IsPointInTri(Input.mPos, new Vector2(0), new Vector2(Globals.ScreenX, 0), Position))
-            {
-                CurrentRow = 1;
-                attackBox = new Rectangle((int)Position.X - 32 - 8, (int)Position.Y - (int)Size.Y - 8, (int)Swing.Size.Y + 16, (int)Swing.Size.X + 16);
-                swingRotation = MathHelper.ToRadians(270);
-            }
-
-            // triangle under player
-            if (Helper.IsPointInTri(Input.mPos, new Vector2(0, Globals.ScreenY), Globals.ScreenXY, Position))
-            {
-                CurrentRow = 0;
-                attackBox = new Rectangle((int)Position.X - 32 - 8, (int)Position.Y + 32 - 8, (int)Swing.Size.Y + 16, (int)Swing.Size.X + 16);
-                swingRotation = MathHelper.ToRadians(90);
-            }
-
-            // triangle left player
-            if (Helper.IsPointInTri(Input.mPos, new Vector2(0), new Vector2(0, Globals.ScreenY), Position))
-            {
-                CurrentRow = 3;
-                attackBox = new Rectangle((int)Position.X - 32 - 17 + 8, (int)Position.Y - 32 - 8, (int)Swing.Size.X + 16, (int)Swing.Size.Y + 16);
-                swingRotation = MathHelper.ToRadians(180);
-            }
-
-            // triangle right player
-            if (Helper.IsPointInTri(Input.mPos, new Vector2(Globals.ScreenX, 0), new Vector2(Globals.ScreenX, Globals.ScreenY), Position))
-            {
-                CurrentRow = 2;
-                attackBox = new Rectangle((int)Position.X + 32 - 8, (int)Position.Y - 32 - 8, (int)Swing.Size.X + 16, (int)Swing.Size.Y + 16);
-                swingRotation = MathHelper.ToRadians(0);
-            }
             #endregion
 
             #region test
