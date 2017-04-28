@@ -90,7 +90,7 @@ namespace attack_gamer
 
         public bool IsAlive => IsDyingTimer > 0;
         public bool IsDying => Health <= 0;
-        public double IsDyingTimer = 1;
+        public double IsDyingTimer = 10;
 
         public double Health { get; set; }
         public double MaxHealth { get; set; }
@@ -156,7 +156,6 @@ namespace attack_gamer
             else if (IsDying)
             {
                 int alpha = (int)(IsDyingTimer * 255);
-                Console.WriteLine(IsDyingTimer);
                 return new Color(Color.Red, alpha);
             }
             else
@@ -202,7 +201,7 @@ namespace attack_gamer
             if (IsDying)
             {
                 Speed = 0;
-                //IsDyingTimer -= Delta;
+                IsDyingTimer -= Delta;
             }
             foreach (var t in textList)
             {

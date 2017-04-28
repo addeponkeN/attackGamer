@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace attack_gamer
-{
+{    
     public class Inventory
     {
 
