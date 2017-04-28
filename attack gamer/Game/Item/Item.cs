@@ -34,16 +34,23 @@ namespace attack_gamer
         public int Column { get; set; } = 0;
         public int Row { get; set; } = 0;
 
+        public bool IsHovered => Rectangle.Contains(Input.mPos);
+
         public Rectangle SetSource(int column, int row)
         {
             return GSheet[column, row];
         }     
         
-        
-        public virtual void Draw(SpriteBatch sb, GameTime gt)
+        public void DropItem(Item i)
         {
 
+        }
+        
+        public virtual void Draw(SpriteBatch sb)
+        {
             sb.Draw(Texture, Rectangle, SetSource(Column, Row), Color, 0, Vector2.Zero, SpriteEffects.None, 0);
+            //sb.Draw(Texture, Rectangle, Color);
+
         }
 
     }

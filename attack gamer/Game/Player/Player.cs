@@ -30,6 +30,8 @@ namespace attack_gamer
         public Vector2 swingOrigin;
         public float swingRotation = 0;
 
+        public Inventory inventory;
+
         public Player(GridSheet shet, GridSheet swing, GraphicsDevice gd) : base(gd)
         {
             GSheet = shet;
@@ -59,6 +61,7 @@ namespace attack_gamer
 
             SetHealth(20);
             SetDamage(2, 5);
+            inventory = new Inventory(gd);
         }
 
         public override void Update(GameTime gameTime)
@@ -151,6 +154,14 @@ namespace attack_gamer
             #endregion
 
             #region test
+            if (Input.KeyClick(Keys.D1))
+            {
+                inventory.AddItemList(new Usable(UsableType.HealthPot, GSheet));
+            }
+            if (Input.KeyClick(Keys.D2))
+            {
+
+            }
             if (Input.KeyHold(Keys.Left))
             {
             }
@@ -183,6 +194,8 @@ namespace attack_gamer
             }
             //if(IsAttacking)
             //sb.Draw(ScreenManager.box, attackBox, Swing.GetSource(Swing.CurrentAnimation, gameTime), new Color(Color.Green, 0.2f));
+
+            inventory.Draw(sb);
 
             sb.DrawString(ScreenManager.DebugFont, "" + swingBox, new Vector2(0, 60), Color.White);
             sb.DrawString(ScreenManager.DebugFont, "" + swingOrigin, new Vector2(0, 80), Color.White);

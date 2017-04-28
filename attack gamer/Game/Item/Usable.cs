@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using MonoGame.Spritesheet;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,14 +19,16 @@ namespace attack_gamer
 
         public double Value { get; set; }
 
-        public Usable(UsableType type)
+        public Usable(UsableType type, GridSheet sheet)
         {
             this.type = type;
+            GSheet = sheet;
 
             switch (this.type)
             {
                 case UsableType.HealthPot:
                     Value = 10;
+                    Color = new Color(Color.IndianRed, 255);
                     break;
                 case UsableType.ManaPot:
                     break;
@@ -33,7 +37,6 @@ namespace attack_gamer
 
         public void Use(Usable u, LivingObject o)
         {
-
             switch (u.type)
             {
                 case UsableType.HealthPot:
@@ -43,6 +46,7 @@ namespace attack_gamer
                     o.Mana += u.Value;
                     break;
             }
+            u.Exist = false;
         }
     }
 }
