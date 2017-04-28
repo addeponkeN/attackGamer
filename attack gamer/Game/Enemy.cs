@@ -25,7 +25,7 @@ namespace attack_gamer
             AddAnimation(new int[] { 0, 1, 0, 2 }, 2, "walkleft");
             AddAnimation(new int[] { 0, 1, 0, 2 }, 3, "walkright");
 
-            Speed = 25f;
+            Speed = 45f;
             Size = new Vector2(32, 32);
 
             SetHealth(10);

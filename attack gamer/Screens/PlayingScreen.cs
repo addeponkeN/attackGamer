@@ -88,10 +88,10 @@ namespace attack_gamer
             sb.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default,
                     RasterizerState.CullNone, null, cam.get_transformation(ScreenManager.GraphicsDevice));
             // draw here ---------------------------------------
-            player.Draw(sb, gameTime);
 
             loManager.Draw(sb, gameTime);
-            
+            player.Draw(sb, gameTime);
+
             sb.DrawString(ScreenManager.DebugFont, "playing", Vector2.One, Color.Black);
             sb.DrawString(ScreenManager.DebugFont, "playing", Vector2.Zero, Color.White);
 
