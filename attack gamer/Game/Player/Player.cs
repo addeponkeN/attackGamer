@@ -67,6 +67,9 @@ namespace attack_gamer
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            inventory.Update(this);
+
             //attackDirection = Input.mPos - new Vector2(attackBox.X, attackBox.Y);
             //attackRotation = (float)Math.Atan2(attackDirection.Y, attackDirection.X);
 

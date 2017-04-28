@@ -66,6 +66,16 @@ namespace attack_gamer
             list.Add(item);
         }
 
+        public void Update(Player player)
+        {
+            foreach (var item in list)
+            {
+                if (item.IsRightClicked)
+                    item.Use(item, player);
+            }
+
+            list.RemoveAll(it => !it.Exist);
+        }
 
         public void Draw(SpriteBatch sb)
         {
