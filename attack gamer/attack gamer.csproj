@@ -44,6 +44,11 @@
   <ItemGroup>
     <Compile Include="Game1.cs" />
     <Compile Include="Game\Enemy.cs" />
+    <Compile Include="Game\Item\Equipment.cs" />
+    <Compile Include="Game\Item\EquippableItem.cs" />
+    <Compile Include="Game\Item\UsableItem.cs" />
+    <Compile Include="Game\Item\Usable.cs" />
+    <Compile Include="Game\Item\Weapon.cs" />
     <Compile Include="Game\LivingObject.cs" />
     <Compile Include="Game\LivingObjectManager.cs" />
     <Compile Include="Gui\Button.cs" />

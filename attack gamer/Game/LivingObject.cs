@@ -91,10 +91,16 @@ namespace attack_gamer
         public bool IsAlive => IsDyingTimer > 0;
         public bool IsDying => Health <= 0;
         public double IsDyingTimer = 1;
+
         public double Health { get; set; }
         public double MaxHealth { get; set; }
         public void SetHealth(double health) { Health = health; MaxHealth = health; }
         public double PercentHealth { get; set; }
+
+        public double Mana { get; set; }
+        public double MaxMana { get; set; }
+        public void SetMana(double mana) { Mana = mana; MaxMana = mana; }
+        public double PercentMana { get; set; }
 
         public double MinDamage { get; set; }
         public double MaxDamage { get; set; }
