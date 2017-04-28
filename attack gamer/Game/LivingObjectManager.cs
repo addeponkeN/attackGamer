@@ -32,7 +32,7 @@ namespace attack_gamer
                 item.UpdateMovement(gameTime, player);
             }
 
-            enemies.RemoveAll(e => !e.IsAlive);
+            //enemies.RemoveAll(e => !e.IsAlive);
         }
 
         public void Draw(SpriteBatch sb, GameTime gameTime)

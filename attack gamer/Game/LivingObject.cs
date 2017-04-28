@@ -42,6 +42,9 @@ namespace attack_gamer
 
         DynamicBar HealthBar;
 
+        DynamicText textDamage;
+        List<DynamicText> textList = new List<DynamicText>();
+
         #region what to draw
         public bool IsDrawHealthBar = true;
 
@@ -125,7 +128,7 @@ namespace attack_gamer
             Health -= damageSource.Damage;
             Push(damageSource.Position - Position, damageSource.KnockbackPower);
             IsHit = true;
-
+            textList.Add(new DynamicText(ScreenManager.DebugFont, Position, Size, new Vector2(0, -1), 10f, Color.MonoGameOrange, damageSource.Damage.ToString()) { TextShader = false });
             damageSource.DidAttack();
         }
         public void Push(Vector2 dir, float force)
@@ -144,6 +147,12 @@ namespace attack_gamer
         {
             if (IsHit)
                 return Color.Red;
+            else if (IsDying)
+            {
+                int alpha = (int)(IsDyingTimer * 255);
+                Console.WriteLine(IsDyingTimer);
+                return new Color(Color.Red, alpha);
+            }
             else
                 return BaseColor;
         }
@@ -184,13 +193,15 @@ namespace attack_gamer
                 else BeingPushed = false;
             }
 
-            if(IsDying)
+            if (IsDying)
             {
                 Speed = 0;
-                IsDyingTimer = Extras.SubEverySecond(gameTime, IsDyingTimer, 1);
-                Console.WriteLine(IsDyingTimer);
+                //IsDyingTimer -= Delta;
             }
-            
+            foreach (var t in textList)
+            {
+                t.Update(gameTime);
+            }
         }
         public virtual void Draw(SpriteBatch sb, GameTime gt)
         {
@@ -199,6 +210,11 @@ namespace attack_gamer
 
             if (IsDrawHealthBar)
                 HealthBar.Draw(sb);
+
+            foreach (var t in textList)
+            {
+                t.Draw(sb);
+            }
 
             sb.Draw(Texture, Rectangle, GetSource(CurrentAnimation, gt), _Color(), 0, Vector2.Zero, SpriteEffects.None, 0);
         }
