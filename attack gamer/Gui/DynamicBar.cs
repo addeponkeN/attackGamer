@@ -89,14 +89,12 @@ namespace attack_gamer
         }
         public void Update(double min, double minMax, int barSizeOrPercent, Vector2 position)
         {
-            Console.WriteLine(min);
             BarWidth = barSizeOrPercent;
             Percent = (min / minMax) * barSizeOrPercent;
             PercentText = (min / minMax) * 100;
             UpdatePosition(position);
 
             MathHelper.Clamp((float)Percent, 0, (float)minMax);
-            //Console.WriteLine(Percent);
         }
 
         //public double Percent => (Min / MinMax) * BarWidth;

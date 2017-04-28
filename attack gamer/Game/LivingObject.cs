@@ -85,7 +85,9 @@ namespace attack_gamer
             return GSheet[column, row];
         }
 
-        public bool IsAlive => Health > 0;
+        public bool IsAlive => IsDyingTimer > 0;
+        public bool IsDying => Health <= 0;
+        public double IsDyingTimer = 1;
         public double Health { get; set; }
         public double MaxHealth { get; set; }
         public void SetHealth(double health) { Health = health; MaxHealth = health; }
@@ -109,8 +111,6 @@ namespace attack_gamer
         public double IsAttackingTimer { get; set; }
         public double AttackCooldown { get; set; } = 5;
         public double AttackCooldownCounter { get; set; }
-
-
 
         public void HitOtherObject(LivingObject target)
         {
@@ -183,6 +183,14 @@ namespace attack_gamer
                     VelocityForce -= 0.2f;
                 else BeingPushed = false;
             }
+
+            if(IsDying)
+            {
+                Speed = 0;
+                IsDyingTimer = Extras.SubEverySecond(gameTime, IsDyingTimer, 1);
+                Console.WriteLine(IsDyingTimer);
+            }
+            
         }
         public virtual void Draw(SpriteBatch sb, GameTime gt)
         {

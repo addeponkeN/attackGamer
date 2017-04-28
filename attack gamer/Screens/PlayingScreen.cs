@@ -19,7 +19,9 @@ namespace attack_gamer
 
         GridSheet playerSheet, swingSheet, skeleSheet, goblinSheet;
 
-        Enemy goblin;
+        LivingObjectManager loManager;
+
+        float delay;
         
         public PlayingScreen()
         {
@@ -37,8 +39,8 @@ namespace attack_gamer
             skeleSheet = content.Load<GridSheet>("skeleSheet");
 
             player = new Player(playerSheet, swingSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(350) };
-            goblin = new Enemy(goblinSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(450) };
-            
+            loManager = new LivingObjectManager();
+            loManager.AddEnemy(new Enemy(goblinSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(400) });
 
             cam = new Camera();
 
@@ -57,8 +59,19 @@ namespace attack_gamer
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
             player.Update(gameTime);
-            goblin.Update(gameTime);
-            goblin.EUpdate(gameTime, player);
+            loManager.Update(gameTime, player);
+
+
+            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            delay += delta;
+            if(delay > 3)
+            {
+                loManager.AddEnemy(new Enemy(goblinSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(Rng.Noxt(Globals.ScreenX), Rng.Noxt(Globals.ScreenY)) });
+
+                delay -= 3;
+            }
+
         }
 
         public override void HandleInput(InputState input)
@@ -77,7 +90,7 @@ namespace attack_gamer
             // draw here ---------------------------------------
             player.Draw(sb, gameTime);
 
-            goblin.Draw(sb, gameTime);
+            loManager.Draw(sb, gameTime);
             
             sb.DrawString(ScreenManager.DebugFont, "playing", Vector2.One, Color.Black);
             sb.DrawString(ScreenManager.DebugFont, "playing", Vector2.Zero, Color.White);

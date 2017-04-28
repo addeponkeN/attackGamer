@@ -36,19 +36,22 @@ namespace attack_gamer
         {
             base.Update(gameTime);
         }
-        public void EUpdate(GameTime gameTime, Player player)
+        public void UpdateMovement(GameTime gameTime, Player player)
         {
             var dir = player.Position - Position;
             dir.Normalize();
             Direction = dir;
 
-            if (Rectangle.Intersects(player.attackBox) && player.IsAttacking && !IsHit)
+            if (!IsDying)
             {
-                GetHitBy(player);
-            }
-            if (player.Rectangle.Intersects(Rectangle) && !Attacked)
-            {
-                player.GetHitBy(this);
+                if (Rectangle.Intersects(player.attackBox) && player.IsAttacking && !IsHit)
+                {
+                    GetHitBy(player);
+                }
+                if (player.Rectangle.Intersects(Rectangle) && !Attacked)
+                {
+                    player.GetHitBy(this);
+                }
             }
         }
     }

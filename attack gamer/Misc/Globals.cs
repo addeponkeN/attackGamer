@@ -26,10 +26,12 @@ namespace attack_gamer
 
         public static bool debug;         // F1 toggle
     }
+
+
     public static class Extras
     {
         private static float counter;
-        public static void AddEverySecond(GameTime gt, int value, float everyXsecond)
+        public static void AddEverySecond(GameTime gt, double value, float everyXsecond)
         {
             counter += (float)gt.ElapsedGameTime.TotalSeconds;
             if (counter >= everyXsecond)
@@ -38,14 +40,15 @@ namespace attack_gamer
                 counter -= everyXsecond;
             }
         }
-        public static void SubEverySecond(GameTime gt, int value, float everyXsecond)
+        public static double SubEverySecond(GameTime gt, double value, float everyXsecond)
         {
             counter += (float)gt.ElapsedGameTime.TotalSeconds;
             if (counter >= everyXsecond)
             {
-                value--;
                 counter -= everyXsecond;
+                return value - 1;
             }
+            return value;
         }
     }
     public static class Convertor

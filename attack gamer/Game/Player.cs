@@ -88,6 +88,8 @@ namespace attack_gamer
 
             #region Movement
             Direction = new Vector2(0);
+            if (Direction == new Vector2(0))
+                SetAnimation(new[] { GSheet[0, CurrentRow] });
             if (!Attacked)
             {
                 if (Input.KeyHold(Keys.W))
@@ -110,8 +112,6 @@ namespace attack_gamer
                     Direction = new Vector2(1, Direction.Y);
                     SetAnimation(Animations["walkright"]);
                 }
-
-
                 #endregion
 
                 #region triangle
@@ -147,8 +147,7 @@ namespace attack_gamer
                     swingRotation = MathHelper.ToRadians(0);
                 }
             }
-            if (Direction == new Vector2(0))
-                SetAnimation(new[] { GSheet[0, CurrentRow] });
+
             #endregion
 
             #region test

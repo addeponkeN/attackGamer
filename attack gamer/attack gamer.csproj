@@ -45,6 +45,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Game\Enemy.cs" />
     <Compile Include="Game\LivingObject.cs" />
+    <Compile Include="Game\LivingObjectManager.cs" />
     <Compile Include="Gui\Button.cs" />
     <Compile Include="Gui\DynamicBar.cs" />
     <Compile Include="Gui\DynamicText.cs" />
