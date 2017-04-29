@@ -25,6 +25,7 @@ namespace attack_gamer
         public bool IsLeftClicked => IsHovered && Input.LeftClick();
         public bool IsDragging;
 
+        public InventorySlot() { }
         public InventorySlot(Item item, GraphicsDevice gd)
         {
             Texture2D Texture = new Texture2D(gd, 1, 1);
@@ -45,6 +46,14 @@ namespace attack_gamer
             box.Size = new Vector2(32);
             Item = item;
             Item.Color = item.Color;
+        }
+        public InventorySlot Copy()
+        {
+            InventorySlot temp = new InventorySlot();
+            temp.box = box;
+            temp.ItemOldPositon = ItemOldPositon;
+            temp.Item = Item;
+            return temp;
         }
         public void RemoveItem()
         {
@@ -88,12 +97,11 @@ namespace attack_gamer
                 {
                     if (slots[x, y].State == InventorySlotState.Closed)
                         continue;
-
                     Console.WriteLine($"added: {item}");
-                    slots[x, y] = new InventorySlot(item, grap);
-                    slots[x, y].Item.Position = new Vector2(P.Position.X + (x * 32), P.Position.Y + (y * 32));
+                    slots[x, y] = new InventorySlot(item, grap, false);
+                    //slots[x, y].Item.Position = new Vector2(P.Position.X + (x * 32), P.Position.Y + (y * 32));
+                    Console.WriteLine($"slot: {slots[x, y].Item.Exist}   i: {item.Exist}");
                     breakLoops = true;
-
                     if (breakLoops)
                         break;
                 }
@@ -120,7 +128,6 @@ namespace attack_gamer
             item.Position = new Vector2(P.Position.X + (x * 32) + x, P.Position.Y + (y * 32) + y);
             list.Add(item);
         }
-
         public void DragItem(InventorySlot slot)
         {
             if (slot.ItemOldPositon == Vector2.Zero)
@@ -139,11 +146,6 @@ namespace attack_gamer
                 else
                     SwapSlots(slot);
             }
-        }
-        public void MoveItem(InventorySlot slot)
-        {
-
-
         }
         public void SwapSlots(InventorySlot holding)
         {

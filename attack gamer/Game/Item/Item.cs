@@ -9,9 +9,13 @@ using System.Threading.Tasks;
 
 namespace attack_gamer
 {
+    public enum ItemType
+    {
+        Usable, Weapon, Armor
+    }
     public class Item
     {
-
+        public ItemType Type { get; set; }
         public GridSheet GSheet { get; set; }
         public Texture2D Texture => GSheet.Texture;
         public Vector2 Position { get; set; }
@@ -19,7 +23,7 @@ namespace attack_gamer
         public Rectangle Rectangle => new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y);
         public Vector2 CenterBox => new Vector2(Position.X + (Size.X / 2), Position.Y + (Size.Y / 2));
 
-        public float Speed { get; set; } = 50f;
+        public float Speed { get; set; }
         public Vector2 Direction { get; set; } = Vector2.Zero;
         public float VelocityForce { get; set; } = 1f;
         public float Delta { get; set; }
@@ -41,27 +45,42 @@ namespace attack_gamer
             return GSheet[column, row];
         }
 
-        public int KeepDistance = 4;
-        public float DistanceToSnake(Vector2 pos)
+        public int Distance = 4;
+        public float DistanceTo(Vector2 pos)
         {
             return Vector2.Distance(pos, Position);
         }
         public bool CloseTo(Vector2 pos)
         {
-            return DistanceToSnake(pos) < KeepDistance;
+            return DistanceTo(pos) < Distance;
         }
-        public virtual void VacuumItem(GameTime gt, Vector2 des, Inventory i)
+        public void VacuumItem(GameTime gt, Item item, Vector2 des, Inventory i)
         {
             Delta = (float)gt.ElapsedGameTime.TotalSeconds;
+            Speed += 200f * Delta;
             Position += Delta * Speed * Direction;
             var dir = des - Position;
             dir.Normalize();
             Direction = dir;
+
             if (CloseTo(des))
             {
-                i.AddItem(this);
+                switch (item.Type)
+                {
+                    case ItemType.Usable:
+                        i.AddItem(new Usable(GetItem<Usable>().type, GSheet));
+                        break;
+                    case ItemType.Weapon:
+                        //i.AddItem(new Weapon(UsableType.HealthPot, GSheet));
+
+                        break;
+                    case ItemType.Armor:
+                        //i.AddItem(new Equipment(UsableType.HealthPot, GSheet));
+
+                        break;
+                }
+                item.Exist = false;
             }
-            Console.WriteLine("fshrooo");
         }
 
 
@@ -69,7 +88,7 @@ namespace attack_gamer
         {
             sb.Draw(Texture, Rectangle, SetSource(Column, Row), Color, 0, Vector2.Zero, SpriteEffects.None, 0);
         }
-        
+
         public T GetItem<T>() where T : Item => this as T;
 
     }

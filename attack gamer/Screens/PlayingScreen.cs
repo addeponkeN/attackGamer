@@ -45,7 +45,12 @@ namespace attack_gamer
 
             cam = new Camera();
 
-            items.Add(new Usable(UsableType.HealthPot, skeleSheet) { Vacuumable = true, Position = new Vector2(300) });
+            items.Add(new Usable(UsableType.HealthPot, skeleSheet) { Vacuumable = true, Position = new Vector2(300, 250) });
+            items.Add(new Usable(UsableType.HealthPot, skeleSheet) { Vacuumable = true, Position = new Vector2(250) });
+            items.Add(new Usable(UsableType.HealthPot, skeleSheet) { Vacuumable = true, Position = new Vector2(450) });
+            items.Add(new Usable(UsableType.HealthPot, skeleSheet) { Vacuumable = true, Position = new Vector2(0) });
+
+
 
             cam.pos = Globals.ScreenCenter;
         }
@@ -68,7 +73,7 @@ namespace attack_gamer
             delay += delta;
             if (delay > 3)
             {
-                loManager.AddEnemy(new Enemy(goblinSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(Rng.Noxt(Globals.ScreenX), Rng.Noxt(Globals.ScreenY)) });
+                //loManager.AddEnemy(new Enemy(goblinSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(Rng.Noxt(Globals.ScreenX), Rng.Noxt(Globals.ScreenY)) });
 
                 delay -= 1;
             }
@@ -94,8 +99,10 @@ namespace attack_gamer
             foreach (var i in items)
             {
                 i.Draw(sb);
-                if (player.LootRadius.Contains(i.Position))
-                    i.VacuumItem(gameTime, player.Position, player.inventory);                
+                if (player.LootRadius.Intersects(i.Rectangle))
+                {
+                    i.VacuumItem(gameTime,i, player.Position, player.inventory);
+                }
             }
 
             loManager.Draw(sb, gameTime);

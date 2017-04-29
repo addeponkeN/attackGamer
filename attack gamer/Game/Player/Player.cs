@@ -53,7 +53,7 @@ namespace attack_gamer
             AddAnimation(new int[] { 0, 1, 2, 3 }, 1, "walkup");
             AddAnimation(new int[] { 0, 1, 2, 3 }, 2, "walkright");
             AddAnimation(new int[] { 0, 1, 2, 3 }, 3, "walkleft");
-            Speed = 150f;
+            Speed = 300f;
             AnimationDuration = .75;
 
             attackWidth = 48;
