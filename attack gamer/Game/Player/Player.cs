@@ -92,7 +92,7 @@ namespace attack_gamer
                 IsAttackingTimer -= Delta;
             }
 
-            #region Movement
+            #region Keybindongs
             Direction = new Vector2(0);
             if (Direction == new Vector2(0))
                 SetAnimation(new[] { GSheet[0, CurrentRow] });
@@ -118,6 +118,12 @@ namespace attack_gamer
                     Direction = new Vector2(1, Direction.Y);
                     SetAnimation(Animations["walkright"]);
                 }
+                if (Input.KeyClick(Keys.I) || Input.KeyClick(Keys.B))
+                    if (inventory.IsDrawing)
+                        inventory.IsDrawing = false;
+                    else inventory.IsDrawing = true;
+                
+
                 #endregion
 
                 #region triangle

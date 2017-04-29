@@ -71,6 +71,9 @@ namespace attack_gamer
         Texture2D Texture;
         Sprite P;
         GraphicsDevice grap;
+
+        public bool IsDrawing { get; set; }
+
         public Inventory(GraphicsDevice gd)
         {
             grap = gd;
@@ -99,8 +102,8 @@ namespace attack_gamer
                         continue;
                     Console.WriteLine($"added: {item}");
                     slots[x, y] = new InventorySlot(item, grap, false);
+                    slots[x, y].State = InventorySlotState.Closed;
                     //slots[x, y].Item.Position = new Vector2(P.Position.X + (x * 32), P.Position.Y + (y * 32));
-                    Console.WriteLine($"slot: {slots[x, y].Item.Exist}   i: {item.Exist}");
                     breakLoops = true;
                     if (breakLoops)
                         break;
@@ -193,55 +196,57 @@ namespace attack_gamer
 
         public void Draw(SpriteBatch sb, Player player)
         {
-            P.Draw(sb);
-
-            for (int y = 0; y < rows; y++)
+            if (IsDrawing)
             {
-                for (int x = 0; x < columns; x++)
+                P.Draw(sb);
+                //-----
+                for (int y = 0; y < rows; y++)
                 {
-                    if (slots[x, y] != null)
+                    for (int x = 0; x < columns; x++)
                     {
-
-                        var slot = slots[x, y];
-                        var item = slots[x, y].Item;
-                        if (slot.Item != null)
+                        if (slots[x, y] != null)
                         {
-                            if (!slot.IsDragging)
-                                item.Position = slot.box.Position;
-                            sb.Draw(item.Texture, item.Rectangle, item.SetSource(item.Column, item.Row), item.Color);
-                        }
-                        slot.box.Position = new Vector2((int)P.Position.X + (x * 32), (int)P.Position.Y + (y * 32));
-                        sb.Draw(slot.box.Texture, new Rectangle(Convertor.ToPoint(slot.box.Position), Convertor.ToPoint(slot.box.Size)), slot.box.Color);
+                            var slot = slots[x, y];
+                            var item = slots[x, y].Item;
+                            if (slot.Item != null)
+                            {
+                                if (!slot.IsDragging)
+                                    item.Position = slot.box.Position;
+                                sb.Draw(item.Texture, item.Rectangle, item.SetSource(item.Column, item.Row), item.Color);
+                            }
+                            slot.box.Position = new Vector2((int)P.Position.X + (x * 32), (int)P.Position.Y + (y * 32));
+                            sb.Draw(slot.box.Texture, new Rectangle(Convertor.ToPoint(slot.box.Position), Convertor.ToPoint(slot.box.Size)), slot.box.Color);
 
-                        if (slots[x, y].Item == null)
-                        {
-                            slots[x, y].State = InventorySlotState.Open;
-                            //slot.box.Color = new Color(Color.Green, 150);
-                        }
-                        else
-                        {
-                            slots[x, y].State = InventorySlotState.Closed;
-                            //slot.box.Color = new Color(Color.Red, 150);
-                        }
+                            if (slots[x, y].Item == null)
+                            {
+                                slots[x, y].State = InventorySlotState.Open;
+                                slot.box.Color = new Color(Color.Green, 150);
+                            }
+                            else
+                            {
+                                slots[x, y].State = InventorySlotState.Closed;
+                                slot.box.Color = new Color(Color.Red, 150);
+                            }
 
-                        if (slot.IsRightClicked)
-                            item.GetItem<Usable>().Use(item, player);
-                        if (slot.Item != null && !item.Exist)
-                            slot.RemoveItem();
+                            if (slot.IsRightClicked)
+                                item.GetItem<Usable>().Use(item, player);
+                            if (slot.Item != null && !item.Exist)
+                                slot.RemoveItem();
 
-                        if (slot.IsLeftClicked)
-                            slot.IsDragging = true;
-                        if (slot.IsDragging)
-                            DragItem(slot);
-                        if (slots[x, y].box.Rectangle.Contains(Input.mPos))
-                        {
-                            slots[x, y].box.Color = new Color(Color.White, 255);
+                            if (slot.IsLeftClicked)
+                                slot.IsDragging = true;
+                            if (slot.IsDragging)
+                                DragItem(slot);
+                            if (slots[x, y].box.Rectangle.Contains(Input.mPos))
+                            {
+                                slots[x, y].box.Color = new Color(Color.White, 255);
+                            }
+                            else slots[x, y].box.Color = new Color(Color.White, 200);
+                            if (slot.IsHovered && Input.KeyClick(Keys.Delete))
+                                slot.RemoveItem();
                         }
-                        else slots[x, y].box.Color = new Color(Color.White, 200);
-                        if (slot.IsHovered && Input.KeyClick(Keys.Delete))
-                            slot.RemoveItem();
                     }
-                }
+                }//------
             }
         }
     }

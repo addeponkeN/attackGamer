@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace attack_gamer
 {
-    public class Equipment : Item
+    public class Armor : Item
     {
 
-        public Equipment()
+        public Armor()
         {
 
 

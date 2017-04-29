@@ -46,7 +46,7 @@
     <Compile Include="Game\Map\Map.cs" />
     <Compile Include="Game\Map\Tile.cs" />
     <Compile Include="Game\Npc\Enemy.cs" />
-    <Compile Include="Game\Item\Equipment.cs" />
+    <Compile Include="Game\Item\Armor.cs" />
     <Compile Include="Game\Item\Item.cs" />
     <Compile Include="Game\Item\Usable.cs" />
     <Compile Include="Game\Item\Weapon.cs" />
