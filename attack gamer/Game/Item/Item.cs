@@ -34,10 +34,36 @@ namespace attack_gamer
         public int Column { get; set; } = 0;
         public int Row { get; set; } = 0;
 
+        public bool Vacuumable { get; set; } = true;
+
         public Rectangle SetSource(int column, int row)
         {
             return GSheet[column, row];
         }
+
+        public int KeepDistance = 4;
+        public float DistanceToSnake(Vector2 pos)
+        {
+            return Vector2.Distance(pos, Position);
+        }
+        public bool CloseTo(Vector2 pos)
+        {
+            return DistanceToSnake(pos) < KeepDistance;
+        }
+        public virtual void VacuumItem(GameTime gt, Vector2 des, Inventory i)
+        {
+            Delta = (float)gt.ElapsedGameTime.TotalSeconds;
+            Position += Delta * Speed * Direction;
+            var dir = des - Position;
+            dir.Normalize();
+            Direction = dir;
+            if (CloseTo(des))
+            {
+                i.AddItem(this);
+            }
+            Console.WriteLine("fshrooo");
+        }
+
 
         public virtual void Draw(SpriteBatch sb)
         {

@@ -20,9 +20,10 @@ namespace attack_gamer
         GridSheet playerSheet, swingSheet, skeleSheet, goblinSheet;
 
         LivingObjectManager loManager;
+        List<Item> items = new List<Item>();
 
         float delay;
-        
+
         public PlayingScreen()
         {
         }
@@ -40,11 +41,11 @@ namespace attack_gamer
 
             player = new Player(playerSheet, swingSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(350) };
             loManager = new LivingObjectManager();
-            loManager.AddEnemy(new Enemy(goblinSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(400) });
+            //loManager.AddEnemy(new Enemy(goblinSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(400) });
 
             cam = new Camera();
 
-
+            items.Add(new Usable(UsableType.HealthPot, skeleSheet) { Vacuumable = true, Position = new Vector2(300) });
 
             cam.pos = Globals.ScreenCenter;
         }
@@ -65,13 +66,14 @@ namespace attack_gamer
             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             delay += delta;
-            if(delay > 3)
+            if (delay > 3)
             {
                 loManager.AddEnemy(new Enemy(goblinSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(Rng.Noxt(Globals.ScreenX), Rng.Noxt(Globals.ScreenY)) });
 
                 delay -= 1;
             }
 
+            items.RemoveAll(i => !i.Exist);
         }
 
         public override void HandleInput(InputState input)
@@ -89,6 +91,13 @@ namespace attack_gamer
                     RasterizerState.CullNone, null, cam.get_transformation(ScreenManager.GraphicsDevice));
             // draw here ---------------------------------------
 
+            foreach (var i in items)
+            {
+                i.Draw(sb);
+                if (player.LootRadius.Contains(i.Position))
+                    i.VacuumItem(gameTime, player.Position, player.inventory);                
+            }
+
             loManager.Draw(sb, gameTime);
             player.Draw(sb, gameTime);
 
@@ -96,7 +105,7 @@ namespace attack_gamer
 
             sb.DrawString(ScreenManager.DebugFont, "playing", Vector2.One, Color.Black);
             sb.DrawString(ScreenManager.DebugFont, "playing", Vector2.Zero, Color.White);
-            
+
 
             sb.End();
             base.Draw(gameTime);

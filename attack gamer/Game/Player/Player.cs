@@ -8,29 +8,31 @@ namespace attack_gamer
 {
     public class Player : LivingObject
     {
+        public Inventory inventory;
 
-        public int attackWidth, attackLength;
-
-        public Vector2 attackPos;
+        #region swinger
+        //public Vector2 attackPos;
         //public Rectangle attackBox => new Rectangle((int)(Position.X + (Size.X / 2)), (int)(Position.Y + (Size.Y / 2)), attackWidth, attackLength);
         //public Rectangle attackBox => new Rectangle((int)attackPos.X, (int)attackPos.Y, attackWidth, attackLength);
         public Rectangle attackBox;
-        public Vector2 attackDirection;
-        public Vector2 attackOrigin;
-        public float attackRotation = 0;
-
+        //public Vector2 attackDirection;
+        //public Vector2 attackOrigin;
+        //public float attackRotation = 0;
         SheetAnimation Swing;
-        public Vector2 swingPos;
+        //public Vector2 swingPos;
         public Rectangle swingBox => new Rectangle((int)(Position.X + (Size.X / 2)), (int)(Position.Y + (Size.Y / 2)), (int)Swing.Size.X + 16, (int)Swing.Size.Y);
         //public Rectangle swingBox;
-
         public SpriteEffects swingEffect;
-
-        public double attackCd;
         public Vector2 swingOrigin;
         public float swingRotation = 0;
+        #endregion
 
-        public Inventory inventory;
+        public double attackCd;
+        public int attackWidth, attackLength;
+
+        public int LootRadiusSize = 128;
+        public Rectangle LootRadius => new Rectangle((int)(Position.X + (Size.X / 2) - (LootRadiusSize / 2)), (int)(Position.Y + (Size.Y / 2) - (LootRadiusSize / 2)), LootRadiusSize, LootRadiusSize);
+
 
         public Player(GridSheet shet, GridSheet swing, GraphicsDevice gd) : base(gd)
         {
@@ -56,7 +58,7 @@ namespace attack_gamer
 
             attackWidth = 48;
             attackLength = 64;
-            attackOrigin = new Vector2(Size.X / 2, Size.Y);
+            //attackOrigin = new Vector2(Size.X / 2, Size.Y);
             swingOrigin = new Vector2(40, 48);
 
             SetHealth(20);
@@ -200,6 +202,8 @@ namespace attack_gamer
             }
             //if(IsAttacking)
             //sb.Draw(ScreenManager.box, attackBox, Swing.GetSource(Swing.CurrentAnimation, gameTime), new Color(Color.Green, 0.2f));
+            sb.Draw(ScreenManager.box, LootRadius, new Color(Color.Green, 0.2f));
+
 
             inventory.Draw(sb, this);
 
