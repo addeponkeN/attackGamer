@@ -142,7 +142,7 @@ namespace attack_gamer
         }
         public void MoveItem(InventorySlot slot)
         {
-            
+
 
         }
         public void SwapSlots(InventorySlot holding)
@@ -186,7 +186,7 @@ namespace attack_gamer
                     }
                 }
             }
-            
+
         }
 
         public void Draw(SpriteBatch sb, Player player)
@@ -197,7 +197,7 @@ namespace attack_gamer
             {
                 for (int x = 0; x < columns; x++)
                 {
-                    if (slots[x, y] != null/* && slots[x, y].Item != null*/)
+                    if (slots[x, y] != null)
                     {
 
                         var slot = slots[x, y];
@@ -211,16 +211,15 @@ namespace attack_gamer
                         slot.box.Position = new Vector2((int)P.Position.X + (x * 32), (int)P.Position.Y + (y * 32));
                         sb.Draw(slot.box.Texture, new Rectangle(Convertor.ToPoint(slot.box.Position), Convertor.ToPoint(slot.box.Size)), slot.box.Color);
 
-                        //Console.WriteLine("drawing slot");
                         if (slots[x, y].Item == null)
                         {
                             slots[x, y].State = InventorySlotState.Open;
-                            slot.box.Color = new Color(Color.Green, 150);
+                            //slot.box.Color = new Color(Color.Green, 150);
                         }
                         else
                         {
                             slots[x, y].State = InventorySlotState.Closed;
-                            slot.box.Color = new Color(Color.Red, 150);
+                            //slot.box.Color = new Color(Color.Red, 150);
                         }
 
                         if (slot.IsRightClicked)
@@ -232,26 +231,16 @@ namespace attack_gamer
                             slot.IsDragging = true;
                         if (slot.IsDragging)
                             DragItem(slot);
-                        if (slot.Item != null)
-                            if (slots[x, y].box.Rectangle.Contains(Input.mPos))
-                            {
-                                slots[x, y].box.Color = new Color(Color.White, 200);
-                            }
+                        if (slots[x, y].box.Rectangle.Contains(Input.mPos))
+                        {
+                            slots[x, y].box.Color = new Color(Color.White, 255);
+                        }
+                        else slots[x, y].box.Color = new Color(Color.White, 200);
                         if (slot.IsHovered && Input.KeyClick(Keys.Delete))
                             slot.RemoveItem();
                     }
                 }
             }
-
-            foreach (var item in list)
-            {
-                //Color[] colorData = { new Color(Color.OrangeRed, (int)255) };
-                //Texture.SetData(colorData);
-                //sb.Draw(Texture, item.Rectangle, Color.MonoGameOrange);
-
-                item.Draw(sb);
-            }
         }
-
     }
 }

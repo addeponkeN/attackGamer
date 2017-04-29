@@ -43,9 +43,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Game1.cs" />
+    <Compile Include="Game\Map\Map.cs" />
+    <Compile Include="Game\Map\Tile.cs" />
     <Compile Include="Game\Npc\Enemy.cs" />
     <Compile Include="Game\Item\Equipment.cs" />
-    <Compile Include="Game\Item\EquippableItem.cs" />
     <Compile Include="Game\Item\Item.cs" />
     <Compile Include="Game\Item\Usable.cs" />
     <Compile Include="Game\Item\Weapon.cs" />

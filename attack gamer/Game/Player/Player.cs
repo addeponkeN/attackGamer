@@ -185,6 +185,11 @@ namespace attack_gamer
             DidAttack();
         }
 
+        public void Loot(Item item)
+        {
+            inventory.AddItem(item);            
+        }
+
         public override void Draw(SpriteBatch sb, GameTime gameTime)
         {
             base.Draw(sb, gameTime);
