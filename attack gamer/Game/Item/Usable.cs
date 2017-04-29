@@ -41,6 +41,8 @@ namespace attack_gamer
             switch (i.type)
             {
                 case UsableType.HealthPot:
+                    if (o.Health >= o.MaxHealth)
+                        return;
                     o.Health += i.Value;
                     break;
                 case UsableType.ManaPot:

@@ -34,11 +34,6 @@ namespace attack_gamer
         public int Column { get; set; } = 0;
         public int Row { get; set; } = 0;
 
-        public bool IsHovered => Rectangle.Contains(Input.mPos);
-        public bool IsRightClicked => IsHovered && Input.RightClick();
-        public bool IsHolding => IsHovered && Input.LeftHold();
-
-
         public Rectangle SetSource(int column, int row)
         {
             return GSheet[column, row];

@@ -40,7 +40,7 @@ namespace attack_gamer
 
             player = new Player(playerSheet, swingSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(350) };
             loManager = new LivingObjectManager();
-            loManager.AddEnemy(new Enemy(goblinSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(400) });
+            //loManager.AddEnemy(new Enemy(goblinSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(400) });
 
             cam = new Camera();
 
@@ -67,7 +67,7 @@ namespace attack_gamer
             delay += delta;
             if(delay > 3)
             {
-                loManager.AddEnemy(new Enemy(goblinSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(Rng.Noxt(Globals.ScreenX), Rng.Noxt(Globals.ScreenY)) });
+                //loManager.AddEnemy(new Enemy(goblinSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(Rng.Noxt(Globals.ScreenX), Rng.Noxt(Globals.ScreenY)) });
 
                 delay -= 1;
             }
@@ -92,8 +92,11 @@ namespace attack_gamer
             loManager.Draw(sb, gameTime);
             player.Draw(sb, gameTime);
 
+            Extras.DrawDebug(sb, $"{Helper.FixPos(Input.mPos, 32)}", 10);
+
             sb.DrawString(ScreenManager.DebugFont, "playing", Vector2.One, Color.Black);
             sb.DrawString(ScreenManager.DebugFont, "playing", Vector2.Zero, Color.White);
+            
 
             sb.End();
             base.Draw(gameTime);

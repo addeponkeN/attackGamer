@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +50,22 @@ namespace attack_gamer
                 return value - 1;
             }
             return value;
+        }
+
+        public static void DrawString(SpriteBatch sb, SpriteFont font, string text, Vector2 position, Color color)
+        {
+            sb.DrawString(font, text, new Vector2(position.X + 1, position.Y + 1), Color.Black);
+            sb.DrawString(font, text, position, color);
+        }
+        public static void DrawDebug(SpriteBatch sb, string text, Vector2 position)
+        {
+            sb.DrawString(ScreenManager.DebugFont, text, new Vector2(position.X + 1, position.Y + 1), Color.Black);
+            sb.DrawString(ScreenManager.DebugFont, text, position, Color.White);
+        }
+        public static void DrawDebug(SpriteBatch sb, string text, int topLeftLine)
+        {
+            sb.DrawString(ScreenManager.DebugFont, text, new Vector2(1, (12 * topLeftLine) + 1), Color.Black);
+            sb.DrawString(ScreenManager.DebugFont, text, new Vector2(1, (12 * topLeftLine)), Color.White);
         }
     }
     public static class Convertor
@@ -116,9 +133,9 @@ namespace attack_gamer
         {
             var x = Math.Round(mpos.X);
             var y = Math.Round(mpos.Y);
-            var xx = ((((int)x / roundTo) + 1) * roundTo);
-            var yy = ((((int)y / roundTo) + 1) * roundTo);
-            return new Vector2((xx) - 1, (yy) - 1);
+            var xx = ((((int)x / roundTo)) * roundTo);
+            var yy = ((((int)y / roundTo)) * roundTo);
+            return new Vector2((xx), (yy));
         }
         public static Point ToPoint(Vector2 mpos)
         {
