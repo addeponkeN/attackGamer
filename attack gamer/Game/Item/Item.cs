@@ -48,6 +48,8 @@ namespace attack_gamer
         {
             sb.Draw(Texture, Rectangle, SetSource(Column, Row), Color, 0, Vector2.Zero, SpriteEffects.None, 0);
         }
+        
+        public T GetItem<T>() where T : Item => this as T;
 
     }
 }

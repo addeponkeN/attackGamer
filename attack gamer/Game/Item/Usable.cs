@@ -35,18 +35,19 @@ namespace attack_gamer
             }
         }
 
-        public void Use(Usable u, LivingObject o)
+        public void Use(Item item, LivingObject o)
         {
-            switch (u.type)
+            var i = item.GetItem<Usable>();
+            switch (i.type)
             {
                 case UsableType.HealthPot:
-                    o.Health += u.Value;
+                    o.Health += i.Value;
                     break;
                 case UsableType.ManaPot:
-                    o.Mana += u.Value;
+                    o.Mana += i.Value;
                     break;
             }
-            u.Exist = false;
+            i.Exist = false;
         }
     }
 }

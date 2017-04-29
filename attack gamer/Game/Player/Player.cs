@@ -159,7 +159,7 @@ namespace attack_gamer
             #region test
             if (Input.KeyClick(Keys.D1))
             {
-                inventory.AddItemList(new Usable(UsableType.HealthPot, GSheet));
+                inventory.AddItem(new Usable(UsableType.HealthPot, GSheet));
             }
             if (Input.KeyClick(Keys.D2))
             {
@@ -198,7 +198,7 @@ namespace attack_gamer
             //if(IsAttacking)
             //sb.Draw(ScreenManager.box, attackBox, Swing.GetSource(Swing.CurrentAnimation, gameTime), new Color(Color.Green, 0.2f));
 
-            inventory.Draw(sb);
+            inventory.Draw(sb, this);
 
             sb.DrawString(ScreenManager.DebugFont, "" + swingBox, new Vector2(0, 60), Color.White);
             sb.DrawString(ScreenManager.DebugFont, "" + swingOrigin, new Vector2(0, 80), Color.White);
