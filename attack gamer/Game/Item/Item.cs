@@ -39,6 +39,7 @@ namespace attack_gamer
         public int Row { get; set; } = 0;
 
         public bool Vacuumable { get; set; } = true;
+        public bool IsBeingLooted { get; set; }
 
         public Rectangle SetSource(int column, int row)
         {
@@ -54,10 +55,10 @@ namespace attack_gamer
         {
             return DistanceTo(pos) < Distance;
         }
-        public void VacuumItem(GameTime gt, Item item, Vector2 des, Inventory i)
+        public void VacuumLoot(GameTime gt, Item item, Vector2 des, Inventory i)
         {
             Delta = (float)gt.ElapsedGameTime.TotalSeconds;
-            Speed += 200f * Delta;
+            Speed += 400f * Delta;
             Position += Delta * Speed * Direction;
             var dir = des - Position;
             dir.Normalize();
@@ -71,11 +72,11 @@ namespace attack_gamer
                         i.AddItem(new Usable(GetItem<Usable>().type, GSheet));
                         break;
                     case ItemType.Weapon:
-                        //i.AddItem(new Weapon(UsableType.HealthPot, GSheet));
+                        i.AddItem(new Weapon(GetItem<Weapon>().type));
 
                         break;
                     case ItemType.Armor:
-                        //i.AddItem(new Equipment(UsableType.HealthPot, GSheet));
+                        i.AddItem(new Armor());
 
                         break;
                 }
@@ -83,6 +84,26 @@ namespace attack_gamer
             }
         }
 
+        public void Action(Item item, LivingObject player)
+        {
+            switch (item.Type)
+            {
+                case ItemType.Usable:
+                    GetItem<Usable>().Use(item, player);
+
+                    break;
+                case ItemType.Weapon:
+                    //GetItem<Weapon>().Use();
+
+                    break;
+                case ItemType.Armor:
+                    //GetItem<Armor>().Use();
+
+                    break;
+                default:
+                    break;
+            }
+        }
 
         public virtual void Draw(SpriteBatch sb)
         {

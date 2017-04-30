@@ -67,7 +67,6 @@ namespace attack_gamer
         public int columns = 10;
         public InventorySlot[,] bagSlots;
         public InventorySlot[] actionbarSlots;
-        List<Usable> list = new List<Usable>();
 
         Texture2D Texture;
         Sprite bagSprite;
@@ -75,6 +74,9 @@ namespace attack_gamer
         GraphicsDevice grap;
 
         public bool IsDrawing { get; set; }
+        public bool IsBagFull => bagSlots.Cast<InventorySlot>().All(s => s.Item != null);
+        public bool IsActionBarFull => actionbarSlots.All(s => s.Item != null);
+        public bool IsFull => IsBagFull && IsActionBarFull;
 
         public Inventory(GraphicsDevice gd)
         {
@@ -101,19 +103,24 @@ namespace attack_gamer
             bagSprite = new Sprite(Texture)
             {
                 Size = new Vector2(64 * columns, 64 * rows),
-                Position = new Vector2((Globals.ScreenX / 2) -((columns * 64) / 2), Globals.ScreenY - (actionbar.Size.Y * 3) - 8)
+                Position = new Vector2((Globals.ScreenX / 2) - ((columns * 64) / 2), Globals.ScreenY - (actionbar.Size.Y * 3) - 8)
             };
         }
         public void AddItem(Item item)
         {
+
             for (int i = 0; i < actionbarSlots.Length; i++)
             {
+                Console.WriteLine(actionbarSlots[i].box.Position);
+
                 if (actionbarSlots[i].State == InventorySlotState.Closed)
                     continue;
-                Console.WriteLine($"added {item} to actionbar");
                 actionbarSlots[i] = new InventorySlot(item, grap, false);
                 actionbarSlots[i].State = InventorySlotState.Closed;
                 actionbarSlots[i].Item.Size = actionbarSlots[i].box.Size;
+                actionbarSlots[i].box.Position = new Vector2((int)actionbar.Position.X + (i * 64), (int)actionbar.Position.Y);
+                actionbarSlots[i].Item.Position = actionbarSlots[i].box.Position;
+
                 return;
             }
             for (int y = 0; y < rows; y++)
@@ -126,6 +133,9 @@ namespace attack_gamer
                     bagSlots[x, y] = new InventorySlot(item, grap, false);
                     bagSlots[x, y].State = InventorySlotState.Closed;
                     bagSlots[x, y].Item.Size = bagSlots[x, y].box.Size;
+                    bagSlots[x, y].box.Position = new Vector2((int)actionbar.Position.X + (x * 64), (int)actionbar.Position.Y + (y * 64));
+                    bagSlots[x, y].Item.Position = bagSlots[x, y].box.Position;
+
                     return;
                 }
             }
@@ -143,25 +153,25 @@ namespace attack_gamer
                 slot.box.BaseColor = new Color(Color.Red, 150);
             }
         }
-        public void AddItemList(Usable item)
-        {
-            var i = list.Count;
-            int x = 0; int y = 0;
-            int time = 0;
-            for (int a = 1; a < i + 1; a++)
-            {
-                var count = a - time;
-                x++;
-                if (count >= 5)
-                {
-                    y++;
-                    x = 0;
-                    time += 5;
-                }
-            }
-            item.Position = new Vector2(bagSprite.Position.X + (x * 32) + x, bagSprite.Position.Y + (y * 32) + y);
-            list.Add(item);
-        }
+        //public void AddItemList(Usable item)
+        //{
+        //    var i = list.Count;
+        //    int x = 0; int y = 0;
+        //    int time = 0;
+        //    for (int a = 1; a < i + 1; a++)
+        //    {
+        //        var count = a - time;
+        //        x++;
+        //        if (count >= 5)
+        //        {
+        //            y++;
+        //            x = 0;
+        //            time += 5;
+        //        }
+        //    }
+        //    item.Position = new Vector2(bagSprite.Position.X + (x * 32) + x, bagSprite.Position.Y + (y * 32) + y);
+        //    list.Add(item);
+        //}
         public void DragItem(InventorySlot slot)
         {
             if (slot.ItemOldPositon == Vector2.Zero)
@@ -196,7 +206,7 @@ namespace attack_gamer
                         holding.State = InventorySlotState.Closed;
                         holding.Item = null;
                         actionbarSlots[i] = temp;
-                        Console.WriteLine($"moved to slot {i}");
+                        Console.WriteLine($"moved to action slot {i}");
                         holding.IsDragging = false;
                         return;
                     }
@@ -233,7 +243,7 @@ namespace attack_gamer
                             holding.Item = null;
                             bagSlots[x, y] = temp;
 
-                            Console.WriteLine($"moved  x: {x}   y:{y}");
+                            Console.WriteLine($"moved to inventory slot {x} {y}");
                             holding.IsDragging = false;
                             //CheckIfOpen(bagSlots[x, y]);
                             return;
@@ -247,6 +257,56 @@ namespace attack_gamer
                         //}
                     }
                 }
+            }
+
+        }
+        public void ActionX(int i, LivingObject o)
+        {
+            if (actionbarSlots[i].Item != null)
+                actionbarSlots[i].Item.Action(actionbarSlots[i].Item, o);
+        }
+        public void Update(GameTime gameTime, Player player)
+        {
+
+            if (Input.KeyClick(Keys.D1))
+            {
+                ActionX(0, player);
+            }
+            if (Input.KeyClick(Keys.D2))
+            {
+                ActionX(1, player);
+            }
+            if (Input.KeyClick(Keys.D3))
+            {
+                ActionX(2, player);
+            }
+            if (Input.KeyClick(Keys.D4))
+            {
+                ActionX(3, player);
+            }
+            if (Input.KeyClick(Keys.D5))
+            {
+                ActionX(4, player);
+            }
+            if (Input.KeyClick(Keys.D6))
+            {
+                ActionX(5, player);
+            }
+            if (Input.KeyClick(Keys.D7))
+            {
+                ActionX(6, player);
+            }
+            if (Input.KeyClick(Keys.D8))
+            {
+                ActionX(7, player);
+            }
+            if (Input.KeyClick(Keys.D9))
+            {
+                ActionX(8, player);
+            }
+            if (Input.KeyClick(Keys.D0))
+            {
+                ActionX(9, player);
             }
 
         }
@@ -327,20 +387,9 @@ namespace attack_gamer
                         #endregion
                         #region update always
                         CheckIfOpen(slot);
-                        //if (bagSlots[x, y].Item == null)
-                        //{
-                        //    bagSlots[x, y].State = InventorySlotState.Open;
                         if (bagSlots[x, y].box.Rectangle.Contains(Input.mPos))
                             bagSlots[x, y].box.Color = new Color(Color.White, 200);
                         else slot.box.Color = slot.box.BaseColor;
-                        //}
-                        //else
-                        //{
-                        //    bagSlots[x, y].State = InventorySlotState.Closed;
-                        //    if (bagSlots[x, y].box.Rectangle.Contains(Input.mPos))
-                        //        bagSlots[x, y].box.Color = new Color(Color.White, 255);
-                        //    else slot.box.Color = new Color(Color.Red, 200);
-                        //}
                         #endregion
                     }
                 }

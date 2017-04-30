@@ -47,7 +47,7 @@
 /processorParam:TextureFormat=Color
 /build:box.png
 
-#begin playerSheet.png
+#begin SpriteSheets/itemSheet.png
 /importer:TextureImporter
 /processor:GridSheetProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -60,9 +60,54 @@
 /processorParam:SpriteWidth=32
 /processorParam:SpriteHeight=32
 /processorParam:Padding=0
-/build:playerSheet.png
+/build:SpriteSheets/itemSheet.png
 
-#begin swing.png
+#begin SpriteSheets/goblinSheet.png
+/importer:TextureImporter
+/processor:GridSheetProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/processorParam:SpriteWidth=32
+/processorParam:SpriteHeight=32
+/processorParam:Padding=0
+/build:SpriteSheets/goblinSheet.png
+
+#begin SpriteSheets/playerSheet.png
+/importer:TextureImporter
+/processor:GridSheetProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/processorParam:SpriteWidth=32
+/processorParam:SpriteHeight=32
+/processorParam:Padding=0
+/build:SpriteSheets/playerSheet.png
+
+#begin SpriteSheets/skeleSheet.png
+/importer:TextureImporter
+/processor:GridSheetProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/processorParam:SpriteWidth=32
+/processorParam:SpriteHeight=32
+/processorParam:Padding=0
+/build:SpriteSheets/skeleSheet.png
+
+#begin SpriteSheets/swing.png
 /importer:TextureImporter
 /processor:GridSheetProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -75,35 +120,5 @@
 /processorParam:SpriteWidth=32
 /processorParam:SpriteHeight=96
 /processorParam:Padding=0
-/build:swing.png
-
-#begin goblinSheet.png
-/importer:TextureImporter
-/processor:GridSheetProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/processorParam:SpriteWidth=32
-/processorParam:SpriteHeight=32
-/processorParam:Padding=0
-/build:goblinSheet.png
-
-#begin skeleSheet.png
-/importer:TextureImporter
-/processor:GridSheetProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/processorParam:SpriteWidth=32
-/processorParam:SpriteHeight=32
-/processorParam:Padding=0
-/build:skeleSheet.png
+/build:SpriteSheets/swing.png
 

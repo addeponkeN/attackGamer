@@ -68,7 +68,7 @@ namespace attack_gamer
 
         public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);            
+            base.Update(gameTime);
 
             //attackDirection = Input.mPos - new Vector2(attackBox.X, attackBox.Y);
             //attackRotation = (float)Math.Atan2(attackDirection.Y, attackDirection.X);
@@ -77,6 +77,7 @@ namespace attack_gamer
             //swingRotation = (float)Math.Atan2(Swing.Direction.Y, Swing.Direction.X);
 
             //swingPos = RotateAround(swingPos, new Vector2(Position.X + (Size.X / 2), (int)Position.Y + (Size.Y / 2)), swingRotation);
+            inventory.Update(gameTime, this);
 
             if (Input.LeftClick())
             {
@@ -93,6 +94,12 @@ namespace attack_gamer
             }
 
             #region Keybindongs
+
+            if (Input.KeyClick(Keys.I) || Input.KeyClick(Keys.B))
+                if (inventory.IsDrawing)
+                    inventory.IsDrawing = false;
+                else inventory.IsDrawing = true;
+
             Direction = new Vector2(0);
             if (Direction == new Vector2(0))
                 SetAnimation(new[] { GSheet[0, CurrentRow] });
@@ -118,10 +125,7 @@ namespace attack_gamer
                     Direction = new Vector2(1, Direction.Y);
                     SetAnimation(Animations["walkright"]);
                 }
-                if (Input.KeyClick(Keys.I) || Input.KeyClick(Keys.B))
-                    if (inventory.IsDrawing)
-                        inventory.IsDrawing = false;
-                    else inventory.IsDrawing = true;
+
                 
 
                 #endregion
@@ -163,11 +167,11 @@ namespace attack_gamer
             #endregion
 
             #region test
-            if (Input.KeyClick(Keys.D1))
+            if (Input.KeyClick(Keys.NumPad0))
             {
-                inventory.AddItem(new Usable(UsableType.HealthPot, GSheet));
+                inventory.AddItem(new Usable(UsableType.HealthPot, PlayingScreen.itemSheet));
             }
-            if (Input.KeyClick(Keys.D2))
+            if (Input.KeyClick(Keys.NumPad2))
             {
 
             }

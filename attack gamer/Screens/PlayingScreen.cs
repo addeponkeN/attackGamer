@@ -17,7 +17,7 @@ namespace attack_gamer
         Camera cam;
         Player player;
 
-        GridSheet playerSheet, swingSheet, skeleSheet, goblinSheet;
+        public static GridSheet playerSheet, swingSheet, skeleSheet, goblinSheet, itemSheet;
 
         LivingObjectManager loManager;
         List<Item> items = new List<Item>();
@@ -34,10 +34,11 @@ namespace attack_gamer
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
-            playerSheet = content.Load<GridSheet>("playerSheet");
-            swingSheet = content.Load<GridSheet>("swing");
-            goblinSheet = content.Load<GridSheet>("goblinSheet");
-            skeleSheet = content.Load<GridSheet>("skeleSheet");
+            playerSheet = content.Load<GridSheet>(@"SpriteSheets/playerSheet");
+            swingSheet = content.Load<GridSheet>("SpriteSheets/swing");
+            goblinSheet = content.Load<GridSheet>("SpriteSheets/goblinSheet");
+            skeleSheet = content.Load<GridSheet>("SpriteSheets/skeleSheet");
+            itemSheet = content.Load<GridSheet>("SpriteSheets/itemSheet");
 
             player = new Player(playerSheet, swingSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(350) };
             loManager = new LivingObjectManager();
@@ -45,10 +46,10 @@ namespace attack_gamer
 
             cam = new Camera();
 
-            items.Add(new Usable(UsableType.HealthPot, skeleSheet) { Vacuumable = true, Position = new Vector2(300, 250) });
-            items.Add(new Usable(UsableType.HealthPot, skeleSheet) { Vacuumable = true, Position = new Vector2(250) });
-            items.Add(new Usable(UsableType.HealthPot, skeleSheet) { Vacuumable = true, Position = new Vector2(450) });
-            items.Add(new Usable(UsableType.HealthPot, skeleSheet) { Vacuumable = true, Position = new Vector2(0) });
+            items.Add(new Usable(UsableType.HealthPot, itemSheet) { Vacuumable = true, Position = new Vector2(300, 250) });
+            items.Add(new Usable(UsableType.ManaPot, itemSheet) { Vacuumable = true, Position = new Vector2(250) });
+            items.Add(new Usable(UsableType.HealthPot, itemSheet) { Vacuumable = true, Position = new Vector2(450) });
+            items.Add(new Usable(UsableType.ManaPot, itemSheet) { Vacuumable = true, Position = new Vector2(0) });
 
 
 
@@ -99,10 +100,11 @@ namespace attack_gamer
             foreach (var i in items)
             {
                 i.Draw(sb);
-                if (player.LootRadius.Intersects(i.Rectangle))
-                {
-                    i.VacuumItem(gameTime,i, player.Position, player.inventory);
-                }
+                if (player.LootRadius.Intersects(i.Rectangle) && !player.inventory.IsFull)
+                    i.IsBeingLooted = true;
+                else if (player.inventory.IsFull) i.IsBeingLooted = false;
+                if(i.IsBeingLooted)
+                    i.VacuumLoot(gameTime, i, player.Position, player.inventory);
             }
 
             loManager.Draw(sb, gameTime);

@@ -20,7 +20,7 @@ namespace attack_gamer
     public class Weapon : Item
     {
 
-        WeaponType type;
+        public WeaponType type;
 
         public Weapon(WeaponType type)
         {

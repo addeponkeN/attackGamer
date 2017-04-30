@@ -28,11 +28,14 @@ namespace attack_gamer
             {
                 case UsableType.HealthPot:
                     Value = 10;
-                    Color = new Color(Color.IndianRed, 255);
                     break;
                 case UsableType.ManaPot:
+                    Value = 5;
+                    Column = 1;
                     break;
             }
+
+            Type = ItemType.Usable;
         }
 
         public void Use(Item item, LivingObject o)
@@ -42,7 +45,11 @@ namespace attack_gamer
             {
                 case UsableType.HealthPot:
                     if (o.Health >= o.MaxHealth)
+                    {
+                        Console.WriteLine("full hp");
                         return;
+                    }
+                    Console.WriteLine("hp restored");
                     o.Health += i.Value;
                     break;
                 case UsableType.ManaPot:
