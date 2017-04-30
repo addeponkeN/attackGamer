@@ -31,8 +31,8 @@ namespace attack_gamer
             Texture2D Texture = new Texture2D(gd, 1, 1);
             Color[] colorData = { new Color(Color.SandyBrown, (int)50) };
             Texture.SetData(colorData);
-            box = new Sprite(Texture);
-            box.Size = new Vector2(32);
+            box = new Sprite(Texture, Color.White);
+            box.Size = new Vector2(64);
             Item = item;
             if (item != null)
                 item.Color = new Color(Rng.Noxt(255), Rng.Noxt(255), Rng.Noxt(255));
@@ -42,8 +42,8 @@ namespace attack_gamer
             Texture2D Texture = new Texture2D(gd, 1, 1);
             Color[] colorData = { new Color(Color.SandyBrown, (int)50) };
             Texture.SetData(colorData);
-            box = new Sprite(Texture);
-            box.Size = new Vector2(32);
+            box = new Sprite(Texture, Color.White);
+            box.Size = new Vector2(64);
             Item = item;
             Item.Color = item.Color;
         }
@@ -65,11 +65,13 @@ namespace attack_gamer
     {
         public int rows = 2;
         public int columns = 10;
-        public InventorySlot[,] slots;
+        public InventorySlot[,] bagSlots;
+        public InventorySlot[] actionbarSlots;
         List<Usable> list = new List<Usable>();
 
         Texture2D Texture;
-        Sprite P;
+        Sprite bagSprite;
+        public Sprite actionbar;
         GraphicsDevice grap;
 
         public bool IsDrawing { get; set; }
@@ -77,39 +79,68 @@ namespace attack_gamer
         public Inventory(GraphicsDevice gd)
         {
             grap = gd;
-            slots = new InventorySlot[columns, rows];
+            bagSlots = new InventorySlot[columns, rows];
+            actionbarSlots = new InventorySlot[10];
             for (int y = 0; y < rows; y++)
                 for (int x = 0; x < columns; x++)
                 {
-                    slots[x, y] = new InventorySlot(null, gd);
+                    if (y == 0 && x <= actionbarSlots.Length)
+                    {
+                        actionbarSlots[x] = new InventorySlot(null, gd);
+                    }
+                    bagSlots[x, y] = new InventorySlot(null, gd);
+                    CheckIfOpen(bagSlots[x, y]);
                 }
+
             Texture = new Texture2D(gd, 1, 1);
             Color[] colorData = { new Color(Color.Black, (int)50) };
             Texture.SetData(colorData);
 
-            P = new Sprite(Texture);
-            P.Size = new Vector2(32 * columns, 32 * rows);
-            P.Position = new Vector2(32 * 25, 32 * 10);
+            actionbar = new Sprite(Texture) { Size = new Vector2(64 * 10, 64 * 1) };
+            actionbar.Position = new Vector2((Globals.ScreenX / 2) - (actionbar.Size.X / 2), Globals.ScreenY - actionbar.Size.Y);
+            bagSprite = new Sprite(Texture)
+            {
+                Size = new Vector2(64 * columns, 64 * rows),
+                Position = new Vector2((Globals.ScreenX / 2) -((columns * 64) / 2), Globals.ScreenY - (actionbar.Size.Y * 3) - 8)
+            };
         }
         public void AddItem(Item item)
         {
-            bool breakLoops = false;
+            for (int i = 0; i < actionbarSlots.Length; i++)
+            {
+                if (actionbarSlots[i].State == InventorySlotState.Closed)
+                    continue;
+                Console.WriteLine($"added {item} to actionbar");
+                actionbarSlots[i] = new InventorySlot(item, grap, false);
+                actionbarSlots[i].State = InventorySlotState.Closed;
+                actionbarSlots[i].Item.Size = actionbarSlots[i].box.Size;
+                return;
+            }
             for (int y = 0; y < rows; y++)
             {
                 for (int x = 0; x < columns; x++)
                 {
-                    if (slots[x, y].State == InventorySlotState.Closed)
+                    if (bagSlots[x, y].State == InventorySlotState.Closed)
                         continue;
-                    Console.WriteLine($"added: {item}");
-                    slots[x, y] = new InventorySlot(item, grap, false);
-                    slots[x, y].State = InventorySlotState.Closed;
-                    //slots[x, y].Item.Position = new Vector2(P.Position.X + (x * 32), P.Position.Y + (y * 32));
-                    breakLoops = true;
-                    if (breakLoops)
-                        break;
+                    Console.WriteLine($"added {item} to inventory");
+                    bagSlots[x, y] = new InventorySlot(item, grap, false);
+                    bagSlots[x, y].State = InventorySlotState.Closed;
+                    bagSlots[x, y].Item.Size = bagSlots[x, y].box.Size;
+                    return;
                 }
-                if (breakLoops)
-                    break;
+            }
+        }
+        public void CheckIfOpen(InventorySlot slot)
+        {
+            if (slot.Item == null)
+            {
+                slot.State = InventorySlotState.Open;
+                slot.box.BaseColor = new Color(Color.Green, 150);
+            }
+            else
+            {
+                slot.State = InventorySlotState.Closed;
+                slot.box.BaseColor = new Color(Color.Red, 150);
             }
         }
         public void AddItemList(Usable item)
@@ -128,7 +159,7 @@ namespace attack_gamer
                     time += 5;
                 }
             }
-            item.Position = new Vector2(P.Position.X + (x * 32) + x, P.Position.Y + (y * 32) + y);
+            item.Position = new Vector2(bagSprite.Position.X + (x * 32) + x, bagSprite.Position.Y + (y * 32) + y);
             list.Add(item);
         }
         public void DragItem(InventorySlot slot)
@@ -140,25 +171,48 @@ namespace attack_gamer
 
             if (Input.LeftRelease())
             {
-                if (!P.Rectangle.Contains(Input.mPos))
+                if (!bagSprite.Rectangle.Contains(Input.mPos) && !actionbar.Rectangle.Contains(Input.mPos))
                 {
                     slot.Item.Position = slot.ItemOldPositon;
                     slot.ItemOldPositon = Vector2.Zero;
                     slot.IsDragging = false;
                 }
                 else
+                {
                     SwapSlots(slot);
+                }
             }
         }
         public void SwapSlots(InventorySlot holding)
         {
             InventorySlot temp = new InventorySlot(holding.Item, grap, false);
 
+            for (int i = 0; i < actionbarSlots.Length; i++)
+            {
+                if (actionbarSlots[i].box.Rectangle.Contains(Input.mPos))
+                {
+                    if (actionbarSlots[i].State == InventorySlotState.Open)
+                    {
+                        holding.State = InventorySlotState.Closed;
+                        holding.Item = null;
+                        actionbarSlots[i] = temp;
+                        Console.WriteLine($"moved to slot {i}");
+                        holding.IsDragging = false;
+                        return;
+                    }
+                    else
+                    {
+                        holding.Item.Position = holding.ItemOldPositon;
+                        holding.IsDragging = false;
+                        return;
+                    }
+                }
+            }
             for (int y = 0; y < rows; y++)
             {
                 for (int x = 0; x < columns; x++)
                 {
-                    if (slots[x, y].box.Rectangle.Contains(Input.mPos))
+                    if (bagSlots[x, y].box.Rectangle.Contains(Input.mPos))
                     {
                         //if (slots[x, y].State == InventorySlotState.Closed)
                         //{
@@ -171,14 +225,17 @@ namespace attack_gamer
                         //    return;
                         //}
                         //else
-                        //{
-                        if (slots[x, y].State == InventorySlotState.Open)
+                        //{                        
+                        //CheckIfOpen(bagSlots[x, y]);
+                        if (bagSlots[x, y].State == InventorySlotState.Open)
                         {
+                            holding.State = InventorySlotState.Closed;
                             holding.Item = null;
-                            slots[x, y] = temp;
+                            bagSlots[x, y] = temp;
 
                             Console.WriteLine($"moved  x: {x}   y:{y}");
                             holding.IsDragging = false;
+                            //CheckIfOpen(bagSlots[x, y]);
                             return;
                         }
                         else
@@ -196,37 +253,63 @@ namespace attack_gamer
 
         public void Draw(SpriteBatch sb, Player player)
         {
+            actionbar.Draw(sb);
             if (IsDrawing)
+                bagSprite.Draw(sb);
+            //-----
+            for (int y = 0; y < rows; y++)
             {
-                P.Draw(sb);
-                //-----
-                for (int y = 0; y < rows; y++)
+                for (int x = 0; x < columns; x++)
                 {
-                    for (int x = 0; x < columns; x++)
+                    InventorySlot aslot;
+                    if (y == 1)
                     {
-                        if (slots[x, y] != null)
+                        aslot = actionbarSlots[x];
+                        //Console.WriteLine(x);
+                        if (aslot.Item != null)
                         {
-                            var slot = slots[x, y];
-                            var item = slots[x, y].Item;
+                            if (!aslot.IsDragging)
+                                aslot.Item.Position = aslot.box.Position;
+                            aslot.Item.Draw(sb);
+                        }
+                        aslot.box.Position = new Vector2((int)actionbar.Position.X + (x * 64), (int)actionbar.Position.Y);
+                        sb.Draw(aslot.box.Texture, new Rectangle(Convertor.ToPoint(aslot.box.Position), Convertor.ToPoint(aslot.box.Size)), aslot.box.Color);
+
+                        if (aslot.IsRightClicked)
+                            aslot.Item.GetItem<Usable>().Use(aslot.Item, player);
+                        if (aslot.Item != null && !aslot.Item.Exist)
+                            aslot.RemoveItem();
+
+                        if (aslot.IsLeftClicked)
+                            aslot.IsDragging = true;
+                        if (aslot.IsDragging)
+                            DragItem(aslot);
+
+                        if (aslot.IsHovered && Input.KeyClick(Keys.Delete))
+                            aslot.RemoveItem();
+
+                        CheckIfOpen(aslot);
+                        if (aslot.box.Rectangle.Contains(Input.mPos))
+                            aslot.box.Color = new Color(Color.White, 200);
+                        else aslot.box.Color = aslot.box.BaseColor;
+                    }
+                    if (bagSlots[x, y] != null)
+                    {
+                        var slot = bagSlots[x, y];
+                        var item = bagSlots[x, y].Item;
+
+                        #region update when drawing
+                        if (IsDrawing)
+                        {
                             if (slot.Item != null)
                             {
                                 if (!slot.IsDragging)
                                     item.Position = slot.box.Position;
-                                sb.Draw(item.Texture, item.Rectangle, item.SetSource(item.Column, item.Row), item.Color);
+                                //sb.Draw(item.Texture, item.Rectangle, item.SetSource(item.Column, item.Row), item.Color);
+                                item.Draw(sb);
                             }
-                            slot.box.Position = new Vector2((int)P.Position.X + (x * 32), (int)P.Position.Y + (y * 32));
+                            slot.box.Position = new Vector2((int)bagSprite.Position.X + (x * 64), (int)bagSprite.Position.Y + (y * 64));
                             sb.Draw(slot.box.Texture, new Rectangle(Convertor.ToPoint(slot.box.Position), Convertor.ToPoint(slot.box.Size)), slot.box.Color);
-
-                            if (slots[x, y].Item == null)
-                            {
-                                slots[x, y].State = InventorySlotState.Open;
-                                slot.box.Color = new Color(Color.Green, 150);
-                            }
-                            else
-                            {
-                                slots[x, y].State = InventorySlotState.Closed;
-                                slot.box.Color = new Color(Color.Red, 150);
-                            }
 
                             if (slot.IsRightClicked)
                                 item.GetItem<Usable>().Use(item, player);
@@ -237,17 +320,31 @@ namespace attack_gamer
                                 slot.IsDragging = true;
                             if (slot.IsDragging)
                                 DragItem(slot);
-                            if (slots[x, y].box.Rectangle.Contains(Input.mPos))
-                            {
-                                slots[x, y].box.Color = new Color(Color.White, 255);
-                            }
-                            else slots[x, y].box.Color = new Color(Color.White, 200);
+
                             if (slot.IsHovered && Input.KeyClick(Keys.Delete))
                                 slot.RemoveItem();
                         }
+                        #endregion
+                        #region update always
+                        CheckIfOpen(slot);
+                        //if (bagSlots[x, y].Item == null)
+                        //{
+                        //    bagSlots[x, y].State = InventorySlotState.Open;
+                        if (bagSlots[x, y].box.Rectangle.Contains(Input.mPos))
+                            bagSlots[x, y].box.Color = new Color(Color.White, 200);
+                        else slot.box.Color = slot.box.BaseColor;
+                        //}
+                        //else
+                        //{
+                        //    bagSlots[x, y].State = InventorySlotState.Closed;
+                        //    if (bagSlots[x, y].box.Rectangle.Contains(Input.mPos))
+                        //        bagSlots[x, y].box.Color = new Color(Color.White, 255);
+                        //    else slot.box.Color = new Color(Color.Red, 200);
+                        //}
+                        #endregion
                     }
-                }//------
-            }
+                }
+            }//------
         }
     }
 }

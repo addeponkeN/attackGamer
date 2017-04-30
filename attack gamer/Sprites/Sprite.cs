@@ -19,6 +19,7 @@ namespace attack_gamer
         public Vector2 Size { get; set; } = new Vector2(32);
         public Vector2 SetSize(Vector2 size) { if (Size.X <= 0 && Size.Y <= 0) return new Vector2(Texture.Width, Texture.Height); return Size; }
         public Color Color { get; set; } = Color.White;
+        public Color BaseColor { get; set; } = Color.White;
         public Rectangle Rectangle { get { return new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y); } }
         public Vector2 CenterBox { get { return new Vector2(Position.X + (Size.X / 2), Position.Y + (Size.Y / 2)); } }
 
@@ -32,6 +33,12 @@ namespace attack_gamer
         public Sprite(Texture2D texture)
         {
             Texture = texture;
+        }
+        public Sprite(Texture2D texture, Color color)
+        {
+            Texture = texture;
+            BaseColor = color;
+            Color = BaseColor;
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
