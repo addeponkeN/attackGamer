@@ -113,9 +113,9 @@ namespace attack_gamer
         {
             return new Vector2(center.X - (thisSize.X * 0.5f), center.Y - (thisSize.Y * 0.5f));
         }
-        public static Vector2 Center(Vector2 center, Vector2 centerSize, Vector2 thisSize)
+        public static Vector2 Center(Rectangle rec, Vector2 thisSize)
         {
-            return new Vector2(center.X + (centerSize.X * 0.5f) - (thisSize.X * 0.5f), center.Y + (centerSize.Y * 0.5f) - (thisSize.Y * 0.5f));
+            return new Vector2(rec.X + (rec.Width * 0.5f) - (thisSize.X * 0.5f), rec.Y + (rec.Height * 0.5f) - (thisSize.Y * 0.5f));
         }
         public static int RoundUp(double input, int roundTo)
         {
@@ -184,5 +184,22 @@ namespace attack_gamer
         {
             return rnd.Next(0, max + 1);
         }
+        public static double NoxtDouble(double min, double max)
+        {
+            return rnd.NextDouble() + rnd.Next((int)min, (int)max + 1);
+        }
+        public static double NoxtDouble(double max)
+        {
+            return rnd.NextDouble() + rnd.Next((int)max + 1);
+        }
+        public static float NoxtFloat(float min, float max)
+        {
+            return (float)rnd.NextDouble() + rnd.Next((int)min, (int)max + 1);
+        }
+        public static float NoxtFloat(float max)
+        {
+            return (float)rnd.NextDouble() + rnd.Next((int)max + 1);
+        }
+
     }
 }

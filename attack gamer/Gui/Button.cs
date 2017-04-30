@@ -37,14 +37,14 @@ namespace attack_gamer
             var textSize = font.MeasureString(text);
             staticText.Font = font;
             staticText.Text = text;
-            staticText.Position = Helper.Center(Position, Size, textSize);
+            staticText.Position = Helper.Center(Rectangle, textSize);
             staticText.Color = Color.White;
         }
         public void SetNewPosition(Vector2 position)
         {
             Position = position;
             var textSize = staticText.Font.MeasureString(staticText.Text);
-            staticText.Position = Helper.Center(Position, Size, textSize);
+            staticText.Position = Helper.Center(Rectangle, textSize);
         }
         public void Draw(SpriteBatch spriteBatch)
         {

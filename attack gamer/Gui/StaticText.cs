@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 
 namespace attack_gamer
 {
-    class StaticText
+    public class StaticText
     {
         public SpriteFont Font { get; set; }
         public Vector2 Position { get; set; }
+        public Vector2 Size => Font.MeasureString(Text);
         public Color Color { get; set; } = Color.White;
         public string Text { get; set; } = "Text";
         public bool TextShader { get; set; } = true;
