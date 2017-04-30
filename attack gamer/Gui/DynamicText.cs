@@ -15,7 +15,7 @@ namespace attack_gamer
         public Vector2 Direction { get; set; }
         public float Speed { get; set; }
         public Color Color { get; set; } = Color.White;
-        public string Text { get; set; } = "Text";
+        public string Msg { get; set; } = "Text";
         public bool TextShader { get; set; } = true;
 
         public bool Fade { get; set; } = true;
@@ -29,7 +29,7 @@ namespace attack_gamer
             var textSize = font.MeasureString(text);
             Position = new Vector2(pos.X + (size.X / 2) - (textSize.X / 2), pos.Y);
             Color = color;
-            Text = text;
+            Msg = text;
             Direction = direction;
             Speed = speed;
         }
@@ -46,8 +46,8 @@ namespace attack_gamer
         public void Draw(SpriteBatch sb)
         {
             if (TextShader)
-                sb.DrawString(Font, Text, new Vector2(Position.X + 1, Position.Y + 1), new Color(Color, Alpha));
-            sb.DrawString(Font, Text, Position, new Color(Color, Alpha));
+                sb.DrawString(Font, Msg, new Vector2(Position.X + 1, Position.Y + 1), new Color(Color, Alpha));
+            sb.DrawString(Font, Msg, Position, new Color(Color, Alpha));
         }
     }
 }

@@ -108,7 +108,6 @@ namespace attack_gamer
         }
         public void AddItem(Item item)
         {
-
             for (int i = 0; i < actionbarSlots.Length; i++)
             {
                 Console.WriteLine(actionbarSlots[i].box.Position);
@@ -120,7 +119,7 @@ namespace attack_gamer
                 actionbarSlots[i].Item.Size = actionbarSlots[i].box.Size;
                 actionbarSlots[i].box.Position = new Vector2((int)actionbar.Position.X + (i * 64), (int)actionbar.Position.Y);
                 actionbarSlots[i].Item.Position = actionbarSlots[i].box.Position;
-
+                PlayingScreen.popManager.AddPopup(new LootPopup(item, grap));
                 return;
             }
             for (int y = 0; y < rows; y++)
@@ -135,7 +134,7 @@ namespace attack_gamer
                     bagSlots[x, y].Item.Size = bagSlots[x, y].box.Size;
                     bagSlots[x, y].box.Position = new Vector2((int)actionbar.Position.X + (x * 64), (int)actionbar.Position.Y + (y * 64));
                     bagSlots[x, y].Item.Position = bagSlots[x, y].box.Position;
-
+                    PlayingScreen.popManager.AddPopup(new LootPopup(item, grap));
                     return;
                 }
             }
@@ -345,7 +344,7 @@ namespace attack_gamer
                         if (aslot.IsDragging)
                             DragItem(aslot);
 
-                        if (aslot.IsHovered && Input.KeyClick(Keys.Delete))
+                        if (aslot.IsHovered && Input.KeyHold(Keys.Delete))
                             aslot.RemoveItem();
 
                         CheckIfOpen(aslot);
@@ -381,7 +380,7 @@ namespace attack_gamer
                             if (slot.IsDragging)
                                 DragItem(slot);
 
-                            if (slot.IsHovered && Input.KeyClick(Keys.Delete))
+                            if (slot.IsHovered && Input.KeyHold(Keys.Delete))
                                 slot.RemoveItem();
                         }
                         #endregion

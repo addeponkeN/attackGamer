@@ -67,6 +67,13 @@ namespace attack_gamer
             sb.DrawString(ScreenManager.DebugFont, text, new Vector2(1, (12 * topLeftLine) + 1), Color.Black);
             sb.DrawString(ScreenManager.DebugFont, text, new Vector2(1, (12 * topLeftLine)), Color.White);
         }
+        public static Texture2D NewTexture(GraphicsDevice gd)
+        {
+            Texture2D Texture = new Texture2D(gd, 1, 1);
+            Color[] colorData = { new Color(Color.Black, (int)50) };
+            Texture.SetData(colorData);
+            return Texture;
+        }
     }
     public static class Convertor
     {

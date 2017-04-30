@@ -16,6 +16,7 @@ namespace attack_gamer
         ContentManager content;
         Camera cam;
         Player player;
+        public static PopupManager popManager;
 
         public static GridSheet playerSheet, swingSheet, skeleSheet, goblinSheet, itemSheet;
 
@@ -42,6 +43,7 @@ namespace attack_gamer
 
             player = new Player(playerSheet, swingSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(350) };
             loManager = new LivingObjectManager();
+            popManager = new PopupManager();
             //loManager.AddEnemy(new Enemy(goblinSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(400) });
 
             cam = new Camera();
@@ -49,6 +51,7 @@ namespace attack_gamer
 
             items.Add(new Usable(UsableType.HealthPot, itemSheet) { Vacuumable = true, Position = new Vector2(450) });
             items.Add(new Usable(UsableType.ManaPot, itemSheet) { Vacuumable = true, Position = new Vector2(200) });
+
 
 
 
@@ -66,6 +69,7 @@ namespace attack_gamer
 
             player.Update(gameTime);
             loManager.Update(gameTime, player);
+            popManager.Update(gameTime);
 
 
             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -78,11 +82,11 @@ namespace attack_gamer
                 delay -= 1;
             }
 
-            if (Input.KeyClick(Keys.NumPad1))
+            if (Input.KeyHold(Keys.NumPad1))
             {
                 items.Add(new Usable(UsableType.HealthPot, itemSheet) { Vacuumable = true, Position = new Vector2(Rng.Noxt(Globals.ScreenX), Rng.Noxt(Globals.ScreenY)) });
             }
-            if (Input.KeyClick(Keys.NumPad2))
+            if (Input.KeyHold(Keys.NumPad2))
             {
                 items.Add(new Usable(UsableType.ManaPot, itemSheet) { Vacuumable = true, Position = new Vector2(Rng.Noxt(Globals.ScreenX), Rng.Noxt(Globals.ScreenY)) });
 
@@ -122,6 +126,7 @@ namespace attack_gamer
 
             loManager.Draw(sb, gameTime);
             player.Draw(sb, gameTime);
+            popManager.Draw(sb);
 
             Extras.DrawDebug(sb, $"{Helper.FixPos(Input.mPos, 32)}", 10);
 

@@ -12,9 +12,9 @@ namespace attack_gamer
     {
         public SpriteFont Font { get; set; }
         public Vector2 Position { get; set; }
-        public Vector2 Size => Font.MeasureString(Text);
+        public Vector2 Size => Font.MeasureString(Msg);
         public Color Color { get; set; } = Color.White;
-        public string Text { get; set; } = "Text";
+        public string Msg { get; set; } = "Text";
         public bool TextShader { get; set; } = true;
 
         public StaticText() { }
@@ -23,13 +23,13 @@ namespace attack_gamer
             Font = font;
             Position = pos;
             Color = color;
-            Text = text;
+            Msg = text;
         }
         public void Draw(SpriteBatch sb)
         {
             if (TextShader)
-                sb.DrawString(Font, Text, new Vector2(Position.X + 1, Position.Y + 1), Color.Black);
-            sb.DrawString(Font, Text, Position, Color);
+                sb.DrawString(Font, Msg, new Vector2(Position.X + 1, Position.Y + 1), Color.Black);
+            sb.DrawString(Font, Msg, Position, Color);
         }
     }
 }

@@ -58,6 +58,7 @@
     <Compile Include="Gui\DynamicText.cs" />
     <Compile Include="Gui\Popup\LootPopup.cs" />
     <Compile Include="Gui\Popup\Popup.cs" />
+    <Compile Include="Gui\Popup\PopupManager.cs" />
     <Compile Include="Gui\StaticText.cs" />
     <Compile Include="Misc\Camera.cs" />
     <Compile Include="Misc\Collision.cs" />

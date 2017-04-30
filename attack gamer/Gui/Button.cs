@@ -36,14 +36,14 @@ namespace attack_gamer
             outline = new Sprite(texture) { Position = new Vector2(Position.X - 1, Position.Y - 1), Size = new Vector2(Size.X + 2, Size.Y + 2), Color = Color.Black };
             var textSize = font.MeasureString(text);
             staticText.Font = font;
-            staticText.Text = text;
+            staticText.Msg = text;
             staticText.Position = Helper.Center(Rectangle, textSize);
             staticText.Color = Color.White;
         }
         public void SetNewPosition(Vector2 position)
         {
             Position = position;
-            var textSize = staticText.Font.MeasureString(staticText.Text);
+            var textSize = staticText.Font.MeasureString(staticText.Msg);
             staticText.Position = Helper.Center(Rectangle, textSize);
         }
         public void Draw(SpriteBatch spriteBatch)
