@@ -69,7 +69,7 @@ namespace attack_gamer
         public InventorySlot[] actionbarSlots;
 
         Texture2D Texture, boxbox;
-        Sprite bagSprite;
+        public Sprite bagSprite;
         public Sprite actionbar;
         GraphicsDevice grap;
 

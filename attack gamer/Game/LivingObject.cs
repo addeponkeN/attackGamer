@@ -197,17 +197,20 @@ namespace attack_gamer
                     VelocityForce -= 0.2f;
                 else BeingPushed = false;
             }
-
             if (IsDying)
             {
                 Speed = 0;
                 IsDyingTimer -= Delta;
+                if (IsDyingTimer < 0)
+                    Exist = false;
             }
             foreach (var t in textList)
             {
                 t.Update(gameTime);
             }
         }
+        
+
         public virtual void Draw(SpriteBatch sb, GameTime gt)
         {
             if (CurrentAnimation == null)

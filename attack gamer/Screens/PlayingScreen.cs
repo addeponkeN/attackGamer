@@ -24,6 +24,7 @@ namespace attack_gamer
         List<Item> items = new List<Item>();
 
         float delay;
+        bool spawnEnemy;
 
         public PlayingScreen()
         {
@@ -71,16 +72,25 @@ namespace attack_gamer
             loManager.Update(gameTime, player);
             popManager.Update(gameTime);
 
+            if (!player.Exist)
+                ExitScreen();
 
             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             delay += delta;
-            if (delay > 3)
-            {
-                loManager.AddEnemy(new Enemy(goblinSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(Rng.Noxt(Globals.ScreenX), Rng.Noxt(Globals.ScreenY)) });
 
-                delay -= 1;
-            }
+            if (Input.KeyClick(Keys.Enter))
+                if (spawnEnemy)
+                    spawnEnemy = false;
+                else spawnEnemy = true;
+
+            if (spawnEnemy)
+                if (delay > 3)
+                {
+                    loManager.AddEnemy(new Enemy(goblinSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(Rng.Noxt(Globals.ScreenX), Rng.Noxt(Globals.ScreenY)) });
+
+                    delay -= 1;
+                }
 
             if (Input.KeyHold(Keys.NumPad1))
             {
@@ -129,9 +139,12 @@ namespace attack_gamer
             popManager.Draw(sb);
 
             Extras.DrawDebug(sb, $"{Helper.FixPos(Input.mPos, 32)}", 10);
+            Extras.DrawDebug(sb, $"spawn enemy: {spawnEnemy}  (enter)", 11);
+
 
             sb.DrawString(ScreenManager.DebugFont, "playing", Vector2.One, Color.Black);
             sb.DrawString(ScreenManager.DebugFont, "playing", Vector2.Zero, Color.White);
+
 
 
             sb.End();

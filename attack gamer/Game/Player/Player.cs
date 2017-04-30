@@ -53,7 +53,7 @@ namespace attack_gamer
             AddAnimation(new int[] { 0, 1, 2, 3 }, 1, "walkup");
             AddAnimation(new int[] { 0, 1, 2, 3 }, 2, "walkright");
             AddAnimation(new int[] { 0, 1, 2, 3 }, 3, "walkleft");
-            Speed = 300f;
+            Speed = 150;
             AnimationDuration = 1;
 
             attackWidth = 48;
@@ -81,7 +81,7 @@ namespace attack_gamer
 
             if (Input.LeftClick())
             {
-                if (CanAttack && !Attacked)
+                if (CanAttack && !Attacked && !inventory.actionbar.Rectangle.Contains(Input.mPos) && !inventory.bagSprite.Rectangle.Contains(Input.mPos))
                 {
                     IsAttacking = true;
                     Action(gameTime);
@@ -197,7 +197,6 @@ namespace attack_gamer
         public override void Draw(SpriteBatch sb, GameTime gameTime)
         {
             base.Draw(sb, gameTime);
-            inventory.Draw(sb, this);
 
             if (IsAttackingTimer > 0)
             {
@@ -209,7 +208,7 @@ namespace attack_gamer
             //sb.Draw(ScreenManager.box, attackBox, Swing.GetSource(Swing.CurrentAnimation, gameTime), new Color(Color.Green, 0.2f));
             //sb.Draw(ScreenManager.box, LootRadius, new Color(Color.Green, 0.2f));
 
-
+            inventory.Draw(sb, this);
 
             sb.DrawString(ScreenManager.DebugFont, "" + swingBox, new Vector2(0, 60), Color.White);
             sb.DrawString(ScreenManager.DebugFont, "" + swingOrigin, new Vector2(0, 80), Color.White);

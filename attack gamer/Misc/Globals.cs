@@ -64,8 +64,8 @@ namespace attack_gamer
         }
         public static void DrawDebug(SpriteBatch sb, string text, int topLeftLine)
         {
-            sb.DrawString(ScreenManager.DebugFont, text, new Vector2(1, (12 * topLeftLine) + 1), Color.Black);
-            sb.DrawString(ScreenManager.DebugFont, text, new Vector2(1, (12 * topLeftLine)), Color.White);
+            sb.DrawString(ScreenManager.DebugFont, text, new Vector2(1, (14 * topLeftLine) + 1), Color.Black);
+            sb.DrawString(ScreenManager.DebugFont, text, new Vector2(0, (14 * topLeftLine)), Color.White);
         }
         public static Texture2D NewTexture(GraphicsDevice gd)
         {
