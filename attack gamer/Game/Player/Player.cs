@@ -81,10 +81,17 @@ namespace attack_gamer
 
             if (Input.LeftClick())
             {
-                if (CanAttack && !Attacked && !inventory.actionbar.Rectangle.Contains(Input.mPos) && !inventory.bagSprite.Rectangle.Contains(Input.mPos))
+                if (CanAttack && !Attacked && !inventory.actionbar.Rectangle.Contains(Input.mPos))
                 {
-                    IsAttacking = true;
-                    Action(gameTime);
+                    bool att = true;
+                    if (inventory.bagSprite.Rectangle.Contains(Input.mPos))
+                        if (inventory.IsDrawing)
+                            att = false;
+                    if (att)
+                    {
+                        IsAttacking = true;
+                        Action(gameTime);
+                    }
                 }
             }
             else

@@ -323,7 +323,6 @@ namespace attack_gamer
                     if (y == 1)
                     {
                         aslot = actionbarSlots[x];
-                        //Console.WriteLine(x);
                         if (aslot.Item != null)
                         {
                             if (!aslot.IsDragging)
