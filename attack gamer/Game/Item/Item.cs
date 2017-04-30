@@ -55,15 +55,17 @@ namespace attack_gamer
         {
             return DistanceTo(pos) < Distance;
         }
-        public void VacuumLoot(GameTime gt, Item item, Vector2 des, Inventory i)
+        public virtual void Update(GameTime gt)
         {
             Delta = (float)gt.ElapsedGameTime.TotalSeconds;
-            Speed += 400f * Delta;
             Position += Delta * Speed * Direction;
+        }
+        public void VacuumLoot(GameTime gt, Item item, Vector2 des, Inventory i)
+        {
+            Speed += 400f * Delta;
             var dir = des - Position;
             dir.Normalize();
             Direction = dir;
-
             if (CloseTo(des))
             {
                 switch (item.Type)

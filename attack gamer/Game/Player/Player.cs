@@ -41,7 +41,7 @@ namespace attack_gamer
 
             Swing = new SheetAnimation();
             Swing.GSheet = swing;
-            Swing.AddAnimation(new int[] { 0, 1, 2, 3 }, 0, "swing");
+            Swing.AddAnimation(new int[] { 0, 1, 2, 3 ,3,3,3}, 0, "swing");
             Swing.AddAnimation(new int[] { 0 }, 0, "test");
 
             Swing.Size = new Vector2(32, 96);
@@ -54,7 +54,7 @@ namespace attack_gamer
             AddAnimation(new int[] { 0, 1, 2, 3 }, 2, "walkright");
             AddAnimation(new int[] { 0, 1, 2, 3 }, 3, "walkleft");
             Speed = 300f;
-            AnimationDuration = .75;
+            AnimationDuration = 1;
 
             attackWidth = 48;
             attackLength = 64;
@@ -167,14 +167,6 @@ namespace attack_gamer
             #endregion
 
             #region test
-            if (Input.KeyClick(Keys.NumPad0))
-            {
-                inventory.AddItem(new Usable(UsableType.HealthPot, PlayingScreen.itemSheet));
-            }
-            if (Input.KeyClick(Keys.NumPad2))
-            {
-
-            }
             if (Input.KeyHold(Keys.Left))
             {
             }
@@ -209,7 +201,9 @@ namespace attack_gamer
             if (IsAttackingTimer > 0)
             {
                 sb.Draw(Swing.GSheet.Texture, swingBox, Swing.GetSource(Swing.CurrentAnimation, gameTime), Swing.Color, swingRotation + ((float)Math.PI * 1f), swingOrigin, swingEffect, 0f);
+
             }
+
             //if(IsAttacking)
             //sb.Draw(ScreenManager.box, attackBox, Swing.GetSource(Swing.CurrentAnimation, gameTime), new Color(Color.Green, 0.2f));
             sb.Draw(ScreenManager.box, LootRadius, new Color(Color.Green, 0.2f));

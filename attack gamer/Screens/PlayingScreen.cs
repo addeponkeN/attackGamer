@@ -46,10 +46,9 @@ namespace attack_gamer
 
             cam = new Camera();
 
-            items.Add(new Usable(UsableType.HealthPot, itemSheet) { Vacuumable = true, Position = new Vector2(300, 250) });
-            items.Add(new Usable(UsableType.ManaPot, itemSheet) { Vacuumable = true, Position = new Vector2(250) });
+
             items.Add(new Usable(UsableType.HealthPot, itemSheet) { Vacuumable = true, Position = new Vector2(450) });
-            items.Add(new Usable(UsableType.ManaPot, itemSheet) { Vacuumable = true, Position = new Vector2(0) });
+            items.Add(new Usable(UsableType.ManaPot, itemSheet) { Vacuumable = true, Position = new Vector2(200) });
 
 
 
@@ -79,7 +78,26 @@ namespace attack_gamer
                 delay -= 1;
             }
 
+            if (Input.KeyClick(Keys.NumPad1))
+            {
+                items.Add(new Usable(UsableType.HealthPot, itemSheet) { Vacuumable = true, Position = new Vector2(Rng.Noxt(Globals.ScreenX), Rng.Noxt(Globals.ScreenY)) });
+            }
+            if (Input.KeyClick(Keys.NumPad2))
+            {
+                items.Add(new Usable(UsableType.ManaPot, itemSheet) { Vacuumable = true, Position = new Vector2(Rng.Noxt(Globals.ScreenX), Rng.Noxt(Globals.ScreenY)) });
+
+            }
             items.RemoveAll(i => !i.Exist);
+            foreach (var i in items)
+            {
+                i.Update(gameTime);
+                if (player.LootRadius.Intersects(i.Rectangle) && !player.inventory.IsFull)
+                    i.IsBeingLooted = true;
+                else if (player.inventory.IsFull) i.IsBeingLooted = false;
+                if (i.IsBeingLooted)
+                    i.VacuumLoot(gameTime, i, player.Position, player.inventory);
+                else { if (i.Speed >= 0f) i.Speed -= 400f * (float)gameTime.ElapsedGameTime.TotalSeconds; if (i.Speed < 0) i.Speed = 0f; }
+            }
         }
 
         public override void HandleInput(InputState input)
@@ -100,11 +118,6 @@ namespace attack_gamer
             foreach (var i in items)
             {
                 i.Draw(sb);
-                if (player.LootRadius.Intersects(i.Rectangle) && !player.inventory.IsFull)
-                    i.IsBeingLooted = true;
-                else if (player.inventory.IsFull) i.IsBeingLooted = false;
-                if(i.IsBeingLooted)
-                    i.VacuumLoot(gameTime, i, player.Position, player.inventory);
             }
 
             loManager.Draw(sb, gameTime);
