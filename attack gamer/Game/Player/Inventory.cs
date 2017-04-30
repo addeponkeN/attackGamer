@@ -348,8 +348,8 @@ namespace attack_gamer
 
                         CheckIfOpen(aslot);
                         if (aslot.box.Rectangle.Contains(Input.mPos))
-                            aslot.box.Color = new Color(Color.White, 255);
-                        else aslot.box.Color = new Color(Color.DarkGray, 255);
+                            aslot.box.Color = new Color(150,150,150, 255);
+                        else aslot.box.Color = new Color(50,50,50, 255);
                     }
                     if (bagSlots[x, y] != null)
                     {
@@ -386,8 +386,8 @@ namespace attack_gamer
                         #region update always
                         CheckIfOpen(slot);
                         if (bagSlots[x, y].box.Rectangle.Contains(Input.mPos))
-                            bagSlots[x, y].box.Color = new Color(Color.White, 255);
-                        else slot.box.Color = new Color(Color.DarkGray, 255);
+                            bagSlots[x, y].box.Color = new Color(150,150,150, 255);
+                        else slot.box.Color = new Color(50,50,50, 255);
                         #endregion
                     }
                 }

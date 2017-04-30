@@ -21,6 +21,7 @@ namespace attack_gamer
             Texture = Extras.NewTexture(gd);
             AliveTime = 2f;
             itemRec = new Rectangle(0, (int)Helper.Center(Rectangle, new Vector2(itemRec.Width, itemRec.Height)).Y, 64, 64);
+
             switch (item.Type)
             {
                 case ItemType.Usable:
@@ -37,6 +38,7 @@ namespace attack_gamer
             }
             Console.WriteLine(Text.Size.X); 
             Size = new Vector2(itemRec.Width + (Text.Size.X * 4), 64);
+            itemRec = new Rectangle(0, (int)Helper.Center(Rectangle, new Vector2(itemRec.Width, itemRec.Height)).Y, 64, 64);
         }
         public override void Update(GameTime gameTime)
         {
