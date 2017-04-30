@@ -22,7 +22,7 @@ namespace attack_gamer
         public SpriteFont Font { get; set; }
         public static SpriteFont DebugFont { get; set; }
 
-        public static Texture2D box;
+        public static Texture2D box, boxbox;
 
         /// <summary>
         /// If true, the manager prints out a list of all the screens
@@ -51,6 +51,8 @@ namespace attack_gamer
             Font = content.Load<SpriteFont>("menufont");
             DebugFont = content.Load<SpriteFont>("debugFont");
             box = content.Load<Texture2D>("box");
+            boxbox = content.Load<Texture2D>("boxbox");
+
             //blankTexture = content.Load<Texture2D>("blank");
 
             blankTexture = new Texture2D(GraphicsDevice, 1, 1);

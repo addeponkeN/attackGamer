@@ -29,9 +29,9 @@ namespace attack_gamer
         public InventorySlot(Item item, GraphicsDevice gd)
         {
             Texture2D Texture = new Texture2D(gd, 1, 1);
-            Color[] colorData = { new Color(Color.SandyBrown, (int)50) };
+            Color[] colorData = { new Color(15,15,15,255) };
             Texture.SetData(colorData);
-            box = new Sprite(Texture, Color.White);
+            box = new Sprite(ScreenManager.boxbox, Color.White);
             box.Size = new Vector2(64);
             Item = item;
             if (item != null)
@@ -40,9 +40,9 @@ namespace attack_gamer
         public InventorySlot(Item item, GraphicsDevice gd, bool test)
         {
             Texture2D Texture = new Texture2D(gd, 1, 1);
-            Color[] colorData = { new Color(Color.SandyBrown, (int)50) };
+            Color[] colorData = { new Color(15, 15, 15, 255) };
             Texture.SetData(colorData);
-            box = new Sprite(Texture, Color.White);
+            box = new Sprite(ScreenManager.boxbox, Color.White);
             box.Size = new Vector2(64);
             Item = item;
             Item.Color = item.Color;
@@ -68,7 +68,7 @@ namespace attack_gamer
         public InventorySlot[,] bagSlots;
         public InventorySlot[] actionbarSlots;
 
-        Texture2D Texture;
+        Texture2D Texture, boxbox;
         Sprite bagSprite;
         public Sprite actionbar;
         GraphicsDevice grap;
@@ -93,9 +93,8 @@ namespace attack_gamer
                     bagSlots[x, y] = new InventorySlot(null, gd);
                     CheckIfOpen(bagSlots[x, y]);
                 }
-
             Texture = new Texture2D(gd, 1, 1);
-            Color[] colorData = { new Color(Color.Black, (int)50) };
+            Color[] colorData = { new Color(15, 15, 15, 255) };
             Texture.SetData(colorData);
 
             actionbar = new Sprite(Texture) { Size = new Vector2(64 * 10, 64 * 1) };
@@ -144,12 +143,12 @@ namespace attack_gamer
             if (slot.Item == null)
             {
                 slot.State = InventorySlotState.Open;
-                slot.box.BaseColor = new Color(Color.Green, 150);
+                //slot.box.BaseColor = new Color(Color.Green, 150);
             }
             else
             {
                 slot.State = InventorySlotState.Closed;
-                slot.box.BaseColor = new Color(Color.Red, 150);
+                //slot.box.BaseColor = new Color(Color.Red, 150);
             }
         }
         //public void AddItemList(Usable item)
@@ -349,8 +348,8 @@ namespace attack_gamer
 
                         CheckIfOpen(aslot);
                         if (aslot.box.Rectangle.Contains(Input.mPos))
-                            aslot.box.Color = new Color(Color.White, 200);
-                        else aslot.box.Color = aslot.box.BaseColor;
+                            aslot.box.Color = new Color(Color.White, 255);
+                        else aslot.box.Color = new Color(Color.DarkGray, 255);
                     }
                     if (bagSlots[x, y] != null)
                     {
@@ -387,8 +386,8 @@ namespace attack_gamer
                         #region update always
                         CheckIfOpen(slot);
                         if (bagSlots[x, y].box.Rectangle.Contains(Input.mPos))
-                            bagSlots[x, y].box.Color = new Color(Color.White, 200);
-                        else slot.box.Color = slot.box.BaseColor;
+                            bagSlots[x, y].box.Color = new Color(Color.White, 255);
+                        else slot.box.Color = new Color(Color.DarkGray, 255);
                         #endregion
                     }
                 }

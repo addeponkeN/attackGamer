@@ -41,7 +41,7 @@ namespace attack_gamer
 
             Swing = new SheetAnimation();
             Swing.GSheet = swing;
-            Swing.AddAnimation(new int[] { 0, 1, 2, 3 ,3,3,3}, 0, "swing");
+            Swing.AddAnimation(new int[] { 0, 1, 2, 3, 3, 3, 3 }, 0, "swing");
             Swing.AddAnimation(new int[] { 0 }, 0, "test");
 
             Swing.Size = new Vector2(32, 96);
@@ -126,7 +126,7 @@ namespace attack_gamer
                     SetAnimation(Animations["walkright"]);
                 }
 
-                
+
 
                 #endregion
 
@@ -191,12 +191,13 @@ namespace attack_gamer
 
         public void Loot(Item item)
         {
-            inventory.AddItem(item);            
+            inventory.AddItem(item);
         }
 
         public override void Draw(SpriteBatch sb, GameTime gameTime)
         {
             base.Draw(sb, gameTime);
+            inventory.Draw(sb, this);
 
             if (IsAttackingTimer > 0)
             {
@@ -206,10 +207,9 @@ namespace attack_gamer
 
             //if(IsAttacking)
             //sb.Draw(ScreenManager.box, attackBox, Swing.GetSource(Swing.CurrentAnimation, gameTime), new Color(Color.Green, 0.2f));
-            sb.Draw(ScreenManager.box, LootRadius, new Color(Color.Green, 0.2f));
+            //sb.Draw(ScreenManager.box, LootRadius, new Color(Color.Green, 0.2f));
 
 
-            inventory.Draw(sb, this);
 
             sb.DrawString(ScreenManager.DebugFont, "" + swingBox, new Vector2(0, 60), Color.White);
             sb.DrawString(ScreenManager.DebugFont, "" + swingOrigin, new Vector2(0, 80), Color.White);
