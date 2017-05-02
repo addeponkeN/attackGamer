@@ -17,10 +17,10 @@ namespace attack_gamer
         {
             item = it;
             Position = new Vector2(0, (int)(Globals.ScreenY * 0.666));
-            Direction = new Vector2(0, -1);
+            Direction = new Vector2(-1, 0);
             Texture = Extras.NewTexture(gd);
             AliveTime = 2f;
-            itemRec = new Rectangle(0, (int)Helper.Center(Rectangle, new Vector2(itemRec.Width, itemRec.Height)).Y, 64, 64);
+            itemRec = new Rectangle((int)Position.X, (int)Helper.Center(Rectangle, new Vector2(itemRec.Width, itemRec.Height)).Y, 32, 32);
 
             switch (item.Type)
             {
@@ -36,14 +36,13 @@ namespace attack_gamer
                 default:
                     break;
             }
-            Console.WriteLine(Text.Size.X); 
-            Size = new Vector2(itemRec.Width + (Text.Size.X * 4), 64);
-            itemRec = new Rectangle(0, (int)Helper.Center(Rectangle, new Vector2(itemRec.Width, itemRec.Height)).Y, 64, 64);
+            Size = new Vector2(32 + Text.Size.X + 8, 32);
+            itemRec = new Rectangle((int)Position.X, (int)Helper.Center(Rectangle, new Vector2(itemRec.Width, itemRec.Height)).Y, 32, 32);
         }
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            itemRec = new Rectangle(0, (int)Helper.Center(Rectangle, new Vector2(itemRec.Width, itemRec.Height)).Y, 64, 64);
+            itemRec = new Rectangle((int)Position.X, (int)Helper.Center(Rectangle, new Vector2(itemRec.Width, itemRec.Height)).Y, 32, 32);
             Text.Position = new Vector2(itemRec.X + itemRec.Width, Helper.Center(itemRec, Text.Size).Y);            
         }
         public override void Draw(SpriteBatch sb)

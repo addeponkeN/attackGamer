@@ -77,7 +77,6 @@ namespace attack_gamer
 
             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            delay += delta;
 
             if (Input.KeyClick(Keys.Enter))
                 if (spawnEnemy)
@@ -85,12 +84,15 @@ namespace attack_gamer
                 else spawnEnemy = true;
 
             if (spawnEnemy)
+            {
+                delay += delta;
                 if (delay > 3)
                 {
                     loManager.AddEnemy(new Enemy(goblinSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(Rng.Noxt(Globals.ScreenX), Rng.Noxt(Globals.ScreenY)) });
 
                     delay -= 1;
                 }
+            }
 
             if (Input.KeyHold(Keys.NumPad1))
             {
@@ -138,7 +140,7 @@ namespace attack_gamer
             player.Draw(sb, gameTime);
             popManager.Draw(sb);
 
-            Extras.DrawDebug(sb, $"{Helper.FixPos(Input.mPos, 32)}", 10);
+            Extras.DrawDebug(sb, $"mPos:{Input.mPos} | tilePos:{Helper.FixPos(Input.mPos, 32)} | tile:{Helper.FixPos(Input.mPos, 32) / 32}", 10);
             Extras.DrawDebug(sb, $"spawn enemy: {spawnEnemy}  (enter)", 11);
 
 

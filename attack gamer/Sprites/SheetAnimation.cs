@@ -35,8 +35,16 @@ namespace attack_gamer
         public bool Exist { get; set; } = true;
 
         public int CurrentRow { get; set; }
+        public int CurrentColumn { get; set; }
         public Rectangle[] CurrentAnimation { get; set; }
-        public double AnimationDuration { get; set; } = 1;
+        public Rectangle CurrentAnimationFrame { get; set; }
+        public double AnimationDuration => (frameLength * CurrentAnimation.Length) - 0.1;
+        private double frameTimer;
+        public double frameLength = 0.25;
+        public int frame;
+        public Vector2 Origin;
+        public float Rotation;
+        public SpriteEffects spriteEffect;
 
         public bool IsAnimating { get; set; } = true;
         public bool IsTimed { get; set; }
@@ -45,6 +53,13 @@ namespace attack_gamer
 
         public Dictionary<string, Rectangle[]> Animations = new Dictionary<string, Rectangle[]>();
 
+        //public SheetAnimation()
+        //{
+        //    AddAnimation(new int[] { 0, 1, 2, 3 }, 0, "walkdown");
+        //    AddAnimation(new int[] { 0, 1, 2, 3 }, 1, "walkup");
+        //    AddAnimation(new int[] { 0, 1, 2, 3 }, 2, "walkright");
+        //    AddAnimation(new int[] { 0, 1, 2, 3 }, 3, "walkleft");
+        //}
         public void AddAnimation(int[] column, int row, string name)
         {
             var frames = column.Length;
@@ -64,11 +79,15 @@ namespace attack_gamer
         public void SetAnimation(Rectangle[] animation)
         {
             CurrentAnimation = animation;
+            CurrentAnimationFrame = Rectangle.Empty;
+            frame = 0;
         }
         public void SetAnimation(Rectangle[] animation, int row)
         {
             CurrentAnimation = animation;
             CurrentRow = row;
+            CurrentAnimationFrame = Rectangle.Empty;
+            frame = 0;
         }
         public Rectangle GetSource(Rectangle[] animation, GameTime gt)
         {
@@ -79,14 +98,37 @@ namespace attack_gamer
         {
             return GSheet[column, row];
         }
+        public void Reset()
+        {
+            frameTimer = 0;
+            frame = 0;
+        }
+        public void Update(GameTime gt)
+        {
+            if (CurrentAnimation == null)
+                CurrentAnimation = new[] { GSheet[0, 0], };
+            if (IsAnimating)
+            {
+                frameTimer += gt.ElapsedGameTime.TotalSeconds;
+                if (frameTimer >= frameLength)
+                {
+                    frame = (frame + 1) % CurrentAnimation.Length;
+                    frameTimer = 0;
+                }
+                CurrentAnimationFrame = CurrentAnimation[frame];
+            }
+        }
         public virtual void Draw(SpriteBatch sb, GameTime gameTime)
         {
+            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (CurrentAnimation == null)
                 CurrentAnimation = new[] { GSheet[0, 0], };
 
             if (IsAnimating)
             {
-                sb.Draw(GSheet.Texture, Rectangle, GetSource(CurrentAnimation, gameTime), Color);
+                frame = (int)(gameTime.TotalGameTime.TotalSeconds * CurrentAnimation.Length / AnimationDuration % CurrentAnimation.Length);
+                CurrentAnimationFrame = CurrentAnimation[frame];
+                sb.Draw(Texture, Rectangle, CurrentAnimationFrame, Color, 0, Vector2.Zero, SpriteEffects.None, 0);
             }
             else
                 sb.Draw(GSheet.Texture, new Rectangle(0, 0, 0, 0), Color);

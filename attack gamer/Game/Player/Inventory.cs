@@ -329,6 +329,7 @@ namespace attack_gamer
                                 aslot.Item.Position = aslot.box.Position;
                             aslot.Item.Draw(sb);
                         }
+
                         aslot.box.Position = new Vector2((int)actionbar.Position.X + (x * 64), (int)actionbar.Position.Y);
                         sb.Draw(aslot.box.Texture, new Rectangle(Convertor.ToPoint(aslot.box.Position), Convertor.ToPoint(aslot.box.Size)), aslot.box.Color);
 

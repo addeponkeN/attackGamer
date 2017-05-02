@@ -84,6 +84,14 @@ namespace attack_gamer
     }
     public static class Helper
     {
+        public static bool IsBetween(int value, int min, int max)
+        {
+            if (value <= min)
+                return false;
+            if (value >= max)
+                return false;
+            return true;                
+        }
         public static double Clamp(double value, double min, double max)
         {
             if (value < min)

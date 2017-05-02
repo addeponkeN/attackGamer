@@ -11,6 +11,7 @@ namespace attack_gamer
 {
     public class LivingObject
     {
+        //public SheetAnimation sprite { get; set; }
         public GridSheet GSheet { get; set; }
         public Texture2D Texture => GSheet.Texture;
         public Vector2 Position { get; set; }
@@ -30,7 +31,10 @@ namespace attack_gamer
         public bool Exist { get; set; } = true;
 
         public int CurrentRow { get; set; }
+        public int CurrentColumn { get; set; }
         public Rectangle[] CurrentAnimation { get; set; }
+        public Rectangle CurrentAnimationFrame { get; set; }
+
         public double AnimationDuration { get; set; } = 1;
 
         public bool IsAnimating { get; set; } = true;
@@ -52,42 +56,11 @@ namespace attack_gamer
         public LivingObject(GraphicsDevice gd)
         {
             HealthBar = new DynamicBar(gd, Position, (int)Size.X);
+            //AddAnimation(new int[] { 0, 1, 2, 3 }, 0, "walkdown");
+            //AddAnimation(new int[] { 0, 1, 2, 3 }, 1, "walkup");
+            //AddAnimation(new int[] { 0, 1, 2, 3 }, 2, "walkright");
+            //AddAnimation(new int[] { 0, 1, 2, 3 }, 3, "walkleft");
         }
-        public void AddAnimation(int[] column, int row, string name)
-        {
-            var frames = column.Length;
-            Rectangle[] test = new Rectangle[frames];
-            for (int i = 0; i < frames; i++)
-                test[i] = GSheet[column[i], row];
-            Animations.Add(name.ToLower(), test);
-        }
-        public void Remove(string a)
-        {
-            Animations.Remove(a);
-        }
-        public Rectangle[] GetAnimation(string name)
-        {
-            return Animations[name];
-        }
-        public void SetAnimation(Rectangle[] animation)
-        {
-            CurrentAnimation = animation;
-        }
-        public void SetAnimation(Rectangle[] animation, int row)
-        {
-            CurrentAnimation = animation;
-            CurrentRow = row;
-        }
-        public Rectangle GetSource(Rectangle[] animation, GameTime gt)
-        {
-            var i = (int)(gt.TotalGameTime.TotalSeconds * animation.Length / AnimationDuration % animation.Length);
-            return animation[i];
-        }
-        public Rectangle SetSource(int column, int row)
-        {
-            return GSheet[column, row];
-        }
-
         public bool IsAlive => IsDyingTimer > 0;
         public bool IsDying => Health <= 0;
         public double IsDyingTimer = 10;
@@ -187,7 +160,6 @@ namespace attack_gamer
                 AttackCooldownCounter--;
                 if (AttackCooldown < 0)
                 {
-                    AttackCooldownCounter = AttackCooldown + 0.25;
                     Attacked = false;
                 }
             }
@@ -209,12 +181,49 @@ namespace attack_gamer
                 t.Update(gameTime);
             }
         }
-        
 
+        public void AddAnimation(int[] column, int row, string name)
+        {
+            var frames = column.Length;
+            Rectangle[] test = new Rectangle[frames];
+            for (int i = 0; i < frames; i++)
+                test[i] = GSheet[column[i], row];
+            Animations.Add(name.ToLower(), test);
+        }
+        public void Remove(string a)
+        {
+            Animations.Remove(a);
+        }
+        public Rectangle[] GetAnimation(string name)
+        {
+            return Animations[name];
+        }
+        public void SetAnimation(Rectangle[] animation)
+        {
+            CurrentAnimation = animation;
+            CurrentAnimationFrame = Rectangle.Empty;
+        }
+        public void SetAnimation(Rectangle[] animation, int row)
+        {
+            CurrentAnimation = animation;
+            CurrentRow = row;
+            CurrentAnimationFrame = Rectangle.Empty;
+        }
+        public Rectangle GetSource(Rectangle[] animation, GameTime gt)
+        {
+            var i = (int)(gt.TotalGameTime.TotalSeconds * animation.Length / AnimationDuration % animation.Length);
+            return animation[i];
+        }
+        public Rectangle SetSource(int column, int row)
+        {
+            return GSheet[column, row];
+        }
         public virtual void Draw(SpriteBatch sb, GameTime gt)
         {
             if (CurrentAnimation == null)
                 CurrentAnimation = new[] { GSheet[0, 0], };
+            if (CurrentAnimationFrame == null)
+                CurrentAnimationFrame = CurrentAnimation[0];
 
             if (IsDrawHealthBar)
                 HealthBar.Draw(sb);
@@ -224,7 +233,9 @@ namespace attack_gamer
                 t.Draw(sb);
             }
 
-            sb.Draw(Texture, Rectangle, GetSource(CurrentAnimation, gt), _Color(), 0, Vector2.Zero, SpriteEffects.None, 0);
+            var i = (int)(gt.TotalGameTime.TotalSeconds * CurrentAnimation.Length / AnimationDuration % CurrentAnimation.Length);
+            CurrentAnimationFrame = CurrentAnimation[i];
+            sb.Draw(Texture, Rectangle, CurrentAnimationFrame, _Color(), 0, Vector2.Zero, SpriteEffects.None, 0);
         }
     }
 }

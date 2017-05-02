@@ -18,10 +18,21 @@ namespace attack_gamer
         public int Width;
         public int Height;
 
+        public int ID { get; set; }
+
         public Vector2 Position { get; set; }
         public Point Point => new Point((int)Position.X / 32, (int)Position.Y / 32);
         public Rectangle Rectangle => new Rectangle(Convertor.ToPoint(Position), new Point(Width, Height));
 
-        public bool Walkable { get; set; }        
+        public bool Walkable { get; set; }       
+        
+        public Tile(TileType type)
+        {
+
+        }
+        public Tile(int id)
+        {
+
+        }
     }
 }

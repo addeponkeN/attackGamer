@@ -22,9 +22,9 @@ namespace attack_gamer
         //public Vector2 swingPos;
         public Rectangle swingBox => new Rectangle((int)(Position.X + (Size.X / 2)), (int)(Position.Y + (Size.Y / 2)), (int)Swing.Size.X + 16, (int)Swing.Size.Y);
         //public Rectangle swingBox;
-        public SpriteEffects swingEffect;
-        public Vector2 swingOrigin;
-        public float swingRotation = 0;
+        //public SpriteEffects swingEffect;
+        //public Vector2 swingOrigin;
+        //public float swingRotation = 0;
         #endregion
 
         public double attackCd;
@@ -41,13 +41,13 @@ namespace attack_gamer
 
             Swing = new SheetAnimation();
             Swing.GSheet = swing;
-            Swing.AddAnimation(new int[] { 0, 1, 2, 3, 3, 3, 3 }, 0, "swing");
+            Swing.AddAnimation(new int[] { 0, 1, 2, 3 }, 0, "swing");
             Swing.AddAnimation(new int[] { 0 }, 0, "test");
 
             Swing.Size = new Vector2(32, 96);
-
+            Swing.Origin = new Vector2(40, 48);
+            Swing.frameLength = 0.1;
             Swing.CurrentAnimation = Swing.Animations["swing"];
-            Swing.AnimationDuration = 0.25;
 
             AddAnimation(new int[] { 0, 1, 2, 3 }, 0, "walkdown");
             AddAnimation(new int[] { 0, 1, 2, 3 }, 1, "walkup");
@@ -59,7 +59,6 @@ namespace attack_gamer
             attackWidth = 48;
             attackLength = 64;
             //attackOrigin = new Vector2(Size.X / 2, Size.Y);
-            swingOrigin = new Vector2(40, 48);
 
             SetHealth(20);
             SetDamage(2, 5);
@@ -79,10 +78,11 @@ namespace attack_gamer
             //swingPos = RotateAround(swingPos, new Vector2(Position.X + (Size.X / 2), (int)Position.Y + (Size.Y / 2)), swingRotation);
             inventory.Update(gameTime, this);
 
-            if (Input.LeftClick())
+            if (CanAttack && !Attacked && !inventory.actionbar.Rectangle.Contains(Input.mPos))
             {
-                if (CanAttack && !Attacked && !inventory.actionbar.Rectangle.Contains(Input.mPos))
+                if (Input.LeftHold())
                 {
+
                     bool att = true;
                     if (inventory.bagSprite.Rectangle.Contains(Input.mPos))
                         if (inventory.IsDrawing)
@@ -100,13 +100,12 @@ namespace attack_gamer
                 IsAttackingTimer -= Delta;
             }
 
-            #region Keybindongs
-
+            #region keybinds
             if (Input.KeyClick(Keys.I) || Input.KeyClick(Keys.B))
                 if (inventory.IsDrawing)
                     inventory.IsDrawing = false;
                 else inventory.IsDrawing = true;
-
+            #region Movement
             Direction = new Vector2(0);
             if (Direction == new Vector2(0))
                 SetAnimation(new[] { GSheet[0, CurrentRow] });
@@ -143,7 +142,7 @@ namespace attack_gamer
                 {
                     CurrentRow = 1;
                     attackBox = new Rectangle((int)Position.X - 32 - 8, (int)Position.Y - (int)Size.Y - 8, (int)Swing.Size.Y + 16, (int)Swing.Size.X + 16);
-                    swingRotation = MathHelper.ToRadians(270);
+                    Swing.Rotation = MathHelper.ToRadians(270);
                 }
 
                 // triangle under player
@@ -151,7 +150,7 @@ namespace attack_gamer
                 {
                     CurrentRow = 0;
                     attackBox = new Rectangle((int)Position.X - 32 - 8, (int)Position.Y + 32 - 8, (int)Swing.Size.Y + 16, (int)Swing.Size.X + 16);
-                    swingRotation = MathHelper.ToRadians(90);
+                    Swing.Rotation = MathHelper.ToRadians(90);
                 }
 
                 // triangle left player
@@ -159,7 +158,7 @@ namespace attack_gamer
                 {
                     CurrentRow = 3;
                     attackBox = new Rectangle((int)Position.X - 32 - 17 + 8, (int)Position.Y - 32 - 8, (int)Swing.Size.X + 16, (int)Swing.Size.Y + 16);
-                    swingRotation = MathHelper.ToRadians(180);
+                    Swing.Rotation = MathHelper.ToRadians(180);
                 }
 
                 // triangle right player
@@ -167,11 +166,14 @@ namespace attack_gamer
                 {
                     CurrentRow = 2;
                     attackBox = new Rectangle((int)Position.X + 32 - 8, (int)Position.Y - 32 - 8, (int)Swing.Size.X + 16, (int)Swing.Size.Y + 16);
-                    swingRotation = MathHelper.ToRadians(0);
+                    Swing.Rotation = MathHelper.ToRadians(0);
                 }
             }
 
             #endregion
+            #endregion
+
+            Swing.Update(gameTime);
 
             #region test
             if (Input.KeyHold(Keys.Left))
@@ -192,7 +194,7 @@ namespace attack_gamer
         public void Action(GameTime gameTime)
         {
             IsAttackingTimer = Swing.AnimationDuration;
-
+            Swing.Reset();
             DidAttack();
         }
 
@@ -207,8 +209,9 @@ namespace attack_gamer
 
             if (IsAttackingTimer > 0)
             {
-                sb.Draw(Swing.GSheet.Texture, swingBox, Swing.GetSource(Swing.CurrentAnimation, gameTime), Swing.Color, swingRotation + ((float)Math.PI * 1f), swingOrigin, swingEffect, 0f);
-
+                //Swing.Rotation += ((float)Math.PI * 1f);
+                sb.Draw(Swing.GSheet.Texture, swingBox, Swing.CurrentAnimationFrame, Swing.Color, Swing.Rotation + ((float)Math.PI * 1f), Swing.Origin, Swing.spriteEffect, 0f);
+                //Swing.Draw(sb, gameTime);
             }
 
             //if(IsAttacking)
@@ -218,8 +221,8 @@ namespace attack_gamer
             inventory.Draw(sb, this);
 
             sb.DrawString(ScreenManager.DebugFont, "" + swingBox, new Vector2(0, 60), Color.White);
-            sb.DrawString(ScreenManager.DebugFont, "" + swingOrigin, new Vector2(0, 80), Color.White);
-            sb.DrawString(ScreenManager.DebugFont, "" + swingRotation, new Vector2(0, 100), Color.White);
+            sb.DrawString(ScreenManager.DebugFont, "" + Swing.Origin, new Vector2(0, 80), Color.White);
+            sb.DrawString(ScreenManager.DebugFont, "" + Swing.Rotation, new Vector2(0, 100), Color.White);
         }
     }
 }

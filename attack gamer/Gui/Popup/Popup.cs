@@ -14,7 +14,7 @@ namespace attack_gamer
         public StaticText Text { get; set; }
         public Texture2D Texture { get; set; }
         public Vector2 Position { get; set; }
-        public Rectangle Rectangle => new Rectangle((int)(Position.X - (Size.X / 2)), (int)(Position.Y - (Size.Y / 2)), (int)Size.X, (int)Size.Y);
+        public Rectangle Rectangle => new Rectangle((int)(Position.X), (int)(Position.Y), (int)Size.X, (int)Size.Y);
 
         public float Speed { get; set; }
         public Vector2 Direction { get; set; }
@@ -46,7 +46,7 @@ namespace attack_gamer
             if (AliveTime < 1)
             {
                 Alpha = AliveTime;
-                Speed += 100f * Delta;
+                Speed += 250f * Delta;
                 Position += Speed * Delta * Direction;
                 if (AliveTime <= 0) Exist = false;
             }
