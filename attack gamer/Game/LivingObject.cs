@@ -91,7 +91,7 @@ namespace attack_gamer
         public bool CanAttack { get; set; } = true;
         public bool Attacked { get; set; }
         public double IsAttackingTimer { get; set; }
-        public double AttackCooldown { get; set; } = 5;
+        public double AttackCooldown { get; set; }
         public double AttackCooldownCounter { get; set; }
 
         public void HitOtherObject(LivingObject target)

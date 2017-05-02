@@ -53,6 +53,7 @@ namespace attack_gamer
             AddAnimation(new int[] { 0, 1, 2, 3 }, 1, "walkup");
             AddAnimation(new int[] { 0, 1, 2, 3 }, 2, "walkright");
             AddAnimation(new int[] { 0, 1, 2, 3 }, 3, "walkleft");
+
             Speed = 150;
             AnimationDuration = 1;
 
@@ -78,7 +79,7 @@ namespace attack_gamer
             //swingPos = RotateAround(swingPos, new Vector2(Position.X + (Size.X / 2), (int)Position.Y + (Size.Y / 2)), swingRotation);
             inventory.Update(gameTime, this);
 
-            if (CanAttack && !Attacked && !inventory.actionbar.Rectangle.Contains(Input.mPos))
+            if (!Attacked && !inventory.actionbar.Rectangle.Contains(Input.mPos))
             {
                 if (Input.LeftHold())
                 {
@@ -109,7 +110,7 @@ namespace attack_gamer
             Direction = new Vector2(0);
             if (Direction == new Vector2(0))
                 SetAnimation(new[] { GSheet[0, CurrentRow] });
-            if (!Attacked)
+            if (AttackCooldown < 0.1)
             {
                 if (Input.KeyHold(Keys.W))
                 {
@@ -210,7 +211,7 @@ namespace attack_gamer
             if (IsAttackingTimer > 0)
             {
                 //Swing.Rotation += ((float)Math.PI * 1f);
-                sb.Draw(Swing.GSheet.Texture, swingBox, Swing.CurrentAnimationFrame, Swing.Color, Swing.Rotation + ((float)Math.PI * 1f), Swing.Origin, Swing.spriteEffect, 0f);
+                sb.Draw(Swing.GSheet.Texture, swingBox, Swing.CurrentAnimationFrame, Swing.Color, Swing.Rotation + ((float)Math.PI * 1f), Swing.Origin, Swing.SpriteEffect, 0f);
                 //Swing.Draw(sb, gameTime);
             }
 

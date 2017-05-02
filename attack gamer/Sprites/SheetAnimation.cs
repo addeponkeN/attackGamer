@@ -42,9 +42,9 @@ namespace attack_gamer
         private double frameTimer;
         public double frameLength = 0.25;
         public int frame;
-        public Vector2 Origin;
-        public float Rotation;
-        public SpriteEffects spriteEffect;
+        public Vector2 Origin = Vector2.Zero;
+        public float Rotation = 0;
+        public SpriteEffects SpriteEffect = SpriteEffects.None;
 
         public bool IsAnimating { get; set; } = true;
         public bool IsTimed { get; set; }
@@ -52,14 +52,7 @@ namespace attack_gamer
         public double Timer;
 
         public Dictionary<string, Rectangle[]> Animations = new Dictionary<string, Rectangle[]>();
-
-        //public SheetAnimation()
-        //{
-        //    AddAnimation(new int[] { 0, 1, 2, 3 }, 0, "walkdown");
-        //    AddAnimation(new int[] { 0, 1, 2, 3 }, 1, "walkup");
-        //    AddAnimation(new int[] { 0, 1, 2, 3 }, 2, "walkright");
-        //    AddAnimation(new int[] { 0, 1, 2, 3 }, 3, "walkleft");
-        //}
+        
         public void AddAnimation(int[] column, int row, string name)
         {
             var frames = column.Length;
@@ -68,6 +61,7 @@ namespace attack_gamer
                 test[i] = GSheet[column[i], row];
             Animations.Add(name.ToLower(), test);
         }
+
         public void Remove(string a)
         {
             Animations.Remove(a);
@@ -98,6 +92,7 @@ namespace attack_gamer
         {
             return GSheet[column, row];
         }
+
         public void Reset()
         {
             frameTimer = 0;
@@ -128,7 +123,7 @@ namespace attack_gamer
             {
                 frame = (int)(gameTime.TotalGameTime.TotalSeconds * CurrentAnimation.Length / AnimationDuration % CurrentAnimation.Length);
                 CurrentAnimationFrame = CurrentAnimation[frame];
-                sb.Draw(Texture, Rectangle, CurrentAnimationFrame, Color, 0, Vector2.Zero, SpriteEffects.None, 0);
+                sb.Draw(Texture, Rectangle, CurrentAnimationFrame, Color, Rotation, Origin, SpriteEffect, 0);
             }
             else
                 sb.Draw(GSheet.Texture, new Rectangle(0, 0, 0, 0), Color);
