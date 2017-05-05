@@ -15,9 +15,9 @@ namespace attack_gamer
 
             graphics = new GraphicsDeviceManager(this);
 
-            graphics.PreferredBackBufferWidth = Globals.ScreenX;
-            graphics.PreferredBackBufferHeight = Globals.ScreenY;
-
+            graphics.PreferredBackBufferWidth = Globals.ScreenWidth;
+            graphics.PreferredBackBufferHeight = Globals.ScreenHeight;
+            graphics.IsFullScreen = false;
             // Create the screen manager component.
             var screenManager = new ScreenManager(this);
 

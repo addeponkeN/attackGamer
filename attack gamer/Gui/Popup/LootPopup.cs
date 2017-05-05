@@ -16,7 +16,7 @@ namespace attack_gamer
         public LootPopup(Item it, GraphicsDevice gd)
         {
             item = it;
-            Position = new Vector2(0, (int)(Globals.ScreenY * 0.666));
+            Position = new Vector2(0, (int)(Globals.ScreenHeight * 0.666));
             Direction = new Vector2(-1, 0);
             Texture = Extras.NewTexture(gd);
             AliveTime = 2f;

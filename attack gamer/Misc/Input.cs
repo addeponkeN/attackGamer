@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -14,8 +15,11 @@ namespace attack_gamer
         public static MouseState m;
         public static KeyboardState kO;
         public static MouseState mO;
+        public static int s => m.ScrollWheelValue;
+        public static int sO;
 
-        public static Vector2 mPos;
+        public static Vector2 mPos => new Vector2(m.X, m.Y);
+        public static Vector2 mWorldPos(Camera cam, GraphicsDevice gd) => Vector2.Transform(mPos, Matrix.Invert(cam.get_transformation(gd)));
 
         public static void Update(GameTime gameTime)
         {
@@ -24,11 +28,7 @@ namespace attack_gamer
 
             mO = m;
             m = Mouse.GetState();
-
-            // mouse position camera fix
-            //Input.mPos = Vector2.Transform(new Vector2(Input.m.X, Input.m.Y), Matrix.Invert(cam.get_transformation(gd)));
-
-            Input.mPos = new Vector2(Input.m.X, Input.m.Y);
+        
         }
 
         public static bool KeyClick(Keys key)

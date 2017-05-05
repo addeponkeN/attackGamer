@@ -11,19 +11,24 @@ namespace attack_gamer
 {
     public static class Globals
     {
-        public static int ScreenX = 1280;
-        public static int ScreenY = 720;
-        public static Vector2 ScreenXY { get { return new Vector2(ScreenX, ScreenY); } }  // update this with camera pos
-        public static Vector2 ScreenCenter = new Vector2(ScreenX / 2, ScreenY / 2);
+        public static int ScreenWidth = 1280;
+        public static int ScreenHeight = 720;
+        public static Vector2 ScreenPosition { get; set; }
+        public static Vector2 ScreenSize { get { return new Vector2(ScreenWidth, ScreenHeight); } }  // update this with camera pos
+        public static Vector2 ScreenCenter = new Vector2(ScreenWidth / 2, ScreenHeight / 2);
 
-        public static Rectangle ScreenRectangle { get { return new Rectangle(0, 0, ScreenX, ScreenY); } }
+        public static Rectangle ScreenRectangle { get { return new Rectangle((int)ScreenPosition.X, (int)ScreenPosition.Y, ScreenWidth, ScreenHeight); } }
+        public static Vector2 ScreenTopLeft => new Vector2(ScreenRectangle.X, ScreenRectangle.Y);
+        public static Vector2 ScreenTopRight => new Vector2(ScreenRectangle.X + ScreenRectangle.Width, ScreenRectangle.Y);
+        public static Vector2 ScreenBotLeft => new Vector2(ScreenRectangle.X, ScreenRectangle.Y + ScreenRectangle.Height);
+        public static Vector2 ScreenBotRight => new Vector2(ScreenRectangle.X + ScreenRectangle.Width, ScreenRectangle.Y + ScreenRectangle.Height);
+
         public static Rectangle ScreenBoundBox { get { return new Rectangle(ScreenRectangle.X - 32, ScreenRectangle.Y - 32, ScreenRectangle.Width + 64, ScreenRectangle.Height + 64); } }
-        //public static Rectangle ScreenGame { get { return new Rectangle(ScreenRectangle.X, ScreenRectangle.Y + 32, ScreenRectangle.Width, ScreenRectangle.Height - 192); } }
 
         public static Rectangle ScreenTop { get { return new Rectangle(ScreenRectangle.X, ScreenRectangle.Y, ScreenRectangle.Width, 4); } }
-        public static Rectangle ScreenBot { get { return new Rectangle(ScreenRectangle.X, (ScreenRectangle.Y + ScreenY) - 4, ScreenRectangle.Width, 4); } }
-        public static Rectangle ScreenLeft { get { return new Rectangle(ScreenRectangle.X, ScreenRectangle.Y, 4, ScreenY); } }
-        public static Rectangle ScreenRight { get { return new Rectangle(ScreenRectangle.X + ScreenX - 4, ScreenRectangle.Y, 4, ScreenY); } }
+        public static Rectangle ScreenBot { get { return new Rectangle(ScreenRectangle.X, (ScreenRectangle.Y + ScreenHeight) - 4, ScreenRectangle.Width, 4); } }
+        public static Rectangle ScreenLeft { get { return new Rectangle(ScreenRectangle.X, ScreenRectangle.Y, 4, ScreenHeight); } }
+        public static Rectangle ScreenRight { get { return new Rectangle(ScreenRectangle.X + ScreenWidth - 4, ScreenRectangle.Y, 4, ScreenHeight); } }
 
         public static bool debug;         // F1 toggle
     }
@@ -32,22 +37,13 @@ namespace attack_gamer
     public static class Extras
     {
         private static float counter;
-        public static void AddEverySecond(GameTime gt, double value, float everyXsecond)
-        {
-            counter += (float)gt.ElapsedGameTime.TotalSeconds;
-            if (counter >= everyXsecond)
-            {
-                value++;
-                counter -= everyXsecond;
-            }
-        }
-        public static double SubEverySecond(GameTime gt, double value, float everyXsecond)
+        public static double AddEverySecond(GameTime gt, double value, double add, float everyXsecond)
         {
             counter += (float)gt.ElapsedGameTime.TotalSeconds;
             if (counter >= everyXsecond)
             {
                 counter -= everyXsecond;
-                return value - 1;
+                return value + add;
             }
             return value;
         }

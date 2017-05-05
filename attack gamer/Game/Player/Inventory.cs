@@ -98,11 +98,11 @@ namespace attack_gamer
             Texture.SetData(colorData);
 
             actionbar = new Sprite(Texture) { Size = new Vector2(64 * 10, 64 * 1) };
-            actionbar.Position = new Vector2((Globals.ScreenX / 2) - (actionbar.Size.X / 2), Globals.ScreenY - actionbar.Size.Y);
+            actionbar.Position = new Vector2((Globals.ScreenWidth / 2) - (actionbar.Size.X / 2), Globals.ScreenHeight - actionbar.Size.Y);
             bagSprite = new Sprite(Texture)
             {
                 Size = new Vector2(64 * columns, 64 * rows),
-                Position = new Vector2((Globals.ScreenX / 2) - ((columns * 64) / 2), Globals.ScreenY - (actionbar.Size.Y * 3) - 8)
+                Position = new Vector2((Globals.ScreenWidth / 2) - ((columns * 64) / 2), Globals.ScreenHeight - (actionbar.Size.Y * 3) - 8)
             };
         }
         public void AddItem(Item item)

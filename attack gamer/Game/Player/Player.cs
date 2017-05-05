@@ -9,6 +9,8 @@ namespace attack_gamer
     public class Player : LivingObject
     {
         public Inventory inventory;
+        Camera cam;
+        GraphicsDevice gd;
 
         #region swinger
         //public Vector2 attackPos;
@@ -18,7 +20,7 @@ namespace attack_gamer
         //public Vector2 attackDirection;
         //public Vector2 attackOrigin;
         //public float attackRotation = 0;
-        SheetAnimation Swing;
+        public SheetAnimation Swing;
         //public Vector2 swingPos;
         public Rectangle swingBox => new Rectangle((int)(Position.X + (Size.X / 2)), (int)(Position.Y + (Size.Y / 2)), (int)Swing.Size.X + 16, (int)Swing.Size.Y);
         //public Rectangle swingBox;
@@ -34,8 +36,10 @@ namespace attack_gamer
         public Rectangle LootRadius => new Rectangle((int)(Position.X + (Size.X / 2) - (LootRadiusSize / 2)), (int)(Position.Y + (Size.Y / 2) - (LootRadiusSize / 2)), LootRadiusSize, LootRadiusSize);
 
 
-        public Player(GridSheet shet, GridSheet swing, GraphicsDevice gd) : base(gd)
+        public Player(GridSheet shet, GridSheet swing, GraphicsDevice grap, Camera camer) : base(grap)
         {
+            gd = grap;
+            cam = camer;
             GSheet = shet;
             KnockbackPower = 4f;
 
@@ -139,7 +143,7 @@ namespace attack_gamer
 
                 #region triangle
                 // triangle above player
-                if (Helper.IsPointInTri(Input.mPos, new Vector2(0), new Vector2(Globals.ScreenX, 0), Position))
+                if (Helper.IsPointInTri(Input.mWorldPos(cam, gd), Globals.ScreenTopLeft, Globals.ScreenTopRight, CenterBox))
                 {
                     CurrentRow = 1;
                     attackBox = new Rectangle((int)Position.X - 32 - 8, (int)Position.Y - (int)Size.Y - 8, (int)Swing.Size.Y + 16, (int)Swing.Size.X + 16);
@@ -147,7 +151,7 @@ namespace attack_gamer
                 }
 
                 // triangle under player
-                if (Helper.IsPointInTri(Input.mPos, new Vector2(0, Globals.ScreenY), Globals.ScreenXY, Position))
+                if (Helper.IsPointInTri(Input.mWorldPos(cam, gd), Globals.ScreenBotLeft, Globals.ScreenBotRight, CenterBox))
                 {
                     CurrentRow = 0;
                     attackBox = new Rectangle((int)Position.X - 32 - 8, (int)Position.Y + 32 - 8, (int)Swing.Size.Y + 16, (int)Swing.Size.X + 16);
@@ -155,7 +159,7 @@ namespace attack_gamer
                 }
 
                 // triangle left player
-                if (Helper.IsPointInTri(Input.mPos, new Vector2(0), new Vector2(0, Globals.ScreenY), Position))
+                if (Helper.IsPointInTri(Input.mWorldPos(cam, gd), Globals.ScreenTopLeft, Globals.ScreenBotLeft, CenterBox))
                 {
                     CurrentRow = 3;
                     attackBox = new Rectangle((int)Position.X - 32 - 17 + 8, (int)Position.Y - 32 - 8, (int)Swing.Size.X + 16, (int)Swing.Size.Y + 16);
@@ -163,7 +167,7 @@ namespace attack_gamer
                 }
 
                 // triangle right player
-                if (Helper.IsPointInTri(Input.mPos, new Vector2(Globals.ScreenX, 0), new Vector2(Globals.ScreenX, Globals.ScreenY), Position))
+                if (Helper.IsPointInTri(Input.mWorldPos(cam, gd), Globals.ScreenTopRight, Globals.ScreenBotRight, CenterBox))
                 {
                     CurrentRow = 2;
                     attackBox = new Rectangle((int)Position.X + 32 - 8, (int)Position.Y - 32 - 8, (int)Swing.Size.X + 16, (int)Swing.Size.Y + 16);
@@ -219,11 +223,10 @@ namespace attack_gamer
             //sb.Draw(ScreenManager.box, attackBox, Swing.GetSource(Swing.CurrentAnimation, gameTime), new Color(Color.Green, 0.2f));
             //sb.Draw(ScreenManager.box, LootRadius, new Color(Color.Green, 0.2f));
 
+        }
+        public void DrawInventory(SpriteBatch sb)
+        {
             inventory.Draw(sb, this);
-
-            sb.DrawString(ScreenManager.DebugFont, "" + swingBox, new Vector2(0, 60), Color.White);
-            sb.DrawString(ScreenManager.DebugFont, "" + Swing.Origin, new Vector2(0, 80), Color.White);
-            sb.DrawString(ScreenManager.DebugFont, "" + Swing.Rotation, new Vector2(0, 100), Color.White);
         }
     }
 }

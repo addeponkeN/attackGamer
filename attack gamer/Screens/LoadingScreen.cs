@@ -60,7 +60,7 @@ namespace attack_gamer
 
                 const string message = "Loading...";
                 Vector2 textSize = font.MeasureString(message);
-                Vector2 textPosition = (Globals.ScreenXY - textSize) / 2;
+                Vector2 textPosition = (Globals.ScreenSize - textSize) / 2;
 
                 spriteBatch.Begin();
                 spriteBatch.DrawString(font, message, new Vector2(textPosition.X + 1, textPosition.Y + 1), new Color(35, 35, 35, TransitionAlpha));
