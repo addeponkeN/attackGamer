@@ -159,7 +159,7 @@ namespace attack_gamer
             loManager.Draw(sb, gameTime);
             player.Draw(sb, gameTime);
 
-            sb.Draw(ScreenManager.box, Input.mWorldPos(cam, ScreenManager.GraphicsDevice)-new Vector2(16), Color.MonoGameOrange);
+            sb.Draw(ScreenManager.box, new Rectangle(Helper.ToPoint(Input.mWorldPos(cam, ScreenManager.GraphicsDevice)-new Vector2(2)), new Point(4)), Color.MonoGameOrange);
 
             sb.End();
             #endregion
