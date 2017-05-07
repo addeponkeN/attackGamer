@@ -46,24 +46,31 @@ namespace attack_gamer
 
         DynamicBar HealthBar;
 
-        DynamicText textDamage;
+        Extras extras;
+
         List<DynamicText> textList = new List<DynamicText>();
 
         #region what to draw
         public bool IsDrawHealthBar = true;
 
+        public LivingObject Nemesis;
+        public int NemesisTimer;
+
         #endregion
         public LivingObject(GraphicsDevice gd)
         {
             HealthBar = new DynamicBar(gd, Position, (int)Size.X);
+            extras = new Extras();
             //AddAnimation(new int[] { 0, 1, 2, 3 }, 0, "walkdown");
             //AddAnimation(new int[] { 0, 1, 2, 3 }, 1, "walkup");
             //AddAnimation(new int[] { 0, 1, 2, 3 }, 2, "walkright");
             //AddAnimation(new int[] { 0, 1, 2, 3 }, 3, "walkleft");
         }
-        public bool IsAlive => IsDyingTimer > 0;
-        public bool IsDying => Health <= 0;
-        public double IsDyingTimer = 10;
+        public bool IsPlayer = false;
+        public bool IsAlive => IsDeadTimer > 0;
+        public bool IsDead => Health <= 0;
+        public bool IsTriggeredDeath { get; set; }
+        public double IsDeadTimer = 10;
 
         public double Health { get; set; }
         public double MaxHealth { get; set; }
@@ -74,7 +81,7 @@ namespace attack_gamer
         public double MaxMana { get; set; }
         public void SetMana(double mana) { Mana = mana; MaxMana = mana; }
         public double PercentMana => (Mana / MaxMana) * 100;
-        
+
         public double Level { get; set; }
         public double Exp { get; set; }
         public double MaxExp { get; set; }
@@ -111,6 +118,8 @@ namespace attack_gamer
 
         public void GetHitBy(LivingObject damageSource)
         {
+            Nemesis = damageSource;
+            //NemesisTimer = 20;
             ModifyResourceValue("hp", -damageSource.Damage);
             Push(damageSource.Position - Position, damageSource.KnockbackPower);
             IsHit = true;
@@ -140,28 +149,26 @@ namespace attack_gamer
             {
                 case "hp":
                     Health = Health + modify;
-                    Console.WriteLine(Health + "  v:" + modify);
                     if (modify > 0) { color = Color.ForestGreen; msg = "+"; } else color = Color.DarkRed;
-                    textList.Add(new DynamicText(ScreenManager.DebugFont, CenterBox, Size, new Vector2(0, -1), 10f, color, msg + modify.ToString()) { TextShader = true });
+                    textList.Add(new DynamicText(ScreenManager.DebugFont, Position, Size, new Vector2(0, -1), 10f, color, msg + modify.ToString()) { TextShader = true });
                     break;
                 case "mana":
                     Mana += modify;
                     if (modify > 0) { color = Color.BlueViolet; msg = "+"; } else color = Color.LightPink;
                     if (modify > 0)
-                        textList.Add(new DynamicText(ScreenManager.DebugFont, CenterBox, Size, new Vector2(0, -1), 10f, color, msg + modify.ToString()) { TextShader = true });
+                        textList.Add(new DynamicText(ScreenManager.DebugFont, Position, Size, new Vector2(0, -1), 10f, color, msg + modify.ToString()) { TextShader = true });
                     break;
                 case "xp":
                     Exp += modify;
                     if (modify > 0) { color = Color.LightGoldenrodYellow; msg = "+"; } else color = Color.GreenYellow;
-                    if(modify > 0)
-                    textList.Add(new DynamicText(ScreenManager.DebugFont, CenterBox, Size, new Vector2(0, -1), 10f, color, msg + modify.ToString()) { TextShader = true });
+                    if (modify > 0)
+                        textList.Add(new DynamicText(ScreenManager.DebugFont, Position, Size, new Vector2(0, -1), 10f, color, msg + modify.ToString()) { TextShader = true });
                     break;
                 default:
                     break;
             }
             Health = Helper.Clamp(Health, 0, MaxHealth);
             Mana = Helper.Clamp(Mana, 0, MaxMana);
-            Console.WriteLine(Health + "  v:" + modify + "   2");
             if (Exp >= MaxExp)
                 LevelUp();
         }
@@ -170,14 +177,29 @@ namespace attack_gamer
         /// </summary>
         public void LevelUp()
         {
-            var floodExp = MaxExp - Exp;
+            Level++;
+            var floodExp = Exp - MaxExp;
             Exp = floodExp;
-            MaxExp = MaxExp * 1.1;
-            MaxHealth += MaxHealth * 1.1;
+            MaxExp = (int)((MaxExp * 1.1) + (5 * Level));
+            MaxHealth = (int)(MaxHealth * 1.1);
             Health = MaxHealth;
-            MaxMana += MaxMana * 1.1;
+            MaxMana = (int)(MaxMana * 1.1);
             Mana = MaxMana;
             textList.Add(new DynamicText(ScreenManager.DebugFont, CenterBox, Size, new Vector2(0, -1), 10f, Color.LightYellow, "level up!!") { TextShader = true });
+        }
+        public void OnDeath(PlayingScreen p)
+        {
+            if(IsPlayer)
+            {
+                //addScreen.DeathScreen();
+                IsTriggeredDeath = true;
+                return;
+            }
+
+            Nemesis.ModifyResourceValue("xp", MaxExp);
+            p.ScreenManager.GetScreen<PlayingScreen>().items.Add(new Usable(UsableType.HealthPot, PlayingScreen.itemSheet) { Position = new Vector2(Position.X + Rng.Noxt(-10, 10), Position.Y + Rng.Noxt(-10, 10)) });
+            Console.WriteLine("died");
+            IsTriggeredDeath = true;
         }
         /// <summary>
         /// unit attacked
@@ -191,15 +213,15 @@ namespace attack_gamer
         {
             if (IsHit)
                 return Color.Red;
-            else if (IsDying)
+            else if (IsDead)
             {
-                int alpha = (int)(IsDyingTimer * 255);
+                int alpha = (int)(IsDeadTimer * 255);
                 return new Color(Color.Red, alpha);
             }
             else
                 return BaseColor;
         }
-        public virtual void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime, PlayingScreen p)
         {
             Delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (BeingPushed)
@@ -209,6 +231,10 @@ namespace attack_gamer
             AttackCooldown -= Delta;
 
             HealthBar.Update(Health, MaxHealth, (int)Size.X, Position);
+
+            //if (NemesisTimer > 0)
+            //    NemesisTimer = (int)extras.AddEverySecond(gameTime, NemesisTimer, -1, 1f);
+            //else Nemesis = null;
 
             if (IsHit)
             {
@@ -233,11 +259,13 @@ namespace attack_gamer
                     VelocityForce -= 0.2f;
                 else BeingPushed = false;
             }
-            if (IsDying)
+            if (IsDead)
             {
+                if (!IsTriggeredDeath)
+                    OnDeath(p);
                 Speed = 0;
-                IsDyingTimer -= Delta;
-                if (IsDyingTimer < 0)
+                IsDeadTimer -= Delta;
+                if (IsDeadTimer < 0)
                     Exist = false;
             }
             foreach (var t in textList)

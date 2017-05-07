@@ -38,6 +38,7 @@ namespace attack_gamer
 
         public Player(GridSheet shet, GridSheet swing, GraphicsDevice grap, Camera camer) : base(grap)
         {
+            IsPlayer = true;
             gd = grap;
             cam = camer;
             GSheet = shet;
@@ -72,9 +73,9 @@ namespace attack_gamer
             inventory = new Inventory(gd);
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, PlayingScreen p)
         {
-            base.Update(gameTime);
+            base.Update(gameTime, p);
 
             //attackDirection = Input.mPos - new Vector2(attackBox.X, attackBox.Y);
             //attackRotation = (float)Math.Atan2(attackDirection.Y, attackDirection.X);

@@ -15,10 +15,11 @@ namespace attack_gamer
     {
 
         public float isHitVelocity = 1f;
-
-        public Enemy(GridSheet sheet, GraphicsDevice gd) : base(gd)
+        Player playerRef;
+        public Enemy(GridSheet sheet, GraphicsDevice gd, Player player) : base(gd)
         {
             GSheet = sheet;
+            playerRef = player;
 
             AddAnimation(new int[] { 0, 1, 0, 2 }, 0, "walkdown");
             AddAnimation(new int[] { 0, 1, 0, 2 }, 1, "walkup");
@@ -30,28 +31,29 @@ namespace attack_gamer
 
             SetHealth(10);
             SetDamage(1, 3);
-            SetExp(10);
+            SetExp((int)Rng.NoxtDouble(Health * 0.8, Health * 1.2));
+            Console.WriteLine(MaxExp);
             KnockbackPower = 2f;
         }
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, PlayingScreen p)
         {
-            base.Update(gameTime);
+            base.Update(gameTime, p);
         }
-        public void UpdateMovement(GameTime gameTime, Player player)
+        public void UpdateMovement(GameTime gameTime)
         {
-            var dir = player.Position - Position;
+            var dir = playerRef.Position - Position;
             dir.Normalize();
             Direction = dir;
 
-            if (!IsDying)
+            if (!IsDead)
             {
-                if (Rectangle.Intersects(player.attackBox) && player.IsAttacking && !IsHit)
+                if (Rectangle.Intersects(playerRef.attackBox) && playerRef.IsAttacking && !IsHit)
                 {
-                    GetHitBy(player);
+                    GetHitBy(playerRef);
                 }
-                if (player.Rectangle.Intersects(Rectangle) && !Attacked)
+                if (playerRef.Rectangle.Intersects(Rectangle) && !Attacked)
                 {
-                    player.GetHitBy(this);
+                    playerRef.GetHitBy(this);
                 }
             }
         }

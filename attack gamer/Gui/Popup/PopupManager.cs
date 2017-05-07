@@ -14,7 +14,6 @@ namespace attack_gamer
         List<Popup> list = new List<Popup>();
         public void AddPopup(Popup p)
         {
-            Console.WriteLine(p.Position);
             list.Add(p);
             if (list.Count >= 1)
                 for (int i = 0; i < list.Count - 1; i++)
@@ -29,7 +28,6 @@ namespace attack_gamer
                     list[i].Newest = true;
                 else list[i].Newest = false;
                 list[i].Update(gt);
-                //list[i].Position = new Vector2(list[i].Position.X, list[i].Position.Y - (list[i].Size.Y * i));
             }
             if (list.Count > 0)
             {

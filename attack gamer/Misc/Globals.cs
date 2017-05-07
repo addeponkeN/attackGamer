@@ -34,10 +34,10 @@ namespace attack_gamer
     }
 
 
-    public static class Extras
+    public class Extras
     {
         private static float counter;
-        public static double AddEverySecond(GameTime gt, double value, double add, float everyXsecond)
+        public double AddEverySecond(GameTime gt, double value, double add, float everyXsecond)
         {
             counter += (float)gt.ElapsedGameTime.TotalSeconds;
             if (counter >= everyXsecond)

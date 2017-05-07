@@ -113,6 +113,5 @@ namespace attack_gamer
         }
 
         public T GetItem<T>() where T : Item => this as T;
-
     }
 }

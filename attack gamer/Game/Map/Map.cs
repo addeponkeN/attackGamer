@@ -18,6 +18,7 @@ namespace attack_gamer
     {
 
         public Tile[,] tileMap;
+        public Item[,] items;
 
         public int Width;
         public int Height;
@@ -26,15 +27,24 @@ namespace attack_gamer
         {
 
         }
-        public void SetTile()
-        {
-
-        }
-        public void LoadMap(LoadType type, int width, int height)
+        public void SetWorldSize(int width, int height)
         {
             Width = width;
             Height = height;
             tileMap = new Tile[Width, Height];
+            items = new Item[Width, Height];
+        }
+        public void SetTile(TileType type)
+        {
+            int x = (int)Helper.FixPos(Input.mPos, 32).X / 32;
+            int y = (int)Helper.FixPos(Input.mPos, 32).Y / 32;
+
+            tileMap[x, y] = new Tile(type, tileMap[x, y].GSheet);
+        }
+
+        public void LoadMap(LoadType type, int width, int height)
+        {
+            SetWorldSize(width, height);
             switch (type)
             {
                 case LoadType.FromFile:
@@ -51,14 +61,21 @@ namespace attack_gamer
                     break;
             }
         }
-
         public void Draw(SpriteBatch sb, GameTime gt)
         {
             for (int y = 0; y < Height; y++)
             {
                 for (int x = 0; x < Width; x++)
                 {
+                    #region TILES
                     tileMap[x, y].Draw(sb, gt);
+
+                    #endregion
+
+                    #region ITEMS
+                    items[x, y].Draw(sb);
+
+                    #endregion
                 }
             }
         }

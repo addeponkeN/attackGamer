@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace attack_gamer
 {
-    class PlayingScreen : GameScreen
+    public class PlayingScreen : GameScreen
     {
         ContentManager content;
         Camera cam;
@@ -21,7 +21,7 @@ namespace attack_gamer
 
         public static GridSheet playerSheet, swingSheet, skeleSheet, goblinSheet, itemSheet, tileSheet;
         LivingObjectManager loManager;
-        List<Item> items = new List<Item>();
+        public List<Item> items = new List<Item>();
 
         float delay;
         bool spawnEnemy;
@@ -51,14 +51,9 @@ namespace attack_gamer
             loManager = new LivingObjectManager();
             popManager = new PopupManager();
             //loManager.AddEnemy(new Enemy(goblinSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(400) });
-
-
-
+            
             items.Add(new Usable(UsableType.HealthPot, itemSheet) { Vacuumable = true, Position = new Vector2(450) });
             items.Add(new Usable(UsableType.ManaPot, itemSheet) { Vacuumable = true, Position = new Vector2(200) });
-
-
-
 
             cam.Position = player.CenterBox;
         }
@@ -71,18 +66,14 @@ namespace attack_gamer
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
-            player.Update(gameTime);
-            loManager.Update(gameTime, player);
+            player.Update(gameTime, this);
+            loManager.Update(gameTime, this);
             popManager.Update(gameTime);
             cam.Position = player.CenterBox;
             Globals.ScreenPosition = new Vector2(cam.Position.X - (Globals.ScreenWidth / 2), cam.Position.Y - (Globals.ScreenHeight / 2));
 
             if (!player.Exist)
                 ExitScreen();
-            for (int i = 0; i < 5000000; i++)
-            {
-
-            }
             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (Input.s > Input.sO)
@@ -110,7 +101,7 @@ namespace attack_gamer
                 delay += delta;
                 if (delay > 3)
                 {
-                    loManager.AddEnemy(new Enemy(goblinSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(Rng.Noxt(Globals.ScreenWidth), Rng.Noxt(Globals.ScreenHeight)) });
+                    loManager.AddEnemy(new Enemy(goblinSheet, ScreenManager.GraphicsDevice, player) { Position = new Vector2(Rng.Noxt(Globals.ScreenWidth), Rng.Noxt(Globals.ScreenHeight)) });
 
                     delay -= 1;
                 }
@@ -123,7 +114,6 @@ namespace attack_gamer
             if (Input.KeyHold(Keys.NumPad2))
             {
                 items.Add(new Usable(UsableType.ManaPot, itemSheet) { Vacuumable = true, Position = new Vector2(Rng.Noxt(Globals.ScreenWidth), Rng.Noxt(Globals.ScreenHeight)) });
-
             }
             items.RemoveAll(i => !i.Exist);
             foreach (var i in items)
@@ -177,13 +167,13 @@ namespace attack_gamer
 
             popManager.Draw(sb);
             player.DrawInventory(sb);
-            Extras.DrawDebug(sb, $"hp:{player.Health}/{player.MaxHealth}  mana:{player.Mana}/{player.MaxMana}  xp:{player.Exp}/{player.MaxExp}  lv:{player.Level}", 4);
-            Extras.DrawDebug(sb, $"mPos:{Input.mWorldPos(cam, ScreenManager.GraphicsDevice)} | tilePos:{Helper.FixPos(Input.mWorldPos(cam, ScreenManager.GraphicsDevice), 32)} | tile:{Helper.FixPos(Input.mWorldPos(cam, ScreenManager.GraphicsDevice), 32) / 32}", 10);
-            Extras.DrawDebug(sb, $"spawn enemy: {spawnEnemy}  (enter)", 11);
-            Extras.DrawDebug(sb, $"tl:{Globals.ScreenTopLeft} tr:{Globals.ScreenTopRight} bl:{Globals.ScreenBotLeft} br:{Globals.ScreenBotRight}", 20);
+            Extras.DrawDebug(sb, "playing", 0);
 
-            sb.DrawString(ScreenManager.DebugFont, "playing", Vector2.One, Color.Black);
-            sb.DrawString(ScreenManager.DebugFont, "playing", Vector2.Zero, Color.White);
+            Extras.DrawDebug(sb, $"hp:{player.Health}/{player.MaxHealth}  mana:{player.Mana}/{player.MaxMana}  xp:{player.Exp}/{player.MaxExp}  lv:{player.Level}", 3);
+            Extras.DrawDebug(sb, $"mPos:{new Vector2((int)Input.mWorldPos(cam, ScreenManager.GraphicsDevice).X, (int)Input.mWorldPos(cam, ScreenManager.GraphicsDevice).Y) } | tilePos:{Helper.FixPos(Input.mWorldPos(cam, ScreenManager.GraphicsDevice), 32)} | tile:{Helper.FixPos(Input.mWorldPos(cam, ScreenManager.GraphicsDevice), 32) / 32}", 5);
+            Extras.DrawDebug(sb, $"spawn enemy: {spawnEnemy}  (enter)", 6);
+
+
             sb.End();
             #endregion
 

@@ -24,12 +24,12 @@ namespace attack_gamer
         {
             enemies.Add(e);
         }
-        public void Update(GameTime gameTime, Player player)
+        public void Update(GameTime gameTime, PlayingScreen p)
         {
             foreach (var item in enemies)
             {
-                item.Update(gameTime);
-                item.UpdateMovement(gameTime, player);
+                item.Update(gameTime, p);
+                item.UpdateMovement(gameTime);
             }
 
             enemies.RemoveAll(e => !e.IsAlive);
