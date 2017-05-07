@@ -31,7 +31,7 @@ namespace attack_gamer
 
             SetHealth(10);
             SetDamage(1, 3);
-            SetExp((int)Rng.NoxtDouble(Health * 0.8, Health * 1.2));
+            SetExp((int)Rng.NoxtDouble((Health/2) * 0.8, (Health/2) * 1.2));
             Console.WriteLine(MaxExp);
             KnockbackPower = 2f;
         }

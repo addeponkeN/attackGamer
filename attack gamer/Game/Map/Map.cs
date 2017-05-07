@@ -73,7 +73,7 @@ namespace attack_gamer
                     #endregion
 
                     #region ITEMS
-                    items[x, y].Draw(sb);
+                    //items[x, y].Draw(sb);
 
                     #endregion
                 }

@@ -47,11 +47,11 @@ namespace attack_gamer
             map = new Map();
             map.LoadMap(LoadType.Fill, 100, 100);
 
-            player = new Player(playerSheet, swingSheet, ScreenManager.GraphicsDevice, cam) { Position = new Vector2(350) };
+            player = new Player(playerSheet, swingSheet, ScreenManager.GraphicsDevice, cam) { Position = new Vector2((map.Width * 32) / 2, (map.Height * 32) / 2) };
             loManager = new LivingObjectManager();
             popManager = new PopupManager();
             //loManager.AddEnemy(new Enemy(goblinSheet, ScreenManager.GraphicsDevice) { Position = new Vector2(400) });
-            
+
             items.Add(new Usable(UsableType.HealthPot, itemSheet) { Vacuumable = true, Position = new Vector2(450) });
             items.Add(new Usable(UsableType.ManaPot, itemSheet) { Vacuumable = true, Position = new Vector2(200) });
 
@@ -90,6 +90,8 @@ namespace attack_gamer
                 cam.Reset();
             Input.sO = Input.s;
 
+            if (Input.KeyClick(Keys.Space))
+                items.Clear();
 
             if (Input.KeyClick(Keys.Enter))
                 if (spawnEnemy)
@@ -101,7 +103,7 @@ namespace attack_gamer
                 delay += delta;
                 if (delay > 3)
                 {
-                    loManager.AddEnemy(new Enemy(goblinSheet, ScreenManager.GraphicsDevice, player) { Position = new Vector2(Rng.Noxt(Globals.ScreenWidth), Rng.Noxt(Globals.ScreenHeight)) });
+                    loManager.AddEnemy(new Enemy(goblinSheet, ScreenManager.GraphicsDevice, player) { Position = new Vector2(player.Position.X + Rng.Noxt(-Globals.ScreenWidth / 2, Globals.ScreenWidth / 2), player.Position.Y + Rng.Noxt(-Globals.ScreenHeight / 2, Globals.ScreenHeight / 2)) });
 
                     delay -= 1;
                 }
@@ -109,11 +111,11 @@ namespace attack_gamer
 
             if (Input.KeyHold(Keys.NumPad1))
             {
-                items.Add(new Usable(UsableType.HealthPot, itemSheet) { Vacuumable = true, Position = new Vector2(Rng.Noxt(Globals.ScreenWidth), Rng.Noxt(Globals.ScreenHeight)) });
+                items.Add(new Usable(UsableType.HealthPot, itemSheet) { Vacuumable = true, Position = new Vector2(player.Position.X + Rng.Noxt(-Globals.ScreenWidth / 2, Globals.ScreenWidth / 2), player.Position.Y + Rng.Noxt(-Globals.ScreenHeight / 2, Globals.ScreenHeight / 2)) });
             }
             if (Input.KeyHold(Keys.NumPad2))
             {
-                items.Add(new Usable(UsableType.ManaPot, itemSheet) { Vacuumable = true, Position = new Vector2(Rng.Noxt(Globals.ScreenWidth), Rng.Noxt(Globals.ScreenHeight)) });
+                items.Add(new Usable(UsableType.ManaPot, itemSheet) { Vacuumable = true, Position = new Vector2(player.Position.X + Rng.Noxt(-Globals.ScreenWidth / 2, Globals.ScreenWidth / 2), player.Position.Y + Rng.Noxt(-Globals.ScreenHeight / 2, Globals.ScreenHeight / 2)) });
             }
             items.RemoveAll(i => !i.Exist);
             foreach (var i in items)

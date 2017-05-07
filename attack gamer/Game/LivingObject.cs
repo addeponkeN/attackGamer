@@ -162,9 +162,10 @@ namespace attack_gamer
                     Exp += modify;
                     if (modify > 0) { color = Color.LightGoldenrodYellow; msg = "+"; } else color = Color.GreenYellow;
                     if (modify > 0)
-                        textList.Add(new DynamicText(ScreenManager.DebugFont, Position, Size, new Vector2(0, -1), 10f, color, msg + modify.ToString()) { TextShader = true });
+                        textList.Add(new DynamicText(ScreenManager.DebugFont, Position, Size, new Vector2(0, -1), 10f, color, msg + modify.ToString() + "xp") { TextShader = true });
                     break;
                 default:
+                    textList.Add(new DynamicText(ScreenManager.DebugFont, Position, Size, new Vector2(0, -1), 10f, Color.White, "INVALID RESOURCE") { TextShader = true });
                     break;
             }
             Health = Helper.Clamp(Health, 0, MaxHealth);
@@ -189,16 +190,16 @@ namespace attack_gamer
         }
         public void OnDeath(PlayingScreen p)
         {
-            if(IsPlayer)
+            if (IsPlayer)
             {
                 //addScreen.DeathScreen();
                 IsTriggeredDeath = true;
                 return;
             }
-
             Nemesis.ModifyResourceValue("xp", MaxExp);
-            p.ScreenManager.GetScreen<PlayingScreen>().items.Add(new Usable(UsableType.HealthPot, PlayingScreen.itemSheet) { Position = new Vector2(Position.X + Rng.Noxt(-10, 10), Position.Y + Rng.Noxt(-10, 10)) });
-            Console.WriteLine("died");
+            var rnd = Rng.Noxt(10);
+            if (rnd == 5)
+                p.ScreenManager.GetScreen<PlayingScreen>().items.Add(new Usable(UsableType.HealthPot, PlayingScreen.itemSheet) { Position = new Vector2(Position.X + Rng.Noxt(-10, 10), Position.Y + Rng.Noxt(-10, 10)) });
             IsTriggeredDeath = true;
         }
         /// <summary>
