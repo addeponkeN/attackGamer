@@ -50,7 +50,8 @@ namespace attack_gamer
                         return;
                     }
                     Console.WriteLine("hp restored");
-                    o.Health += i.Value;
+                    o.ModifyResourceValue("hp",i.Value);
+                    Console.WriteLine(i.Value);
                     break;
                 case UsableType.ManaPot:
                     o.Mana += i.Value;

@@ -30,6 +30,7 @@ namespace attack_gamer
 
             SetHealth(10);
             SetDamage(1, 3);
+            SetExp(10);
             KnockbackPower = 2f;
         }
         public override void Update(GameTime gameTime)

@@ -68,12 +68,18 @@ namespace attack_gamer
         public double Health { get; set; }
         public double MaxHealth { get; set; }
         public void SetHealth(double health) { Health = health; MaxHealth = health; }
-        public double PercentHealth { get; set; }
+        public double PercentHealth => (Health / MaxHealth) * 100;
 
         public double Mana { get; set; }
         public double MaxMana { get; set; }
         public void SetMana(double mana) { Mana = mana; MaxMana = mana; }
-        public double PercentMana { get; set; }
+        public double PercentMana => (Mana / MaxMana) * 100;
+        
+        public double Level { get; set; }
+        public double Exp { get; set; }
+        public double MaxExp { get; set; }
+        public void SetExp(double exp) { Exp = 0; MaxExp = exp; }
+        public double PercentExp => (Exp / MaxExp) * 100;
 
         public double MinDamage { get; set; }
         public double MaxDamage { get; set; }
@@ -94,22 +100,26 @@ namespace attack_gamer
         public double AttackCooldown { get; set; }
         public double AttackCooldownCounter { get; set; }
 
-        public void HitOtherObject(LivingObject target)
-        {
-            target.Health -= Damage;
-            target.Push(Position - target.Position, KnockbackPower);
-            target.IsHit = true;
+        //public void HitOtherObject(LivingObject target)
+        //{
+        //    target.Health -= Damage;
+        //    target.Push(Position - target.Position, KnockbackPower);
+        //    target.IsHit = true;
 
-            DidAttack();
-        }
+        //    DidAttack();
+        //}
+
         public void GetHitBy(LivingObject damageSource)
         {
-            Health -= damageSource.Damage;
+            ModifyResourceValue("hp", -damageSource.Damage);
             Push(damageSource.Position - Position, damageSource.KnockbackPower);
             IsHit = true;
-            textList.Add(new DynamicText(ScreenManager.DebugFont, Position, Size, new Vector2(0, -1), 10f, Color.MonoGameOrange, damageSource.Damage.ToString()) { TextShader = false });
+            //textList.Add(new DynamicText(ScreenManager.DebugFont, Position, Size, new Vector2(0, -1), 10f, Color.DarkRed, "-" + damageSource.Damage.ToString()) { TextShader = true });
             damageSource.DidAttack();
         }
+        /// <summary>
+        /// push unit to direction with force
+        /// </summary>
         public void Push(Vector2 dir, float force)
         {
             BeingPushed = true;
@@ -117,6 +127,61 @@ namespace attack_gamer
             PushDirection = dir;
             VelocityForce = force;
         }
+        /// <summary>
+        /// modify a unit resource
+        /// </summary>
+        /// <param name="resource">hp, mana, exp</param>
+        public void ModifyResourceValue(string resource, double value)
+        {
+            Color color;
+            string msg = "";
+            double modify = value;
+            switch (resource)
+            {
+                case "hp":
+                    Health = Health + modify;
+                    Console.WriteLine(Health + "  v:" + modify);
+                    if (modify > 0) { color = Color.ForestGreen; msg = "+"; } else color = Color.DarkRed;
+                    textList.Add(new DynamicText(ScreenManager.DebugFont, CenterBox, Size, new Vector2(0, -1), 10f, color, msg + modify.ToString()) { TextShader = true });
+                    break;
+                case "mana":
+                    Mana += modify;
+                    if (modify > 0) { color = Color.BlueViolet; msg = "+"; } else color = Color.LightPink;
+                    if (modify > 0)
+                        textList.Add(new DynamicText(ScreenManager.DebugFont, CenterBox, Size, new Vector2(0, -1), 10f, color, msg + modify.ToString()) { TextShader = true });
+                    break;
+                case "xp":
+                    Exp += modify;
+                    if (modify > 0) { color = Color.LightGoldenrodYellow; msg = "+"; } else color = Color.GreenYellow;
+                    if(modify > 0)
+                    textList.Add(new DynamicText(ScreenManager.DebugFont, CenterBox, Size, new Vector2(0, -1), 10f, color, msg + modify.ToString()) { TextShader = true });
+                    break;
+                default:
+                    break;
+            }
+            Health = Helper.Clamp(Health, 0, MaxHealth);
+            Mana = Helper.Clamp(Mana, 0, MaxMana);
+            Console.WriteLine(Health + "  v:" + modify + "   2");
+            if (Exp >= MaxExp)
+                LevelUp();
+        }
+        /// <summary>
+        /// unit leveled up (exp>max exp)
+        /// </summary>
+        public void LevelUp()
+        {
+            var floodExp = MaxExp - Exp;
+            Exp = floodExp;
+            MaxExp = MaxExp * 1.1;
+            MaxHealth += MaxHealth * 1.1;
+            Health = MaxHealth;
+            MaxMana += MaxMana * 1.1;
+            Mana = MaxMana;
+            textList.Add(new DynamicText(ScreenManager.DebugFont, CenterBox, Size, new Vector2(0, -1), 10f, Color.LightYellow, "level up!!") { TextShader = true });
+        }
+        /// <summary>
+        /// unit attacked
+        /// </summary>
         public void DidAttack()
         {
             Attacked = true;
@@ -143,7 +208,6 @@ namespace attack_gamer
                 Position += Delta * Speed * Direction;
             AttackCooldown -= Delta;
 
-            Health = Helper.Clamp(Health, 0, MaxHealth);
             HealthBar.Update(Health, MaxHealth, (int)Size.X, Position);
 
             if (IsHit)
@@ -182,6 +246,7 @@ namespace attack_gamer
             }
         }
 
+        #region animation soon fix
         public void AddAnimation(int[] column, int row, string name)
         {
             var frames = column.Length;
@@ -218,6 +283,8 @@ namespace attack_gamer
         {
             return GSheet[column, row];
         }
+        #endregion
+
         public virtual void Draw(SpriteBatch sb, GameTime gt)
         {
             if (CurrentAnimation == null)
@@ -228,14 +295,14 @@ namespace attack_gamer
             if (IsDrawHealthBar)
                 HealthBar.Draw(sb);
 
+            var i = (int)(gt.TotalGameTime.TotalSeconds * CurrentAnimation.Length / AnimationDuration % CurrentAnimation.Length);
+            CurrentAnimationFrame = CurrentAnimation[i];
+            sb.Draw(Texture, Rectangle, CurrentAnimationFrame, _Color(), 0, Vector2.Zero, SpriteEffects.None, 0);
+
             foreach (var t in textList)
             {
                 t.Draw(sb);
             }
-
-            var i = (int)(gt.TotalGameTime.TotalSeconds * CurrentAnimation.Length / AnimationDuration % CurrentAnimation.Length);
-            CurrentAnimationFrame = CurrentAnimation[i];
-            sb.Draw(Texture, Rectangle, CurrentAnimationFrame, _Color(), 0, Vector2.Zero, SpriteEffects.None, 0);
         }
     }
 }

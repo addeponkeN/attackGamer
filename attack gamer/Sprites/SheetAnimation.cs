@@ -126,7 +126,7 @@ namespace attack_gamer
                 sb.Draw(Texture, Rectangle, CurrentAnimationFrame, Color, Rotation, Origin, SpriteEffect, 0);
             }
             else
-                sb.Draw(GSheet.Texture, new Rectangle(0, 0, 0, 0), Color);
+                sb.Draw(GSheet.Texture, Rectangle, SetSource(CurrentColumn, CurrentRow), Color);
 
             if (Size.X < 1 || Size.Y < 1)
                 Size = new Vector2(GSheet.SpriteWidth, GSheet.SpriteHeight);

@@ -59,14 +59,16 @@ namespace attack_gamer
             AddAnimation(new int[] { 0, 1, 2, 3 }, 3, "walkleft");
 
             Speed = 150;
-            AnimationDuration = 1;
+            AnimationDuration = 0.60;
 
             attackWidth = 48;
             attackLength = 64;
             //attackOrigin = new Vector2(Size.X / 2, Size.Y);
-
+            
             SetHealth(20);
+            SetMana(10);
             SetDamage(2, 5);
+            SetExp(10);
             inventory = new Inventory(gd);
         }
 
@@ -76,10 +78,8 @@ namespace attack_gamer
 
             //attackDirection = Input.mPos - new Vector2(attackBox.X, attackBox.Y);
             //attackRotation = (float)Math.Atan2(attackDirection.Y, attackDirection.X);
-
             //Swing.Direction = Input.mPos - new Vector2(swingBox.X, swingBox.Y);
             //swingRotation = (float)Math.Atan2(Swing.Direction.Y, Swing.Direction.X);
-
             //swingPos = RotateAround(swingPos, new Vector2(Position.X + (Size.X / 2), (int)Position.Y + (Size.Y / 2)), swingRotation);
             inventory.Update(gameTime, this);
 

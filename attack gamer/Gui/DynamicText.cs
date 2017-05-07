@@ -46,7 +46,7 @@ namespace attack_gamer
         public void Draw(SpriteBatch sb)
         {
             if (TextShader)
-                sb.DrawString(Font, Msg, new Vector2(Position.X + 1, Position.Y + 1), new Color(Color, Alpha));
+                sb.DrawString(Font, Msg, new Vector2(Position.X + 1, Position.Y + 1), new Color(Color.Black, Alpha));
             sb.DrawString(Font, Msg, Position, new Color(Color, Alpha));
         }
     }

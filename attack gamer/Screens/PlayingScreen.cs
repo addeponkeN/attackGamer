@@ -16,9 +16,10 @@ namespace attack_gamer
         ContentManager content;
         Camera cam;
         Player player;
+        Map map;
         public static PopupManager popManager;
 
-        public static GridSheet playerSheet, swingSheet, skeleSheet, goblinSheet, itemSheet;
+        public static GridSheet playerSheet, swingSheet, skeleSheet, goblinSheet, itemSheet, tileSheet;
         LivingObjectManager loManager;
         List<Item> items = new List<Item>();
 
@@ -40,7 +41,11 @@ namespace attack_gamer
             goblinSheet = content.Load<GridSheet>("SpriteSheets/goblinSheet");
             skeleSheet = content.Load<GridSheet>("SpriteSheets/skeleSheet");
             itemSheet = content.Load<GridSheet>("SpriteSheets/itemSheet");
+            tileSheet = content.Load<GridSheet>("SpriteSheets/tileSheet");
+
             cam = new Camera();
+            map = new Map();
+            map.LoadMap(LoadType.Fill, 100, 100);
 
             player = new Player(playerSheet, swingSheet, ScreenManager.GraphicsDevice, cam) { Position = new Vector2(350) };
             loManager = new LivingObjectManager();
@@ -74,10 +79,13 @@ namespace attack_gamer
 
             if (!player.Exist)
                 ExitScreen();
+            for (int i = 0; i < 5000000; i++)
+            {
 
+            }
             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if(Input.s > Input.sO)
+            if (Input.s > Input.sO)
             {
                 cam.Zoom += (float)0.1;
                 Console.WriteLine(cam.Zoom);
@@ -150,16 +158,14 @@ namespace attack_gamer
             sb.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default,
                     RasterizerState.CullNone, null, cam.get_transformation(ScreenManager.GraphicsDevice));
             // draw here ---------------------------------------
-
+            map.Draw(sb, gameTime);
             foreach (var i in items)
-            {
                 i.Draw(sb);
-            }
-
             loManager.Draw(sb, gameTime);
             player.Draw(sb, gameTime);
 
-            sb.Draw(ScreenManager.box, new Rectangle(Helper.ToPoint(Input.mWorldPos(cam, ScreenManager.GraphicsDevice)-new Vector2(2)), new Point(4)), Color.MonoGameOrange);
+
+            sb.Draw(ScreenManager.box, new Rectangle(Helper.ToPoint(Input.mWorldPos(cam, ScreenManager.GraphicsDevice) - new Vector2(2)), new Point(4)), Color.MonoGameOrange);
 
             sb.End();
             #endregion
@@ -169,17 +175,12 @@ namespace attack_gamer
             #region DRAW SCREEN
             sb.Begin();
 
-            player.DrawInventory(sb);
             popManager.Draw(sb);
-
-
-            sb.DrawString(ScreenManager.DebugFont, "" + player.swingBox, new Vector2(0, 60), Color.White);
-            sb.DrawString(ScreenManager.DebugFont, "" + player.Swing.Origin, new Vector2(0, 80), Color.White);
-            sb.DrawString(ScreenManager.DebugFont, "" + player.Swing.Rotation, new Vector2(0, 100), Color.White);
+            player.DrawInventory(sb);
+            Extras.DrawDebug(sb, $"hp:{player.Health}/{player.MaxHealth}  mana:{player.Mana}/{player.MaxMana}  xp:{player.Exp}/{player.MaxExp}  lv:{player.Level}", 4);
             Extras.DrawDebug(sb, $"mPos:{Input.mWorldPos(cam, ScreenManager.GraphicsDevice)} | tilePos:{Helper.FixPos(Input.mWorldPos(cam, ScreenManager.GraphicsDevice), 32)} | tile:{Helper.FixPos(Input.mWorldPos(cam, ScreenManager.GraphicsDevice), 32) / 32}", 10);
             Extras.DrawDebug(sb, $"spawn enemy: {spawnEnemy}  (enter)", 11);
             Extras.DrawDebug(sb, $"tl:{Globals.ScreenTopLeft} tr:{Globals.ScreenTopRight} bl:{Globals.ScreenBotLeft} br:{Globals.ScreenBotRight}", 20);
-            Extras.DrawDebug(sb, $"tl:{Globals.ScreenTopLeft} tr:{Globals.ScreenTopRight} bl:{Globals.ScreenBotLeft} br:{Globals.ScreenBotRight}", 21);
 
             sb.DrawString(ScreenManager.DebugFont, "playing", Vector2.One, Color.Black);
             sb.DrawString(ScreenManager.DebugFont, "playing", Vector2.Zero, Color.White);

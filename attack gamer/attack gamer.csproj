@@ -76,7 +76,6 @@
     <Compile Include="Screens\MenuScreen.cs" />
     <Compile Include="Screens\PlayingScreen.cs" />
     <Compile Include="Sprites\AnimatedSprite.cs" />
-    <Compile Include="Sprites\Animation.cs" />
     <Compile Include="Sprites\SheetAnimation.cs" />
     <Compile Include="Sprites\Sprite.cs" />
   </ItemGroup>
