@@ -32,9 +32,8 @@ namespace attack_gamer
         public double attackCd;
         public int attackWidth, attackLength;
 
-        public int LootRadiusSize = 128;
+        public int LootRadiusSize = 64;
         public Rectangle LootRadius => new Rectangle((int)(Position.X + (Size.X / 2) - (LootRadiusSize / 2)), (int)(Position.Y + (Size.Y / 2) - (LootRadiusSize / 2)), LootRadiusSize, LootRadiusSize);
-
 
         public Player(GridSheet shet, GridSheet swing, GraphicsDevice grap, Camera camer) : base(grap)
         {
@@ -46,12 +45,12 @@ namespace attack_gamer
 
             Swing = new SheetAnimation();
             Swing.GSheet = swing;
-            Swing.AddAnimation(new int[] { 0,3,6,8,9,10,11,12,13,14,15,15}, 0, "swing");
+            Swing.AddAnimation(new int[] { 0, 2, 4, 6,7, 7,7,7,7, 8, 9, 10, 11, 12, 13, 14, 15, 15 }, 0, "swing");
             Swing.AddAnimation(new int[] { 0 }, 0, "test");
 
             Swing.Size = new Vector2(32, 96);
             Swing.Origin = new Vector2(40, 48);
-            Swing.frameLength = 0.025;
+            Swing.frameLength = 0.015;
             Swing.CurrentAnimation = Swing.Animations["swing"];
 
             AddAnimation(new int[] { 0, 1, 2, 3 }, 0, "walkdown");
@@ -65,7 +64,7 @@ namespace attack_gamer
             attackWidth = 48;
             attackLength = 64;
             //attackOrigin = new Vector2(Size.X / 2, Size.Y);
-            
+
             SetHealth(20);
             SetMana(10);
             SetDamage(2, 5);
@@ -88,7 +87,6 @@ namespace attack_gamer
             {
                 if (Input.LeftHold())
                 {
-
                     bool att = true;
                     if (inventory.bagSprite.Rectangle.Contains(Input.mPos))
                         if (inventory.IsDrawing)
@@ -148,7 +146,7 @@ namespace attack_gamer
                 {
                     var mod = (int)(8);
                     CurrentRow = 1;
-                    attackBox = new Rectangle((int)Position.X - (int)Size.X - (mod/2), (int)Position.Y - (int)Size.Y - (mod/2), (int)Swing.Size.Y + mod, (int)Swing.Size.X + mod + 8);
+                    attackBox = new Rectangle((int)Position.X - (int)Size.X - (mod / 2), (int)Position.Y - (int)Size.Y - (mod / 2), (int)Swing.Size.Y + mod, (int)Swing.Size.X + mod + 8);
                     Swing.Rotation = MathHelper.ToRadians(270);
                 }
 
@@ -166,7 +164,7 @@ namespace attack_gamer
                 {
                     var mod = (int)(8);
                     CurrentRow = 3;
-                    attackBox = new Rectangle((int)Position.X - (int)Size.X - (mod/2), (int)Position.Y - (int)Size.Y - (mod / 2), (int)Swing.Size.X + mod + 8, (int)Swing.Size.Y + mod);
+                    attackBox = new Rectangle((int)Position.X - (int)Size.X - (mod / 2), (int)Position.Y - (int)Size.Y - (mod / 2), (int)Swing.Size.X + mod + 8, (int)Swing.Size.Y + mod);
                     Swing.Rotation = MathHelper.ToRadians(180);
                 }
 
