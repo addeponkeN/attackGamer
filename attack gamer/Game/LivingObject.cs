@@ -197,9 +197,12 @@ namespace attack_gamer
                 return;
             }
             Nemesis.ModifyResourceValue("xp", MaxExp);
-            var rnd = Rng.Noxt(2);
+            var rnd = Rng.Noxt(3);
             if (rnd == 1)
                 p.ScreenManager.GetScreen<PlayingScreen>().items.Add(new Usable(UsableType.HealthPot, PlayingScreen.itemSheet) { Position = new Vector2(Position.X + Rng.Noxt(-10, 10), Position.Y + Rng.Noxt(-10, 10)) });
+            if (rnd == 2)
+                p.ScreenManager.GetScreen<PlayingScreen>().items.Add(new Usable(UsableType.ManaPot, PlayingScreen.itemSheet) { Position = new Vector2(Position.X + Rng.Noxt(-10, 10), Position.Y + Rng.Noxt(-10, 10)) });
+
             IsTriggeredDeath = true;
         }
         /// <summary>
