@@ -123,7 +123,7 @@ namespace attack_gamer
             {
                 frame = (int)(gameTime.TotalGameTime.TotalSeconds * CurrentAnimation.Length / AnimationDuration % CurrentAnimation.Length);
                 CurrentAnimationFrame = CurrentAnimation[frame];
-                sb.Draw(Texture, Rectangle, CurrentAnimationFrame, Color, Rotation, Origin, SpriteEffect, 0);
+                sb.Draw(Texture, Rectangle, CurrentAnimationFrame, Color, Rotation, Origin,SpriteEffect, 0);
             }
             else
                 sb.Draw(GSheet.Texture, Rectangle, SetSource(CurrentColumn, CurrentRow), Color);

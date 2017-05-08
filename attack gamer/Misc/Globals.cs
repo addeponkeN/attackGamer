@@ -28,7 +28,7 @@ namespace attack_gamer
         public static Rectangle ScreenTop { get { return new Rectangle(ScreenRectangle.X, ScreenRectangle.Y, ScreenRectangle.Width, 4); } }
         public static Rectangle ScreenBot { get { return new Rectangle(ScreenRectangle.X, (ScreenRectangle.Y + ScreenHeight) - 4, ScreenRectangle.Width, 4); } }
         public static Rectangle ScreenLeft { get { return new Rectangle(ScreenRectangle.X, ScreenRectangle.Y, 4, ScreenHeight); } }
-        public static Rectangle ScreenRight { get { return new Rectangle(ScreenRectangle.X + ScreenWidth - 4, ScreenRectangle.Y, 4, ScreenHeight); } }
+        public static Rectangle ScreenRight { get { return new Rectangle(ScreenRectangle.X + ScreenWidth - 4, ScreenRectangle.Y, 4, ScreenHeight); } }        
 
         public static bool debug;         // F1 toggle
     }

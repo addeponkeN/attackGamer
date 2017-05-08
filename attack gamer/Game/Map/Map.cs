@@ -16,6 +16,7 @@ namespace attack_gamer
     }
     public class Map
     {
+        public static float WorldScale = 2f;
 
         public Tile[,] tileMap;
         public Item[,] items;

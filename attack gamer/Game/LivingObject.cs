@@ -24,7 +24,7 @@ namespace attack_gamer
         public float VelocityForce { get; set; } = 1f;
         public float Delta { get; set; }
 
-        public Vector2 Size { get; set; } = new Vector2(32);
+        public Vector2 Size { get; set; } = new Vector2(32 * 2f);
         public Color BaseColor { get; set; } = Color.White;
 
         public bool Visible { get; set; } = true;
@@ -124,7 +124,7 @@ namespace attack_gamer
             Push(damageSource.Position - Position, damageSource.KnockbackPower);
             IsHit = true;
             //textList.Add(new DynamicText(ScreenManager.DebugFont, Position, Size, new Vector2(0, -1), 10f, Color.DarkRed, "-" + damageSource.Damage.ToString()) { TextShader = true });
-            damageSource.DidAttack();
+            damageSource.OnAttack();
         }
         /// <summary>
         /// push unit to direction with force
@@ -148,7 +148,7 @@ namespace attack_gamer
             switch (resource)
             {
                 case "hp":
-                    Health = Health + modify;
+                    Health += modify;
                     if (modify > 0) { color = Color.ForestGreen; msg = "+"; } else color = Color.DarkRed;
                     textList.Add(new DynamicText(ScreenManager.DebugFont, Position, Size, new Vector2(0, -1), 10f, color, msg + modify.ToString()) { TextShader = true });
                     break;
@@ -205,10 +205,13 @@ namespace attack_gamer
         /// <summary>
         /// unit attacked
         /// </summary>
-        public void DidAttack()
+        public void OnAttack()
         {
             Attacked = true;
-            AttackCooldown = IsAttackingTimer + 0.25;
+            if (IsPlayer)
+                AttackCooldown = IsAttackingTimer + 0.25;
+            else
+                AttackCooldown = IsAttackingTimer + 0.75;
         }
         public Color _Color()
         {
@@ -243,7 +246,10 @@ namespace attack_gamer
                 if (IsHitTimer < 0)
                 {
                     IsHit = false;
-                    IsHitTimer = 10;
+                    if (IsPlayer)
+                        IsHitTimer = 20;
+                    else
+                        IsHitTimer = 10;
                 }
             }
             if (Attacked)

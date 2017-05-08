@@ -16,7 +16,7 @@ namespace attack_gamer
         public float SpeedF { get; set; }
         public Vector2 Direction { get; set; }
         public float Delta { get; set; }
-        public Vector2 Size { get; set; } = new Vector2(32);
+        public Vector2 Size { get; set; } = new Vector2(32 * 2f);
         public Vector2 SetSize(Vector2 size) { if (Size.X <= 0 && Size.Y <= 0) return new Vector2(Texture.Width, Texture.Height); return Size; }
         public Color Color { get; set; } = Color.White;
         public Color BaseColor { get; set; } = Color.White;

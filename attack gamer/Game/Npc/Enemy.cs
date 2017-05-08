@@ -27,7 +27,6 @@ namespace attack_gamer
             AddAnimation(new int[] { 0, 1, 0, 2 }, 3, "walkright");
 
             Speed = 45f;
-            Size = new Vector2(32, 32);
 
             SetHealth(10);
             SetDamage(1, 3);
@@ -51,7 +50,7 @@ namespace attack_gamer
                 {
                     GetHitBy(playerRef);
                 }
-                if (playerRef.Rectangle.Intersects(Rectangle) && !Attacked)
+                if (playerRef.Rectangle.Intersects(Rectangle) && !Attacked && !playerRef.IsHit)
                 {
                     playerRef.GetHitBy(this);
                 }

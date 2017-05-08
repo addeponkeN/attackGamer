@@ -14,6 +14,8 @@ namespace attack_gamer
         Tree,
         Stone,
         Bush,
+        Water,
+
 
 
     }
@@ -22,11 +24,9 @@ namespace attack_gamer
         public int Width;
         public int Height;
 
-        public int ID { get; set; }        
+        public int ID { get; set; }
 
         public bool Walkable { get; set; }
-
-        
 
         public Tile(TileType type, GridSheet sheet)
         {
@@ -44,6 +44,8 @@ namespace attack_gamer
                 case TileType.Stone:
                     break;
                 case TileType.Bush:
+                    break;
+                case TileType.Water:
                     break;
             }
         }
@@ -65,6 +67,24 @@ namespace attack_gamer
                 case 10: break;
                 case 11: break;
                 case 12: break;
+                case 13: break;
+                case 14: break;
+                case 15: break;
+                case 16: break;
+                case 17: break;
+                case 18: break;
+                case 19: break;
+                case 20: break;
+                case 21: break;
+                case 22: break;
+                case 23: break;
+                case 24: break;
+                case 25: break;
+                case 26: break;
+                case 27: break;
+                case 28: break;
+                case 29: break;
+                case 30: break;
                 default: break;
             }
         }
