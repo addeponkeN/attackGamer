@@ -37,7 +37,7 @@ namespace attack_gamer
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
             playerSheet = content.Load<GridSheet>(@"SpriteSheets/playerSheet");
-            swingSheet = content.Load<GridSheet>("SpriteSheets/swing");
+            swingSheet = content.Load<GridSheet>("SpriteSheets/swingNew");
             goblinSheet = content.Load<GridSheet>("SpriteSheets/goblinSheet");
             skeleSheet = content.Load<GridSheet>("SpriteSheets/skeleSheet");
             itemSheet = content.Load<GridSheet>("SpriteSheets/itemSheet");
@@ -56,7 +56,7 @@ namespace attack_gamer
             items.Add(new Usable(UsableType.ManaPot, itemSheet) { Vacuumable = true, Position = new Vector2(200) });
 
             cam.Position = player.CenterBox;
-            cam.Zoom = 1.666666666f;
+            cam.Zoom = 2.0f;
         }
 
         public override void UnloadContent()

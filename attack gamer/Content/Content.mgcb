@@ -149,3 +149,18 @@
 /processorParam:Padding=0
 /build:SpriteSheets/tileSheet.png
 
+#begin SpriteSheets/swingNew.png
+/importer:TextureImporter
+/processor:GridSheetProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/processorParam:SpriteWidth=32
+/processorParam:SpriteHeight=96
+/processorParam:Padding=0
+/build:SpriteSheets/swingNew.png
+

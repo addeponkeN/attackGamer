@@ -38,7 +38,7 @@ namespace attack_gamer
         public int CurrentColumn { get; set; }
         public Rectangle[] CurrentAnimation { get; set; }
         public Rectangle CurrentAnimationFrame { get; set; }
-        public double AnimationDuration => (frameLength * CurrentAnimation.Length) - 0.1;
+        public double AnimationDuration => (frameLength * CurrentAnimation.Length) - 0.02;
         private double frameTimer;
         public double frameLength = 0.25;
         public int frame;

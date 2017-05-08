@@ -46,12 +46,12 @@ namespace attack_gamer
 
             Swing = new SheetAnimation();
             Swing.GSheet = swing;
-            Swing.AddAnimation(new int[] { 0, 1, 2, 3 }, 0, "swing");
+            Swing.AddAnimation(new int[] { 0,3,6,8,9,10,11,12,13,14,15,15}, 0, "swing");
             Swing.AddAnimation(new int[] { 0 }, 0, "test");
 
             Swing.Size = new Vector2(32, 96);
             Swing.Origin = new Vector2(40, 48);
-            Swing.frameLength = 0.1;
+            Swing.frameLength = 0.025;
             Swing.CurrentAnimation = Swing.Animations["swing"];
 
             AddAnimation(new int[] { 0, 1, 2, 3 }, 0, "walkdown");
