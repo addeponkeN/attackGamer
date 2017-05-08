@@ -24,7 +24,7 @@ namespace attack_gamer
         public List<Item> items = new List<Item>();
 
         float delay;
-        bool spawnEnemy;
+        bool spawnEnemy = true;
 
         public PlayingScreen()
         {
