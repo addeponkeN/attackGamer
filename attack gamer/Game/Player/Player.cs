@@ -49,7 +49,7 @@ namespace attack_gamer
             Swing.AddAnimation(new int[] { 0, 1, 2, 3 }, 0, "swing");
             Swing.AddAnimation(new int[] { 0 }, 0, "test");
 
-            Swing.Size = new Vector2(32, 96) * 2f;
+            Swing.Size = new Vector2(32, 96);
             Swing.Origin = new Vector2(40, 48);
             Swing.frameLength = 0.1;
             Swing.CurrentAnimation = Swing.Animations["swing"];
@@ -146,7 +146,7 @@ namespace attack_gamer
                 // triangle above player
                 if (Helper.IsPointInTri(Input.mWorldPos(cam, gd), Globals.ScreenTopLeft, Globals.ScreenTopRight, CenterBox))
                 {
-                    var mod = (int)(8 * Map.WorldScale);
+                    var mod = (int)(8);
                     CurrentRow = 1;
                     attackBox = new Rectangle((int)Position.X - (int)Size.X - (mod/2), (int)Position.Y - (int)Size.Y - (mod/2), (int)Swing.Size.Y + mod, (int)Swing.Size.X + mod + 8);
                     Swing.Rotation = MathHelper.ToRadians(270);
@@ -155,7 +155,7 @@ namespace attack_gamer
                 // triangle under player
                 if (Helper.IsPointInTri(Input.mWorldPos(cam, gd), Globals.ScreenBotLeft, Globals.ScreenBotRight, CenterBox))
                 {
-                    var mod = (int)(8 * Map.WorldScale);
+                    var mod = (int)(8);
                     CurrentRow = 0;
                     attackBox = new Rectangle((int)Position.X - (int)Size.X - (mod / 2), (int)Position.Y + (int)Size.Y - (mod / 2) - 8, (int)Swing.Size.Y + mod, (int)Swing.Size.X + mod + 8);
                     Swing.Rotation = MathHelper.ToRadians(90);
@@ -164,7 +164,7 @@ namespace attack_gamer
                 // triangle left player
                 if (Helper.IsPointInTri(Input.mWorldPos(cam, gd), Globals.ScreenTopLeft, Globals.ScreenBotLeft, CenterBox))
                 {
-                    var mod = (int)(8 * Map.WorldScale);
+                    var mod = (int)(8);
                     CurrentRow = 3;
                     attackBox = new Rectangle((int)Position.X - (int)Size.X - (mod/2), (int)Position.Y - (int)Size.Y - (mod / 2), (int)Swing.Size.X + mod + 8, (int)Swing.Size.Y + mod);
                     Swing.Rotation = MathHelper.ToRadians(180);
@@ -173,7 +173,7 @@ namespace attack_gamer
                 // triangle right player
                 if (Helper.IsPointInTri(Input.mWorldPos(cam, gd), Globals.ScreenTopRight, Globals.ScreenBotRight, CenterBox))
                 {
-                    var mod = (int)(8 * Map.WorldScale);
+                    var mod = (int)(8);
                     CurrentRow = 2;
                     attackBox = new Rectangle((int)Position.X + (int)Size.X - (mod / 2) - 8, (int)Position.Y - (int)Size.Y - (mod / 2), (int)Swing.Size.X + mod + 8, (int)Swing.Size.Y + mod);
                     Swing.Rotation = MathHelper.ToRadians(0);
@@ -225,7 +225,7 @@ namespace attack_gamer
             }
 
             //if(IsAttacking)
-            sb.Draw(ScreenManager.box, attackBox, Swing.GetSource(Swing.CurrentAnimation, gameTime), new Color(Color.MonoGameOrange, 0.3f));
+            //sb.Draw(ScreenManager.box, attackBox, Swing.GetSource(Swing.CurrentAnimation, gameTime), new Color(Color.MonoGameOrange, 0.3f));
             //sb.Draw(ScreenManager.box, LootRadius, new Color(Color.Green, 0.2f));
 
         }

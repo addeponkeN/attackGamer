@@ -43,12 +43,12 @@ namespace attack_gamer
         {
             base.Update(gameTime);
             itemRec = new Rectangle((int)Position.X, (int)Helper.Center(Rectangle, new Vector2(itemRec.Width, itemRec.Height)).Y, 32, 32);
-            Text.Position = new Vector2(itemRec.X + itemRec.Width, Helper.Center(itemRec, Text.Size).Y);            
+            Text.Position = new Vector2(itemRec.X + itemRec.Width, Helper.Center(itemRec, Text.Size).Y);
         }
         public override void Draw(SpriteBatch sb)
         {
             base.Draw(sb);
-            sb.Draw(item.Texture, itemRec, item.SetSource(item.Column, item.Row), new Color(item.Color, Alpha));            
+            sb.Draw(item.Texture, itemRec, item.SetSource(item.Column, item.Row), new Color(item.Color, Alpha));
         }
     }
 }

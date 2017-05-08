@@ -24,7 +24,7 @@ namespace attack_gamer
         public float VelocityForce { get; set; } = 1f;
         public float Delta { get; set; }
 
-        public Vector2 Size { get; set; } = new Vector2(32 * 2f);
+        public Vector2 Size { get; set; } = new Vector2(32);
         public Color BaseColor { get; set; } = Color.White;
 
         public bool Visible { get; set; } = true;
@@ -197,8 +197,8 @@ namespace attack_gamer
                 return;
             }
             Nemesis.ModifyResourceValue("xp", MaxExp);
-            var rnd = Rng.Noxt(10);
-            if (rnd == 5)
+            var rnd = Rng.Noxt(2);
+            if (rnd == 1)
                 p.ScreenManager.GetScreen<PlayingScreen>().items.Add(new Usable(UsableType.HealthPot, PlayingScreen.itemSheet) { Position = new Vector2(Position.X + Rng.Noxt(-10, 10), Position.Y + Rng.Noxt(-10, 10)) });
             IsTriggeredDeath = true;
         }
@@ -215,7 +215,7 @@ namespace attack_gamer
         }
         public Color _Color()
         {
-            if (IsHit)
+            if (BeingPushed)
                 return Color.Red;
             else if (IsDead)
             {

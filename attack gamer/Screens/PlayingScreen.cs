@@ -56,6 +56,7 @@ namespace attack_gamer
             items.Add(new Usable(UsableType.ManaPot, itemSheet) { Vacuumable = true, Position = new Vector2(200) });
 
             cam.Position = player.CenterBox;
+            cam.Zoom = 1.666666666f;
         }
 
         public override void UnloadContent()
@@ -111,17 +112,17 @@ namespace attack_gamer
 
             if (Input.KeyHold(Keys.NumPad1))
             {
-                items.Add(new Usable(UsableType.HealthPot, itemSheet) { Vacuumable = true, Position = new Vector2(player.Position.X + Rng.Noxt(-Globals.ScreenWidth / 2, Globals.ScreenWidth / 2), player.Position.Y + Rng.Noxt(-Globals.ScreenHeight / 2, Globals.ScreenHeight / 2)) });
+                items.Add(new Usable(UsableType.HealthPot, itemSheet) { Position = new Vector2(player.Position.X + Rng.Noxt(-Globals.ScreenWidth / 2, Globals.ScreenWidth / 2), player.Position.Y + Rng.Noxt(-Globals.ScreenHeight / 2, Globals.ScreenHeight / 2)) });
             }
             if (Input.KeyHold(Keys.NumPad2))
             {
-                items.Add(new Usable(UsableType.ManaPot, itemSheet) { Vacuumable = true, Position = new Vector2(player.Position.X + Rng.Noxt(-Globals.ScreenWidth / 2, Globals.ScreenWidth / 2), player.Position.Y + Rng.Noxt(-Globals.ScreenHeight / 2, Globals.ScreenHeight / 2)) });
+                items.Add(new Usable(UsableType.ManaPot, itemSheet) { Position = new Vector2(player.Position.X + Rng.Noxt(-Globals.ScreenWidth / 2, Globals.ScreenWidth / 2), player.Position.Y + Rng.Noxt(-Globals.ScreenHeight / 2, Globals.ScreenHeight / 2)) });
             }
             items.RemoveAll(i => !i.Exist);
             foreach (var i in items)
             {
                 i.Update(gameTime);
-                if (player.LootRadius.Intersects(i.Rectangle) && !player.inventory.IsFull)
+                if (player.LootRadius.Intersects(i.Rectangle) && !player.inventory.IsFull && i.IsLootable)
                     i.IsBeingLooted = true;
                 else if (player.inventory.IsFull) i.IsBeingLooted = false;
                 if (i.IsBeingLooted)
@@ -147,6 +148,7 @@ namespace attack_gamer
             ////////////////////DRAW WORLD////////////////////////
             //////////////////////////////////////////////////////
             #region DRAW WORLD
+            //sb.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, cam.get_transformation(ScreenManager.GraphicsDevice));
             sb.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default,
                     RasterizerState.CullNone, null, cam.get_transformation(ScreenManager.GraphicsDevice));
             // draw here ---------------------------------------
@@ -155,8 +157,7 @@ namespace attack_gamer
                 i.Draw(sb);
             loManager.Draw(sb, gameTime);
             player.Draw(sb, gameTime);
-
-
+            
             sb.Draw(ScreenManager.box, new Rectangle(Helper.ToPoint(Input.mWorldPos(cam, ScreenManager.GraphicsDevice) - new Vector2(2)), new Point(4)), Color.MonoGameOrange);
 
             sb.End();

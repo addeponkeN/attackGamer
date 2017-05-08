@@ -32,6 +32,7 @@ namespace attack_gamer
         {
             IsAnimating = false;
             GSheet = sheet;
+
             switch (type)
             {
                 case TileType.Grass:

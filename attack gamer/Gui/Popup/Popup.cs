@@ -20,9 +20,9 @@ namespace attack_gamer
         public Vector2 Direction { get; set; }
         public float Delta { get; set; }
         public Vector2 Size { get; set; } = new Vector2(128, 48);
-        public Color BaseColor { get; set; } = Color.White;
-        public Color Color { get; set; } = Color.White;
-        public float Alpha { get; set; } = 1f;
+        public Color BaseColor { get; set; }
+        public Color Color { get; set; }
+        public float Alpha { get; set; } = (int)150;
 
         public bool Visible { get; set; } = true;
         public bool Exist { get; set; } = true;
@@ -32,6 +32,7 @@ namespace attack_gamer
         public bool Newest { get; set; }
 
         public float AliveTime { get; set; } = 5;
+        public int Quantity = 0;
 
         public T GetPopup<T>() where T : Popup => this as T;
         public Popup()
@@ -45,16 +46,19 @@ namespace attack_gamer
             AliveTime -= Delta;
             if (AliveTime < 1)
             {
-                Alpha = AliveTime;
+                Alpha = 150 * AliveTime;
                 Speed += 250f * Delta;
                 Position += Speed * Delta * Direction;
                 if (AliveTime <= 0) Exist = false;
             }
             if (Newest)
-                Color = new Color(Color.LightGoldenrodYellow, Alpha);
-            else Color = new Color(Color.Black, Alpha);            
+                Color = new Color(0, 0, 0, (int)Alpha);
+            else Color = new Color(0, 0, 0, (int)Alpha);
         }
-
+        public void SetMsg(string msg)
+        {
+            Text.Msg = msg;
+        }
         public virtual void Draw(SpriteBatch sb)
         {
             sb.Draw(Texture, Rectangle, Color);
@@ -62,8 +66,15 @@ namespace attack_gamer
             {
                 var pos = Helper.Center(Rectangle, Text.Size);
                 if (CentreText)
-                    sb.DrawString(Text.Font, Text.Msg, pos, new Color(Text.Color, Alpha));
-                else sb.DrawString(Text.Font, Text.Msg, Text.Position, new Color(Text.Color, Alpha));
+                {
+                    //if (Quantity > 0)
+                    //Extras.DrawString(sb, Text.Font, Text.Msg + " x" + Quantity, pos, new Color(Text.Color, Alpha));
+                    //else
+                    Extras.DrawString(sb, Text.Font, Text.Msg, pos, new Color(Text.Color, Alpha));
+                }
+                //if (Quantity > 0)
+                //Extras.DrawString(sb, Text.Font, Text.Msg + " x" + Quantity, Text.Position, new Color(Text.Color, Alpha));
+                else Extras.DrawString(sb, Text.Font, Text.Msg, Text.Position, new Color(Text.Color, Alpha));
             }
         }
     }

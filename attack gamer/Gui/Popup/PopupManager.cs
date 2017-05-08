@@ -14,31 +14,43 @@ namespace attack_gamer
         List<Popup> list = new List<Popup>();
         public void AddPopup(Popup p)
         {
+            p.Newest = true;
             list.Add(p);
+            if (list.Count > 10)
+                list.RemoveAt(0);
             if (list.Count >= 1)
-                for (int i = 0; i < list.Count - 1; i++)
-                    list[i].Position = new Vector2(list[i].Position.X, list[i].Position.Y - (list[i].Size.Y));
+            {
+                //if (list.Any(g => g.Text.Msg == p.Text.Msg))
+                //{
+                //    p.Quantity++;
+                //    p.AliveTime = 5f;
+                //}
+                //else
+                    for (int i = 0; i < list.Count - 1; i++)
+                    {
+                        list[i].Newest = false;
+                        list[i].Position = new Vector2(list[i].Position.X, list[i].Position.Y - (list[i].Size.Y));
+                    }
+            }
         }
 
         public void Update(GameTime gt)
         {
             for (int i = 0; i < list.Count; i++)
             {
-                if (i < 1)
-                    list[i].Newest = true;
-                else list[i].Newest = false;
                 list[i].Update(gt);
             }
             if (list.Count > 0)
             {
                 list.RemoveAll(p => !p.Exist);
             }
+
         }
         public void Draw(SpriteBatch sb)
         {
-            foreach (var item in list)
+            foreach (var p in list)
             {
-                item.Draw(sb);
+                p.Draw(sb);
             }
         }
     }

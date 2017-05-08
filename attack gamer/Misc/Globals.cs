@@ -66,7 +66,7 @@ namespace attack_gamer
         public static Texture2D NewTexture(GraphicsDevice gd)
         {
             Texture2D Texture = new Texture2D(gd, 1, 1);
-            Color[] colorData = { new Color(Color.Black, (int)50) };
+            Color[] colorData = { new Color(Color.White, (int)255) };
             Texture.SetData(colorData);
             return Texture;
         }
@@ -147,6 +147,14 @@ namespace attack_gamer
             var xx = ((((int)x / roundTo)) * roundTo);
             var yy = ((((int)y / roundTo)) * roundTo);
             return new Vector2((xx), (yy));
+        }
+        public static Point FixPosToPoint(Vector2 mpos, int roundTo)
+        {
+            var x = Math.Round(mpos.X);
+            var y = Math.Round(mpos.Y);
+            var xx = ((((int)x / roundTo)) * roundTo);
+            var yy = ((((int)y / roundTo)) * roundTo);
+            return new Point((xx), (yy));
         }
         public static Point ToPoint(Vector2 mpos)
         {

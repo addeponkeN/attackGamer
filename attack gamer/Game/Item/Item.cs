@@ -39,7 +39,9 @@ namespace attack_gamer
         public int Row { get; set; } = 0;
 
         public bool Vacuumable { get; set; } = true;
+        public bool IsLootable => AliveTime <= 0.1 && Vacuumable;
         public bool IsBeingLooted { get; set; }
+        public double AliveTime = 0.75;
 
         public Rectangle SetSource(int column, int row)
         {
@@ -59,6 +61,8 @@ namespace attack_gamer
         {
             Delta = (float)gt.ElapsedGameTime.TotalSeconds;
             Position += Delta * Speed * Direction;
+            if (AliveTime > 0)
+                AliveTime -= Delta;
         }
         public void VacuumLoot(GameTime gt, Item item, Vector2 des, Inventory i)
         {
@@ -66,6 +70,7 @@ namespace attack_gamer
             var dir = des - Position;
             dir.Normalize();
             Direction = dir;
+            
             if (CloseTo(des))
             {
                 switch (item.Type)
