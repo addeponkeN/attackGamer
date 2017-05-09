@@ -44,7 +44,7 @@ namespace attack_gamer
 
         public Dictionary<string, Rectangle[]> Animations = new Dictionary<string, Rectangle[]>();
 
-        DynamicBar HealthBar;
+        public DynamicBar HealthBar;
 
         Extras extras;
 
@@ -106,6 +106,8 @@ namespace attack_gamer
         public double IsAttackingTimer { get; set; }
         public double AttackCooldown { get; set; }
         public double AttackCooldownCounter { get; set; }
+        public bool IsInCombat { get; set; }
+        public double IsInCombatTimer { get; set; } = 10;
 
         //public void HitOtherObject(LivingObject target)
         //{
@@ -123,6 +125,7 @@ namespace attack_gamer
             ModifyResourceValue("hp", -damageSource.Damage);
             Push(damageSource.Position - Position, damageSource.KnockbackPower);
             IsHit = true;
+            IsInCombat = true;
             //textList.Add(new DynamicText(ScreenManager.DebugFont, Position, Size, new Vector2(0, -1), 10f, Color.DarkRed, "-" + damageSource.Damage.ToString()) { TextShader = true });
             damageSource.OnAttack();
         }
@@ -237,7 +240,7 @@ namespace attack_gamer
                 Position += Delta * Speed * Direction;
             AttackCooldown -= Delta;
 
-            HealthBar.Update(Health, MaxHealth, (int)Size.X, Position);
+            HealthBar.Update(Health, MaxHealth, HealthBar.BarWidth, Position);
 
             //if (NemesisTimer > 0)
             //    NemesisTimer = (int)extras.AddEverySecond(gameTime, NemesisTimer, -1, 1f);
@@ -253,6 +256,15 @@ namespace attack_gamer
                         IsHitTimer = 20;
                     else
                         IsHitTimer = 10;
+                }
+            }
+            if (IsInCombat)
+            {
+                IsInCombatTimer -= Delta;
+                if (IsInCombatTimer < 0)
+                {
+                    IsInCombatTimer = 10;
+                    IsInCombat = false;
                 }
             }
             if (Attacked)
@@ -330,8 +342,10 @@ namespace attack_gamer
             if (CurrentAnimationFrame == null)
                 CurrentAnimationFrame = CurrentAnimation[0];
 
-            if (IsDrawHealthBar)
-                HealthBar.Draw(sb);
+            if (!IsDead)
+                if (IsDrawHealthBar)
+                    if (IsInCombat)
+                        HealthBar.Draw(sb);
 
             var i = (int)(gt.TotalGameTime.TotalSeconds * CurrentAnimation.Length / AnimationDuration % CurrentAnimation.Length);
             CurrentAnimationFrame = CurrentAnimation[i];

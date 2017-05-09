@@ -36,7 +36,7 @@ namespace attack_gamer
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
-            playerSheet = content.Load<GridSheet>(@"SpriteSheets/playerSheet");
+            playerSheet = content.Load<GridSheet>("SpriteSheets/playerSheet");
             swingSheet = content.Load<GridSheet>("SpriteSheets/swingNew");
             goblinSheet = content.Load<GridSheet>("SpriteSheets/goblinSheet");
             skeleSheet = content.Load<GridSheet>("SpriteSheets/skeleSheet");

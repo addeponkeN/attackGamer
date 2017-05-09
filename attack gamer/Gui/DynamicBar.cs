@@ -61,7 +61,7 @@ namespace attack_gamer
 
         public int distanceBetweenObjectY = 2;
 
-        public Vector2 NewPosition { get { return new Vector2(Position.X, Position.Y - ((Size.Y * distanceBetweenObjectY) + OutlineSize)); } }
+        public Vector2 NewPosition { get { return new Vector2(Position.X + (BarWidth / 2), Position.Y - ((Size.Y * distanceBetweenObjectY) + OutlineSize)); } }
         public Vector2 Position;
 
         public bool OutlineActive = true;

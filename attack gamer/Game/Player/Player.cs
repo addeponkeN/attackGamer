@@ -38,6 +38,7 @@ namespace attack_gamer
         public Player(GridSheet shet, GridSheet swing, GraphicsDevice grap, Camera camer) : base(grap)
         {
             IsPlayer = true;
+            IsDrawHealthBar = true;
             gd = grap;
             cam = camer;
             GSheet = shet;

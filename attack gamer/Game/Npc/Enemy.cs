@@ -33,6 +33,9 @@ namespace attack_gamer
             SetExp((int)Rng.NoxtDouble((Health/2) * 0.8, (Health/2) * 1.2));
             Console.WriteLine(MaxExp);
             KnockbackPower = 2f;
+            HealthBar.BarHeight = 2;
+            HealthBar.BarWidth = 16;
+            HealthBar.distanceBetweenObjectY = -4;
         }
         public override void Update(GameTime gameTime, PlayingScreen p)
         {
