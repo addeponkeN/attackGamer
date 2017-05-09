@@ -19,7 +19,7 @@ namespace attack_gamer
             Position = new Vector2(0, (int)(Globals.ScreenHeight * 0.666));
             Direction = new Vector2(-1, 0);
             Texture = Extras.NewTexture(gd);
-            AliveTime = 2f;
+            AliveTime = 5f;
             itemRec = new Rectangle((int)Position.X, (int)Helper.Center(Rectangle, new Vector2(itemRec.Width, itemRec.Height)).Y, 32, 32);
 
             switch (item.Type)

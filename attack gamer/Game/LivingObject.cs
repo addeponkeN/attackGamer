@@ -335,7 +335,7 @@ namespace attack_gamer
 
             var i = (int)(gt.TotalGameTime.TotalSeconds * CurrentAnimation.Length / AnimationDuration % CurrentAnimation.Length);
             CurrentAnimationFrame = CurrentAnimation[i];
-            sb.Draw(Texture, Rectangle, CurrentAnimationFrame, _Color(), 0, Vector2.Zero, SpriteEffects.None, 0);
+            sb.Draw(Texture, Rectangle, CurrentAnimationFrame, _Color(), 0, Vector2.Zero, SpriteEffects.None, 0.0f);
 
             foreach (var t in textList)
             {

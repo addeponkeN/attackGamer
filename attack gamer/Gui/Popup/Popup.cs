@@ -32,7 +32,6 @@ namespace attack_gamer
         public bool Newest { get; set; }
 
         public float AliveTime { get; set; } = 5;
-        public int Quantity = 0;
 
         public T GetPopup<T>() where T : Popup => this as T;
         public Popup()

@@ -42,6 +42,7 @@ namespace attack_gamer
         public bool IsLootable => AliveTime <= 0.1 && Vacuumable;
         public bool IsBeingLooted { get; set; }
         public double AliveTime = 0.75;
+        public int Quantity { get; set; }
 
         public Rectangle SetSource(int column, int row)
         {

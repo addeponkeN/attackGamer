@@ -49,9 +49,8 @@ namespace attack_gamer
                         Console.WriteLine("full hp");
                         return;
                     }
-                    Console.WriteLine("hp restored");
+                    Console.WriteLine("hp restored: " + i.Value);
                     o.ModifyResourceValue("hp",i.Value);
-                    Console.WriteLine(i.Value);
                     break;
                 case UsableType.ManaPot:
                     o.Mana += i.Value;

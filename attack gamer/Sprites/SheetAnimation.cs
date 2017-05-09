@@ -45,6 +45,7 @@ namespace attack_gamer
         public Vector2 Origin = Vector2.Zero;
         public float Rotation = 0;
         public SpriteEffects SpriteEffect = SpriteEffects.None;
+        public float Layer { get; set; } = 0.0f;
 
         public bool IsAnimating { get; set; } = true;
         public bool IsTimed { get; set; }
@@ -123,7 +124,7 @@ namespace attack_gamer
             {
                 frame = (int)(gameTime.TotalGameTime.TotalSeconds * CurrentAnimation.Length / AnimationDuration % CurrentAnimation.Length);
                 CurrentAnimationFrame = CurrentAnimation[frame];
-                sb.Draw(Texture, Rectangle, CurrentAnimationFrame, Color, Rotation, Origin,SpriteEffect, 0);
+                sb.Draw(Texture, Rectangle, CurrentAnimationFrame, Color, Rotation, Origin,SpriteEffect, Layer);
             }
             else
                 sb.Draw(GSheet.Texture, Rectangle, SetSource(CurrentColumn, CurrentRow), Color);

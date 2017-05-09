@@ -65,11 +65,6 @@ namespace attack_gamer
                 Item.Position = box.Position;
             }
             else Console.WriteLine("ADDED ITEM WAS NULL");
-            //actionbarSlots[i] = new InventorySlot(item, grap, false);
-            //actionbarSlots[i].State = InventorySlotState.Closed;
-            //actionbarSlots[i].Item.Size = actionbarSlots[i].box.Size;
-            //actionbarSlots[i].box.Position = new Vector2((int)actionbar.Position.X + (i * 64), (int)actionbar.Position.Y);
-            //actionbarSlots[i].Item.Position = actionbarSlots[i].box.Position;
         }
         public void ClearSlot()
         {
@@ -130,11 +125,6 @@ namespace attack_gamer
                 if (actionbarSlots[i].State == InventorySlotState.Closed)
                     continue;
                 actionbarSlots[i].AddItem(item);
-                //actionbarSlots[i] = new InventorySlot(item, grap, false);
-                //actionbarSlots[i].State = InventorySlotState.Closed;
-                //actionbarSlots[i].Item.Size = actionbarSlots[i].box.Size;
-                //actionbarSlots[i].box.Position = new Vector2((int)actionbar.Position.X + (i * 64), (int)actionbar.Position.Y);
-                //actionbarSlots[i].Item.Position = actionbarSlots[i].box.Position;
                 PlayingScreen.popManager.AddPopup(new LootPopup(item, grap));
                 return;
             }
@@ -145,11 +135,6 @@ namespace attack_gamer
                     if (bagSlots[x, y].State == InventorySlotState.Closed)
                         continue;
                     bagSlots[x, y].AddItem(item);
-                    //bagSlots[x, y] = new InventorySlot(item, grap, false);
-                    //bagSlots[x, y].State = InventorySlotState.Closed;
-                    //bagSlots[x, y].Item.Size = bagSlots[x, y].box.Size;
-                    //bagSlots[x, y].box.Position = new Vector2((int)actionbar.Position.X + (x * 64), (int)actionbar.Position.Y + (y * 64));
-                    //bagSlots[x, y].Item.Position = bagSlots[x, y].box.Position;
                     PlayingScreen.popManager.AddPopup(new LootPopup(item, grap));
                     return;
                 }
@@ -177,7 +162,6 @@ namespace attack_gamer
 
             if (Input.LeftRelease())
             {
-                //Console.WriteLine(Helper.FixPos(new Vector2(slot.Item.Position.X, slot.Item.Position.Y - 8), 64) + "  - " + slot.ItemOldPositon);
                 if ((!bagSprite.Rectangle.Contains(Input.mPos) && !actionbar.Rectangle.Contains(Input.mPos)))
                 {
                     slot.Item.Position = slot.ItemOldPositon;
@@ -185,9 +169,7 @@ namespace attack_gamer
                     slot.IsDragging = false;
                 }
                 else
-                {
                     SwapSlots(slot);
-                }
             }
         }
         public void SwapSlots(InventorySlot holding)
