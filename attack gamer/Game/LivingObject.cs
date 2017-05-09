@@ -234,13 +234,14 @@ namespace attack_gamer
         public virtual void Update(GameTime gameTime, PlayingScreen p)
         {
             Delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             if (BeingPushed)
                 Position += Delta * Speed * PushDirection * -VelocityForce;
-            else
+            else if(!IsDead)
                 Position += Delta * Speed * Direction;
             AttackCooldown -= Delta;
 
-            HealthBar.Update(Health, MaxHealth, HealthBar.BarWidth, Position);
+            HealthBar.Update(Health, MaxHealth, HealthBar.BarWidth, Position, Size);
 
             //if (NemesisTimer > 0)
             //    NemesisTimer = (int)extras.AddEverySecond(gameTime, NemesisTimer, -1, 1f);
@@ -285,7 +286,6 @@ namespace attack_gamer
             {
                 if (!IsTriggeredDeath)
                     OnDeath(p);
-                Speed = 0;
                 IsDeadTimer -= Delta;
                 if (IsDeadTimer < 0)
                     Exist = false;

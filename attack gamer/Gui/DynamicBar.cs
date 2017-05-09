@@ -61,8 +61,9 @@ namespace attack_gamer
 
         public int distanceBetweenObjectY = 2;
 
-        public Vector2 NewPosition { get { return new Vector2(Position.X + (BarWidth / 2), Position.Y - ((Size.Y * distanceBetweenObjectY) + OutlineSize)); } }
+        public Vector2 NewPosition { get { return new Vector2(Position.X - (Size.X / 2) + (TargetSize.X/2), Position.Y - ((Size.Y * distanceBetweenObjectY) + OutlineSize)); } }
         public Vector2 Position;
+        public Vector2 TargetSize;
 
         public bool OutlineActive = true;
         public bool BackgroundActive = true;
@@ -83,16 +84,17 @@ namespace attack_gamer
             Texture.SetData(colorData);
         }
 
-        public Vector2 UpdatePosition(Vector2 position)
+        public void UpdatePosition(Vector2 position, Vector2 size)
         {
-            return Position = position;
+            Position = position;
+            TargetSize = size;
         }
-        public void Update(double min, double minMax, int barSizeOrPercent, Vector2 position)
+        public void Update(double min, double minMax, int barSizeOrPercent, Vector2 position, Vector2 size)
         {
             BarWidth = barSizeOrPercent;
             Percent = (min / minMax) * barSizeOrPercent;
             PercentText = (min / minMax) * 100;
-            UpdatePosition(position);
+            UpdatePosition(position, size);
 
             MathHelper.Clamp((float)Percent, 0, (float)minMax);
         }
